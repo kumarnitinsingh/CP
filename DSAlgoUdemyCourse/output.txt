@@ -1,0 +1,9 @@
+ttle : true
+cute cat : true
+quick : false
+cat : true
+
+
+
+
+Executed in: 1e-006 ms
