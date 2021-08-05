@@ -43,48 +43,41 @@ void init_code(){
     #endif
 }
 
-bool cancut(ll h,ll n,ll m, vec v,vec pref){
+bool can(ll time,ll p,ll l,vec v){
     ll cn=0;
-     ll st=lower_bound(v.begin(),v.end(),h)-v.begin();
-     //cout<<st<<" "<<h<<endl;
-     ll tl=n-st;
-      ll total =h*(tl);
-      ll original=pref[n-1]-pref[st-1];
-      ll k=original-total;
-     // cout<<h<<" "<<k<<endl;
-      if(k>=m)return true;
+     for(int i=0;i<l;i++){
+         ll t=v[i];int j=2;
+          while(t<=time){
+            cn++;
+             t+=v[i]*j;
+             j++;
+          }
+          if(cn>=p)return true;
+     }
       return false;
-     // for(ll i=st;i<n;i++){
-     //    cn=cn+v[i]-h;
-     // }
-     // if(cn>=m)return true;
-     // return false;
 }
 
-ll binarySearch(ll n,ll m,vec v){
+ll Bsearch(ll p,ll l,vec v){
+
     ll s=0;
-    ll e=v[n-1];
+    ll x=v[l-1];
+    ll t=0;
+    for(int i=1;i<=p;i++){
+        t+=x*i;
+    }
+    ll e=t;
     ll ans=0;
-    vec pref(v);
-    
-     for(int i=1;i<n;i++){
-        pref[i]=pref[i]+pref[i-1];
-     }
-
-     while(s<=e){
-        ll mid =s+(e-s)/2;
-        //cout<<mid<<endl;
-        if(cancut(mid,n,m,v,pref)){
-            ans=max(ans,mid);
-           // cout<<ans<<endl;
-            s=mid+1;
-
-        }
+    while(s<=e){
+        ll mid=s+(e-s)/2;
+        if(can(mid,p,l,v)){
+                ans=mid;
+                e=mid-1;
+        } 
         else{
-            e=mid-1;
+            s=mid+1;
         }
-     }
-     return ans;
+    }
+    return ans;
 }
 
 int main(int argc, char const *argv[])
@@ -93,12 +86,16 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-      ll n,m;
-      cin>>n>>m;
-      vec v(n);
-      loop(i,n)cin>>v[i];
-      sort(v.begin(),v.end());
-      cout<<binarySearch(n,m,v)<<endl; 
+       ll t;
+       cin>>t;
+       while(t--){
+        ll p,l;
+        cin>>p>>l;
+        vec v(l);
+        loop(i,l)cin>>v[i];
+        sort(v.begin(),v.end());
+        cout<<Bsearch(p,l,v)<<endl;
+       }
 
 
 

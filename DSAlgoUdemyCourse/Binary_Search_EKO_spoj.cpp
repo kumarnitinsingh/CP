@@ -46,19 +46,13 @@ void init_code(){
 bool cancut(ll h,ll n,ll m, vec v,vec pref){
     ll cn=0;
      ll st=lower_bound(v.begin(),v.end(),h)-v.begin();
-     //cout<<st<<" "<<h<<endl;
      ll tl=n-st;
       ll total =h*(tl);
       ll original=pref[n-1]-pref[st-1];
       ll k=original-total;
-     // cout<<h<<" "<<k<<endl;
       if(k>=m)return true;
       return false;
-     // for(ll i=st;i<n;i++){
-     //    cn=cn+v[i]-h;
-     // }
-     // if(cn>=m)return true;
-     // return false;
+    
 }
 
 ll binarySearch(ll n,ll m,vec v){
@@ -73,12 +67,10 @@ ll binarySearch(ll n,ll m,vec v){
 
      while(s<=e){
         ll mid =s+(e-s)/2;
-        //cout<<mid<<endl;
+       
         if(cancut(mid,n,m,v,pref)){
             ans=max(ans,mid);
-           // cout<<ans<<endl;
             s=mid+1;
-
         }
         else{
             e=mid-1;
