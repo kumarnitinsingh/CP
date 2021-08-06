@@ -16,7 +16,7 @@ using namespace std;
 
 
 
-#define ll             unsigned long long int
+#define ll             long long int
 #define ld             long double
 #define mod            1000000007
 #define inf            1e18
@@ -43,46 +43,42 @@ void init_code(){
     #endif
 }
 
-vector<ll>V;
-
-bool ispalindrome(ll n){
-    string s=to_string(n);
-    if(s.size()%2==0)return false;
-
-    int i=0;int j=s.size()-1;
-    while(i<=j){
-        if(s[i]!=s[j])return false;
-        i++;
-        j--;
-    }
-
-    return true;
-
+bool can(ll time,ll p,ll l,vec v){
+    ll cn=0;
+     for(int i=0;i<l;i++){
+         ll t=v[i];int j=2;
+          while(t<=time){
+            cn++;
+             t+=v[i]*j;
+             j++;
+          }
+          if(cn>=p)return true;
+     }
+      return false;
 }
 
+ll Bsearch(ll p,ll l,vec v){
 
- ll FastModulo(ll x,ll p,ll m){
-   ll ans=1;
-  while(p>0){
-    if(p&1){
-      ans=((ans%m)*(x%m))%m;
+    ll s=0;
+    ll x=v[l-1];
+    ll t=0;
+    for(int i=1;i<=p;i++){
+        t+=x*i;
     }
-    x=((x%m)*(x%m))%m;
-    p=p>>1;
-  }
-  return ans;
- }
-
-void PA(){
-    for(ll i=1;i<10000000;i++){
-        if(to_string(i).size()%2==0)i=i*10;
-        
-        if(ispalindrome(i)){
-            V.push_back(i);
+    ll e=t;
+    ll ans=0;
+    while(s<=e){
+        ll mid=s+(e-s)/2;
+        if(can(mid,p,l,v)){
+                ans=mid;
+                e=mid-1;
+        } 
+        else{
+            s=mid+1;
         }
     }
+    return ans;
 }
-
 
 int main(int argc, char const *argv[])
 {
@@ -90,21 +86,17 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
+       ll t;
+       cin>>t;
+       while(t--){
+        ll p,l;
+        cin>>p>>l;
+        vec v(l);
+        loop(i,l)cin>>v[i];
+        sort(v.begin(),v.end());
+        cout<<Bsearch(p,l,v)<<endl;
+       }
 
-    //    PA();
-        
-    //     int t;cin>>t;
-    // while(t--){
-
-    //     ll l,r;
-    // cin>>l>>r;
-    //  ll ans=1;
-    //  for(int i=l;i<r;i++){
-      
-    //     ans=((ans%mod)*(FastModulo(V[l-1],V[i],mod))%mod)%mod;
-    //  }
-    //  cout<<ans%mod<<endl;
-     cout<<"jkkk";
 
 
 

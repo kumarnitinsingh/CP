@@ -1,20 +1,12 @@
 // Created by Nitin kumar singh
-// problem link ->
-
 #include <bits/stdc++.h>
-
 //#include<ext/pb_ds/assoc_container.hpp>
 //#include<ext/pb_ds/tree_policy.hpp>
 //#include<ext/pb_ds/trie_policy.hpp>
 
+
+//using namespace_-gnu_pbds;
 using namespace std;
-
-//using namespace __gnu_pbds;
-//typedef tree <int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update>Set;
-
-//find_by_order(k) and order_of_key(k)
-
-
 
 #define ll             long long int
 #define ld             long double
@@ -43,25 +35,48 @@ void init_code(){
     #endif
 }
 
+vector<string> ans;
+  
+  bool mycom(string s1,string s2){
+    return s1<s2;  }
+
+void Permutaion(string input,int i){
+   
+    if(input[i]=='\0'){
+        cout<<input<<endl;
+        ans.push_back(input);
+        return;
+    }
+    
+    for(int k=i;k<input.size();k++){
+        swap(input[i],input[k]);
+        Permutaion(input,i+1);
+        swap(input[i],input[k]);
+    }
+return;
+    
+}
 
 
 int main(int argc, char const *argv[])
 {
-     clock_t start=clock();
-     init_code();
+    clock_t start=clock();
+    init_code();
     
-     //write your code here
-       
-       int t;
-       cin>>t;
-       int w=1;
-       while(t--){
-       
-       
-          cout<<"case #"<<w<<": "<<ans<<endl;
-          w++;
 
-}
+    //write your code here
+ vector<string>v={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+  
+
+   string s;
+   cin>>s;
+   
+   Permutaion(s,0);
+   cout<<endl;
+  
+  for(int i=0;i<ans.size();i++){
+    cout<<ans[i]<<" ";
+  }
 
    
     #ifndef  ONLINE_JUDGE

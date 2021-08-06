@@ -43,7 +43,38 @@ void init_code(){
     #endif
 }
 
+bool can(ll diff,ll stall,ll cows,vec v){
+      ll cn=1;
+      ll last=v[0];
+      for(int i=1;i<v.size();i++){
+              ll x=v[i];
+              if(x-last>=diff){
+                 last=x;
+                 cn++;
+              }
+            
+      }
+      if(cn>=cows)return true;
+      return false;
+}
 
+ll Bsearch(ll n,ll c,vec v){
+    ll s=0;
+    ll e=v[n-1]-v[0];
+
+    ll ans=0;
+    while(s<=e){
+        ll mid=s+(e-s)/2;
+        if(can(mid,n,c,v)){
+                ans=mid;
+                s=mid+1;
+        } 
+        else{
+            e=mid-1;
+        }
+    }
+    return ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -51,17 +82,19 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-       
-       int t;
+       ll t;
        cin>>t;
-       int w=1;
        while(t--){
-       
-       
-          cout<<"case #"<<w<<": "<<ans<<endl;
-          w++;
+        ll n,c;
+        cin>>n>>c;
+        vec v(n);
+        loop(i,n)cin>>v[i];
+        sort(v.begin(),v.end());
+        cout<<Bsearch(n,c,v)<<endl;
+       }
 
-}
+
+
 
    
     #ifndef  ONLINE_JUDGE

@@ -1,20 +1,12 @@
 // Created by Nitin kumar singh
-// problem link ->
-
 #include <bits/stdc++.h>
-
 //#include<ext/pb_ds/assoc_container.hpp>
 //#include<ext/pb_ds/tree_policy.hpp>
 //#include<ext/pb_ds/trie_policy.hpp>
 
+
+//using namespace_-gnu_pbds;
 using namespace std;
-
-//using namespace __gnu_pbds;
-//typedef tree <int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update>Set;
-
-//find_by_order(k) and order_of_key(k)
-
-
 
 #define ll             long long int
 #define ld             long double
@@ -44,24 +36,27 @@ void init_code(){
 }
 
 
+void BalancedBraketing(string s,int open,int close,int n,int i){
+    if(i==2*n){
+        cout<<s<<endl;
+        return;
+    }
+    if(open<n){
+        BalancedBraketing(s+"(",open+1,close,n,i+1);
+    }
+    if(close<open)BalancedBraketing(s+")",open,close+1,n,i+1);
+}
 
+   
 int main(int argc, char const *argv[])
 {
-     clock_t start=clock();
-     init_code();
+    clock_t start=clock();
+    init_code();
     
-     //write your code here
-       
-       int t;
-       cin>>t;
-       int w=1;
-       while(t--){
-       
-       
-          cout<<"case #"<<w<<": "<<ans<<endl;
-          w++;
 
-}
+   
+   BalancedBraketing("",0,0,n,0);
+
 
    
     #ifndef  ONLINE_JUDGE

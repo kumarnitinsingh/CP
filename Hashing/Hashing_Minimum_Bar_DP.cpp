@@ -43,6 +43,34 @@ void init_code(){
     #endif
 }
 
+int MIN_BAR_HELPER(string s,vector<string>&v,int idx,unordered_set<string>&m){
+    if(s[idx]=='\0')return 0;
+
+    int ans=INT_MAX;
+    string currentString="";
+    for(int i=idx;s[i]!='\0';i++){
+        currentString+=s[i];
+        if(m.find(currentString)!=m.end()){
+            int temp=MIN_BAR_HELPER(s,v,i+1,m);
+            if(temp!=-1){
+                ans=min(ans,1+temp);
+            }
+        }
+    }
+
+if(ans==INT_MAX)return -1;
+  
+  return ans;
+ }
+
+int MIN_BAR(string s,vector<string>&v){
+    unordered_set<string>m;
+    for(auto x:v){m.insert(x);}
+
+        int ans=MIN_BAR_HELPER(s,v,0,m);
+
+    return ans-1;
+}
 
 
 int main(int argc, char const *argv[])
@@ -51,10 +79,27 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-cout<<gcd(0,5);
+ //use this as input ;
+/*  
+   5
+thequickbrownfox
+the 
+quickbrown
+fox
+quick
+brown
+*/
+     int n;
+     cin>>n;
+         string s;
+         cin>>s;
+      vector<string>v(n);
+      loop(i,n)cin>>v[i];
 
+      int ans=MIN_BAR(s,v);
+     
 
-
+      cout<<ans;
 
 
    

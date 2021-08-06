@@ -43,7 +43,21 @@ void init_code(){
     #endif
 }
 
+int solve(vector<pair<int,int>>v,int n){
+    int ans=0;
+    unordered_map<int,int>xcor;
+    unordered_map<int,int>ycor;
+    for(int i=0;i<n;i++){
+       xcor[v[i].first]++;
+       ycor[v[i].second]++;
+    }
+    for(int i=0;i<n;i++){
+          pair<int,int>p=v[i];
+          ans+=(xcor[p.first]-1)*(ycor[p.second]-1);
+        }
 
+    return ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -51,33 +65,15 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-     int t;
-     cin>>t;
-     while(t--){
-        ll n,d;
-        cin>>n>>d;
-        vector<pair<ll,ll>>p(n);
-        vector<ll>s(n);
-        loop(i,n){cin>>p[i].first;p[i].second=i;}
-        loop(i,n)cin>>s[i];
-        ll ans=0;
-        sort(p.begin(),p.end());
-         ll tt=upper_bound(p.begin(),p.end(),d)-p.begin();
-        for(int i=0;i<tt;i++){
-             if(p[i].first>d)continue;
-             ans=max(ans,s[p[i].second]);
-              ll wq=upper_bound(p.begin()+i,p.end(),d-p[i].first)-p.begin();
-            for(int j=i+1;j<wq;j++){
-                     if(p[j].first>d){continue;}
-                    if((p[i].first+p[j].first)>d){ans=max(ans,max(s[p[i].second],s[p[j].second]));continue;}
-                    ans=max(ans,s[p[i].second]+s[p[j].second]);
+     int n;
+     cin>>n;
+    vector<pair<int,int>>v(n);
+    loop(i,n){
+        cin>>v[i].first>>v[i].second;
             }
-        }
-        cout<<ans<<endl;
-     }
-
-
-
+      
+      int ans=solve(v,n);
+   cout<<ans;
 
 
    

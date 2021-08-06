@@ -44,6 +44,27 @@ void init_code(){
 }
 
 
+int solve(string s){
+    int ans=0;
+    map<vector<int>,int>m;
+    for(int i=0;i<s.size();i++){
+        for(int j=i;j<s.size();j++){
+            vector<int>v(26,0);
+            for(int k=i;k<=j;k++){
+                v[s[k]-'a']++;
+            }
+               m[v]++;  
+        }  
+        
+    }
+
+    for(auto x:m){
+        int f=x.second;
+        if(f>=2){
+        ans+=f*(f-1)/2;}
+    }
+    return ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -51,43 +72,10 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
+      string s;
+      cin>>s;
      
-
-     ll t;
-     cin>>t;
-     while(t--){
-         unsigned ll a,b;
-         cin>>a>>b;
-         ll ans=gcd(a,b);
-         if(ans==a and ans==b){cout<<"0 0"<<endl;continue;}
-        if(ans==1 and a!=1 and b!=1){
-            ll diff=max(a,b)-min(a,b);
-           
-            unsigned ll m=min(a,b);
-            unsigned ll temp=0;
-            while(temp<=m){
-                temp=temp+diff;
-            }
-             ll leftmin=temp-diff;
-             ll leftmax=temp;
-             ll rightmin=temp;
-             ll rightmax=rightmin+diff;
-
-        
-             ll ans1=gcd(leftmin,rightmin);
-             ll ans2=gcd(leftmax,rightmax);
-              if(ans1>ans2)(cout<<ans1<<" "<<max(a,b)-max(leftmin,rightmin))<<endl;
-               if(ans1<ans2)(cout<<ans2<<" "<<max(leftmax,rightmax)-max(a,b))<<endl;
-               else{
-                cout<<ans1<<" "<<min(min(a,b)-min(leftmin,rightmin),min(leftmax,rightmax)-min(a,b))<<endl;
-               }
-               continue;
-           }
-
-         if(ans==1 and a==1 or b==1){cout<<max(a,b)-1<<" "<<( a==2 or b==2 ?0:1)<<endl;continue;}
-         if(ans==min(a,b) ){cout<<max(a,b)-min(a,b)<<" "<<(gcd(max(a,b)-min(a,b),0)==ans?0:min(a,b))<<endl;continue;}
-         else {cout<<max(gcd(a,b),gcd(max(a,b)-min(a,b),0))<<" "<<(gcd(a,b)>=gcd(max(a,b)-min(a,b),0)?0:min(a,b))<<endl;continue;}
-     }
+      cout<<solve(s);
 
 
 

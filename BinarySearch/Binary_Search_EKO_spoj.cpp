@@ -43,41 +43,41 @@ void init_code(){
     #endif
 }
 
-
-int prims(vector<vector<pair<int,int>>>g,int V,int start){
+bool cancut(ll h,ll n,ll m, vec v,vec pref){
+    ll cn=0;
+     ll st=lower_bound(v.begin(),v.end(),h)-v.begin();
+     ll tl=n-st;
+      ll total =h*(tl);
+      ll original=pref[n-1]-pref[st-1];
+      ll k=original-total;
+      if(k>=m)return true;
+      return false;
     
-     priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>q;
-     vector<bool>visited(V+1,false);
-     int mst=0;
-     q.push({0,start});
+}
+
+ll binarySearch(ll n,ll m,vec v){
+    ll s=0;
+    ll e=v[n-1];
+    ll ans=0;
+    vec pref(v);
     
-     while(!q.empty()){
-          int u=q.top().second;
-          int wt1=q.top().first;
-          q.pop();
-          if(visited[u]==true ){
-              continue;
-          }
-          visited[u]==true;
-          mst+=wt1;
-          cout<<wt1<<endl;
-
-          for(auto nbr_pair:g[u]){
-               int v=nbr_pair.first;
-               int wt=nbr_pair.second;
-              
-               if(!visited[v]){
-                    
-                    q.push({wt,v});
-               }
-
-          
+     for(int i=1;i<n;i++){
+        pref[i]=pref[i]+pref[i-1];
      }
-}
 
-     return mst;
+     while(s<=e){
+        ll mid =s+(e-s)/2;
+       
+        if(cancut(mid,n,m,v,pref)){
+            ans=max(ans,mid);
+            s=mid+1;
+        }
+        else{
+            e=mid-1;
+        }
+     }
+     return ans;
 }
-
 
 int main(int argc, char const *argv[])
 {
@@ -85,22 +85,15 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-       
-       int n,m;
-       cin>>n>>m;
-       vector<vector<pair<int,int>>>g;
-       g.resize(n+1);
-       for(int i=0;i<m;i++){
-          int u,v,wt;
-          cin>>u>>v>>wt;
-          g[u].push_back({v,wt});
-          g[v].push_back({u,wt});
+      ll n,m;
+      cin>>n>>m;
+      vec v(n);
+      loop(i,n)cin>>v[i];
+      sort(v.begin(),v.end());
+      cout<<binarySearch(n,m,v)<<endl; 
 
-                 }
-      
-        cout<<prims(g,n,1);
 
-       
+
 
    
     #ifndef  ONLINE_JUDGE

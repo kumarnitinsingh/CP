@@ -43,18 +43,26 @@ void init_code(){
     #endif
 }
 
-void dfs(vector<int>g[],int src,vector<bool>&visited,int n,int &ans){
-        visited[src]=true;
-        ans++;
+int solve(vector<pair<int,int>>v,int n){
+    int ans=0;
+    set<pair<int,int>>s;
+    for(int i=0;i<n;i++){
+        s.insert(v[i]);
+    }
 
-          for(int i=1;i<=n;i++){
+    for(int i=0;i<n-1;i++){
+        for(int j=i+1;j<n;j++){
+            pair<int,int> p1=v[i];
+            pair<int,int> p2=v[j];
+            if(p1.first==p2.first or p1.second==p2.second)continue;  //only diagonal points will be considered
+            pair<int,int> p3=make_pair(p1.first,p2.second);
+            pair<int,int> p4=make_pair(p2.first,p1.second);
+            if(s.find(p3)!=s.end() and s.find(p4)!=s.end())ans++;
+        }
+    }
 
-                if(find(g[src].begin(),g[src].end(),i)==g[src].end() and visited[i]==false)dfs(g,i,visited,n,ans);
-            
-         }
-         return;
+    return ans/2;
 }
-
 
 int main(int argc, char const *argv[])
 {
@@ -62,45 +70,15 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-
-     ll n,m;
-     cin>>n>>m;
-
-     vector<int>g[n+1];
-     while(m--){
-        int x,y;
-        cin>>x>>y;
-        g[x].push_back(y);
-        g[y].push_back(x);
-     }
-     
-     //for(int i=1;i<=n;i++)g[i][i]=false;
-
-
-     // vector<int>Graph[n+1];
-     // for(int i=1;i<=n;i++){
-     //    for(int j=1;j<=n;j++){
-     //       if(g[i][j]==true)Graph[i].push_back(j);
-     //    }
-        
-     // }
-
-     ll cn=0;
-     vector<bool>visited(n+1,false);
-     vector<int>temp;
-     for(int i=1;i<=n;i++){
-        if(visited[i]==false){
-            cn++;
-            int ans=0;
-            dfs(g,i,visited,n,ans);
-            temp.push_back(ans);
-        }
-     }
-
-     sort(temp.begin(),temp.end());
-    cout<<cn<<endl;
-    for(auto x:temp)cout<<x<<" ";
-
+     int n;
+     cin>>n;
+    vector<pair<int,int>>v(n);
+    loop(i,n){
+        cin>>v[i].first>>v[i].second;
+            }
+      
+      int ans=solve(v,n);
+   cout<<ans;
 
 
    

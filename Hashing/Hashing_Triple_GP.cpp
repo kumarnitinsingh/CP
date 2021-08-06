@@ -1,12 +1,20 @@
 // Created by Nitin kumar singh
+// problem link ->
+
 #include <bits/stdc++.h>
+
 //#include<ext/pb_ds/assoc_container.hpp>
 //#include<ext/pb_ds/tree_policy.hpp>
 //#include<ext/pb_ds/trie_policy.hpp>
 
-
-//using namespace_-gnu_pbds;
 using namespace std;
+
+//using namespace __gnu_pbds;
+//typedef tree <int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update>Set;
+
+//find_by_order(k) and order_of_key(k)
+
+
 
 #define ll             long long int
 #define ld             long double
@@ -35,40 +43,44 @@ void init_code(){
     #endif
 }
 
-vector<int> stockSpan(vector<int> v) {
-//Write your code here. Do not modify the function or parameters.
-vector<int > ans;
-ans.push_back(1);
-stack<pair<int,int>>st;
-st.push({0,v[0]});
-for(int i=1;i<v.size();i++){
-    if(st.top().second>v[i]){ans.push_back(i-st.top().first); st.push({i,v[i]});}
-    else{
-        while(!st.empty() and st.top().second<v[i]){st.pop();}
-        if(st.empty())ans.push_back(i+1);
-        else{
-        ans.push_back(i-st.top().first);}
-        st.push({i,v[i]});
-    
+int solve(vector<int>v,int n, int r){
+    unordered_map<int,int>left;
+    unordered_map<int,int>right;
+    int ans=0;
+
+    for(int i=0;i<n;i++){
+        right[v[i]]++;
     }
-  
-}
-return ans;
-    
+
+    for(int i=0;i<n;i++){
+
+        int le=v[i]/r;
+        int mid=v[i];
+        int re=v[i]*r;
+        right[mid]--;
+        if(left.count(le)>0 and right.count(re)>0){
+            ans+=left[le]*right[re];
+        }
+        left[mid]++;
+    }
+    return ans;
 }
 
 
 int main(int argc, char const *argv[])
 {
-    clock_t start=clock();
-    init_code();
+     clock_t start=clock();
+     init_code();
     
- int n;
- cin>>n;
- vector<int>v(n);
- loop(i,n)cin>>v[i];
- vector<int>ans =stockSpan(v);
- loop(i,n)cout<<ans[i]<<" ";
+     //write your code here
+     int n,r;
+     cin>>n>>r;
+     vector<int>v(n);
+     loop(i,n)cin>>v[i];
+
+     int ans=solve(v,n,r);
+     cout<<ans;
+
 
 
    
@@ -78,5 +90,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-

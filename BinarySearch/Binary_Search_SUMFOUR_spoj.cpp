@@ -51,17 +51,39 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-       
-       int t;
-       cin>>t;
-       int w=1;
-       while(t--){
-       
-       
-          cout<<"case #"<<w<<": "<<ans<<endl;
-          w++;
+        ll n;cin>>n;
+        vector<ll>A(n),B(n),C(n),D(n);
+        loop(i,n)cin>>A[i]>>B[i]>>C[i]>>D[i];
 
-}
+        vector<ll>pa,ra;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                pa.push_back(C[i]+D[j]);
+            }
+        }
+        
+          for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                ra.push_back(A[i]+B[j]);
+            }
+        }
+         ll ans=0;
+         sort(pa.begin(),pa.end());
+          for(int i=0;i<ra.size();i++){
+              
+              ll s=lower_bound(pa.begin(),pa.end(),(-ra[i]))-pa.begin();
+               ll e=upper_bound(pa.begin(),pa.end(),(-ra[i]))-pa.begin();
+              
+
+                    ans+=e-s;
+
+          }
+
+        
+          cout<<ans<<endl;
+
+
+
 
    
     #ifndef  ONLINE_JUDGE

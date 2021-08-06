@@ -35,14 +35,23 @@ void init_code(){
     #endif
 }
 
-void solve(vector<int>&v,int n){
-  for(int i=0,j=n-1;i<j;){
-    if(v[i]<0)i++;
-    if(v[j]>0)j--;
-    swap(v[i],v[j]);
-    i++;j--;
-  }
+  
+
+void PhoneKeypad(string output,string number,vector<string>v,int i=0){
+      if(i==number.size()){
+        cout<<output<<endl;
+        return;
+      }
+      int idx=number[i]-'0';
+      if(idx==0 || idx==1)PhoneKeypad(output,number,v,i+1);
+    for(int j=0;j<v[idx].size();j++){
+        PhoneKeypad(output+v[idx][j],number,v,i+1);
+    }
+
+    return;
 }
+
+
 int main(int argc, char const *argv[])
 {
     clock_t start=clock();
@@ -50,16 +59,13 @@ int main(int argc, char const *argv[])
     
 
     //write your code here
-    int n;
-    cin>>n;
-    vector<int>v(n);
-    for(int i=0;i<n;i++)cin>>v[i];
-      solve(v,n);
+ vector<string>v={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+  
 
-    for(int i=0;i<n;i++){
-      cout<<v[i]<<" ";
-    }
+   string s;
+   cin>>s;
 
+  PhoneKeypad("",s,v,0);
 
 
    

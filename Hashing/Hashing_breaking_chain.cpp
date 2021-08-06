@@ -43,41 +43,58 @@ void init_code(){
     #endif
 }
 
+class node{
+public:  
+  int data;
+  node * next;
+  
+  node(int data){
+      this->data = data;
+  }
+};
+
+
+ node * breakChain(node * head){
+     //Complete this method
+     unordered_map<node*,int>h;
+     node* temp=head;
+     while(temp!=NULL){
+         if(h.count(temp->next)==0){
+             h[temp]++;
+             temp=temp->next;
+         }
+         else{
+             temp->next=NULL;
+             break;
+         }
+         
+     }
+     
+     
+     
+     
+     return head;
+ }
+
+
+
 
 
 int main(int argc, char const *argv[])
 {
-     
+     clock_t start=clock();
      init_code();
     
      //write your code here
-
-     ll t;cin>>t;
-     while(t--){
-        ll n;cin>>n;
-        vector<ll>v;
-        for(int i=0;i<n;i++){
-            ll x;cin>>x;
-            v.push_back(x);
-        }
-        ll sum=0;
-        for(int i= 0;i<n;i++)sum=sum+v[i];
-      // if(sum%n==0)cout<<0<<endl;continue;
-        
-
-        ll avg=sum/n;
-
-        ll left=(sum-avg*n);
-        cout<<(left*(n-left))<<endl;
-      
-
-     }
 
 
 
 
 
    
-  
+    #ifndef  ONLINE_JUDGE
+     clock_t end=clock();
+    cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
+    #endif
    return 0;
 }
