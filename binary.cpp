@@ -43,7 +43,28 @@ void init_code(){
     #endif
 }
 
+int binarySearch(vector<int>(v)){
+	int s=0;
+	int e=1;
+	while(v[e]!=1){
+		s=e;
+		e=2*e;
+	}
 
+int ans=-1;
+	while(s<=e){
+		int mid=s+(e-s)/2;
+		if(v[mid]==0){
+			ans=mid;
+			s=mid+1;
+		}
+		if(v[mid]>0){
+			e=mid-1;
+		}
+		else s=mid+1;
+	}
+	return ans+1;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -51,40 +72,13 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-            // your code goes here
-    int t;
-    cin>>t;
-    while(t--){
-      ll n,p,k;
-      cin>>n>>p>>k;
-     // if(k>n){cout<<k<<endl;continue;}
-      //if(p%k==0){cout<<(p/k)+1<<endl;continue;}
-
-       ll x=((n-1)/k)+1;
+     int n;
+     cin>>n;
+     vector<int>v(n);
+     loop(i,n)cin>>v[i];
+     cout<<binarySearch(v);
 
 
-       
-
-        ll rows=(p%k)-1;
-
-        ll op=(n-1)-((n-1)/k)*k;
-
-        ll totalrow=k;
-        if(op>=rows){
-            unsigned ll temp=rows*x;
-           unsigned  ll ans=temp+x+(p/k)+1;
-            cout<<ans<<endl;
-            continue;
-        }
-        else{
-             unsigned temp=op*x;
-             unsigned temp2=(rows-op)*(x-1);
-       unsigned ll ans=temp+temp2+x+(p/k)+1;
-        cout<<ans<<endl;
-  }
-
-      
-    }
 
 
 

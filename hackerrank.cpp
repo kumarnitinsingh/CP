@@ -43,17 +43,49 @@ void init_code(){
     #endif
 }
 
-string decode(string s){
-    vector<int>v(27,0);
-    for(unsigned long int i=0;i<s.size();i++){
-         v[s[i]-'a']++;
+pair<double, double> find_Centroid(vector<pair<double, double> >& v)
+{
+    pair<double, double> ans = { 0, 0 };
+      
+    int n = v.size();
+    double signedArea = 0;
+      
+    // For all vertices
+    for (int i = 0; i < v.size(); i++) {
+          
+        double x0 = v[i].first, y0 = v[i].second;
+        double x1 = v[(i + 1) % n].first, y1 = 
+                            v[(i + 1) % n].second;
+                              
+        // Calculate value of A
+        // using shoelace formula
+        double A = (x0 * y1) - (x1 * y0);
+        signedArea += A;
+          
+        // Calculating coordinates of
+        // centroid of polygon
+        ans.first += (x0 + x1) * A;
+        ans.second += (y0 + y1) * A;
     }
-  string str="";
-    for(int i=0;i<27;i++){
-        str+=to_string(v[i]);
-            
+  
+    signedArea *= 0.5;
+    ans.first = (ans.first) / (6 * signedArea);
+    ans.second = (ans.second) / (6 * signedArea);
+  
+    return ans;
+}
+
+double polygonArea(vector<pair<double,double>>v, int n)
+{
+   
+    double area = 0.0;
+    int j = n - 1;
+    for (int i = 0; i < n; i++)
+    {
+        area += (v[j].first + v[i].first) * (v[j].second - v[i].second);
+        j = i;  
     }
-    return str;
+    return abs(area / 2.0);
 }
 
 int main(int argc, char const *argv[])
@@ -62,40 +94,26 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-         int n;
-    cin>>n;
-    vector<string>v(n);
-    for(int i=0;i<n;i++)cin>>v[i];
-    
-     map<string,vector<string>>m;
-      for(int i=0;i<n;i++){
-          string d=decode(v[i]);
-        
-          m[d].push_back(v[i]);
-      }
-    unsigned long int ans=0;
-    auto ref=m.begin();
-    
-    for(auto it=m.begin();it!=m.end();it++){
-    	 vector<string>v=it->second;
-          if(v.size()>ans){
-                ref=it;
-              ans=v.size();
-              //cout<<ans<<endl;
-          }
-        
-         //  for(unsigned long int i=0;i<v.size();i++)cout<<v[i]<<" ";cout<<endl;
-    }
-    
-     cout<<ref->second.size()<<endl;
-      vector<string> ans2=ref->second;
-    sort(ans2.begin(),ans2.end());
-     for(unsigned long int i=0;i<ans2.size();i++)cout<<ans2[i]<<" ";
-    
-    return 0;
+     ll t;cin>>t;
+     while(t--){
+        ll n,q;
+        cin>>n>>q;
+        vector<pair<double,double>>v(n);
+        loop(i,n)cin>>v[i].first>>v[i].second;
+        double ar=polygonArea(v,n);
+            pair<double,double> cen=find_Centroid(v);
+            cout<<cen.first<<","<<cen.second<<endl;
+        while(q--){
+            ll v,t;
+            cin>>v>>t;
+            cout<<ar+<<endl;
+            
+        }
+        //cout<<endl;
+     }
 
 
-  
+
 
 
    

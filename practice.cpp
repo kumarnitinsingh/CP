@@ -44,6 +44,25 @@ void init_code(){
 }
 
 
+class mycom{
+public:
+// bool operator()(pair<ll,ll>p1,pair<ll,ll>p2){
+//      if(p1.second>p2.second)return true;
+//      else return p1.first>p2.first;
+// }
+
+     template <typename T>
+  
+    // Comparator function
+    bool operator()(const T& l,
+                    const T& r) const
+    {
+        if (l.second > r.second) {
+            return true;
+        }
+        return l.first < r.first;
+    }
+};
 
 int main(int argc, char const *argv[])
 {
@@ -51,6 +70,57 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
+
+     int t;cin>>t;
+     while(t--){
+        ll n,m;
+        cin>>n>>m;
+         map<ll,ll>mp;
+       // vector<pair<ll,ll>>mp(m+1);
+        for(int i=1;i<=m;i++){
+            ll x,y;
+            cin>>x>>y;
+           // mp.push_back({x,y});
+            mp[y]=max(mp[y],x);
+        }
+         //sort(mp.begin(),mp.end(),mycom);
+          set<pair<ll, ll>, mycom> S(mp.begin(),
+                                   mp.end());
+          // for(auto x:S){
+          //   cout<<x.second<<" "<<x.first<<endl;
+          
+  
+         ll ans=0;
+            unordered_map<ll,ll>v;
+            auto f=S.begin();
+              ll t1=f->second;
+              ll t2=f->first;
+              ans+=(n-n/t2)*t1;
+              f++;
+              ll last =t2;
+         for(auto it=f;it!=S.end();it++){
+            vector<ll>temp;
+            ll x=it->second;
+            ll y=it->first;
+            n=n/last;
+              ans+=(abs(n-n/y))*x;
+             
+             // ans-=(n/last)+;
+         
+               // for(int i=last;i<=n;i+=last){
+               //    // if(i%t2!=0)continue;
+               //    if(i%y==0 ||  v[i]!=0)continue;
+               //     else{
+               //      ans+=x;
+               //      v[i]=x;
+
+               //  }
+               // }
+               last=y; 
+         }
+          cout<<ans<<endl;
+
+     }
 
 
 

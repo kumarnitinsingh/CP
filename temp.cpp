@@ -44,6 +44,23 @@ void init_code(){
 }
 
 
+ll solve(vector<ll>timeRec,vector<ll>timeHave,ll n,ll total,vect &v){
+	if(n==0)return 0;
+
+	ll ans=INT_MIN;
+	if(timeRec[n-1]<=timeHave[n-1] and timeHave[n-1]>=total){
+		ll op1=solve(timeRec,timeHave,n-1,total,v);
+		ll op2=	1+solve(timeRec,timeHave,n-1,total+timeRec[n-1],v);
+		if(op2>op1){
+			v.push_back({n,total,total+timeRec[n-1]});
+		}
+		else v.pop_back();
+		ans=max(op2,op1);
+	}
+	else ans=solve(timeRec,timeHave,n-1,total,v);
+
+	return ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -51,40 +68,25 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-            // your code goes here
-    int t;
-    cin>>t;
-    while(t--){
-      ll n,p,k;
-      cin>>n>>p>>k;
-     // if(k>n){cout<<k<<endl;continue;}
-      //if(p%k==0){cout<<(p/k)+1<<endl;continue;}
-
-       ll x=((n-1)/k)+1;
-
-
-       
-
-        ll rows=(p%k)-1;
-
-        ll op=(n-1)-((n-1)/k)*k;
-
-        ll totalrow=k;
-        if(op>=rows){
-            unsigned ll temp=rows*x;
-           unsigned  ll ans=temp+x+(p/k)+1;
-            cout<<ans<<endl;
-            continue;
-        }
-        else{
-             unsigned temp=op*x;
-             unsigned temp2=(rows-op)*(x-1);
-       unsigned ll ans=temp+temp2+x+(p/k)+1;
-        cout<<ans<<endl;
-  }
-
       
-    }
+       ll t;
+       cin>>t;
+       while(t--){
+       	   ll n;cin>>n;
+       	   vector<ll>timeRec(n),timeHave(n);
+       	   loop(i,n)cin>>timeRec[i];
+       	   loop(i,n)cin>>timeHave[i];
+
+       	   	vect v;
+       	   	
+       	   ll ans=solve(timeRec,timeHave,n,0,v);
+
+       	   cout<<ans<<endl;
+       	   for(int i=0;i<v.size();i++){
+       	   	 cout<<v[i][0]<<" "<<v[i][1]<<" "<<v[i][2]<<endl;
+       	   }
+       }
+
 
 
 
