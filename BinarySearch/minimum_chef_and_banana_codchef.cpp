@@ -43,41 +43,31 @@ void init_code(){
     #endif
 }
 
-// bool canEat(vector<ll>v,ll n,ll h,ll k){
-//     ll cn=0;
-//     for(int i=0;i<n;i++){
-//         cn=cn+(v[i]%k==0?v[i]/k:(v[i]/k)+1);
+bool canEat(vector<ll>v,ll n,ll h,ll k){
+    ll cn=0;
+    for(int i=0;i<n;i++){
+        cn=cn+(v[i]%k==0?v[i]/k:(v[i]/k)+1);
 
-//         if(cn>h)return false;
-//     }
-//     return true;
-// }
+        if(cn>h)return false;
+    }
+    return true;
+}
 
-// ll binarySearch(ll n){
-// 	ll s=0;
-//     ll e=1<<61;
-//     while(s<=e){
-
-//         ll mid=s+(e-s)/2;
-//         if(canRep(mid)){
-//             ans=mid;
-        
-//         }
-//         else s=mid+1;
-//     }
-//     return ans;
-// }
-
-
-ll fun(ll n){
+ll binarySearch(vector<ll>(v),ll n,ll h){
+	ll s=1;
+    ll e=0;
+    for(int i=0;i<n;i++){
+        e=e+v[i];
+    }
     ll ans=INT_MAX;
-    for(ll i=0;i<40;i++){
-        for(ll j=i+1;j<40;j++){
-           // if(i==j)continue;
-            ll temp=(1<<i)+(1<<j);
-           // cout<<temp<<endl;
-            ans=min(ans,abs(n-temp));
+
+    while(s<=e){
+        ll mid=s+(e-s)/2;
+        if(canEat(v,n,h,mid)){
+            ans=mid;
+            e=mid-1;
         }
+        else s=mid+1;
     }
     return ans;
 }
@@ -90,10 +80,11 @@ int main(int argc, char const *argv[])
      //write your code here
      int t;cin>>t;
      while(t--){
-     ll n;
-     cin>>n;
-     
-     cout<<fun(n)<<endl;
+     ll n,h;
+     cin>>n>>h;
+     vector<ll>v(n);
+     loop(i,n)cin>>v[i];
+     cout<<binarySearch(v,n,h)<<endl;
 }
 
 

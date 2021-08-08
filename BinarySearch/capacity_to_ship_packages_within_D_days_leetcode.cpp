@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->https://www.codechef.com/problems/MINEAT
+// problem link ->
 
 #include <bits/stdc++.h>
 
@@ -43,44 +43,46 @@ void init_code(){
     #endif
 }
 
-// bool canEat(vector<ll>v,ll n,ll h,ll k){
-//     ll cn=0;
-//     for(int i=0;i<n;i++){
-//         cn=cn+(v[i]%k==0?v[i]/k:(v[i]/k)+1);
-
-//         if(cn>h)return false;
-//     }
-//     return true;
-// }
-
-// ll binarySearch(ll n){
-// 	ll s=0;
-//     ll e=1<<61;
-//     while(s<=e){
-
-//         ll mid=s+(e-s)/2;
-//         if(canRep(mid)){
-//             ans=mid;
-        
-//         }
-//         else s=mid+1;
-//     }
-//     return ans;
-// }
-
-
-ll fun(ll n){
-    ll ans=INT_MAX;
-    for(ll i=0;i<40;i++){
-        for(ll j=i+1;j<40;j++){
-           // if(i==j)continue;
-            ll temp=(1<<i)+(1<<j);
-           // cout<<temp<<endl;
-            ans=min(ans,abs(n-temp));
-        }
+ bool can(vector<int>&weights,int days,int n,int wt){
+        int cn=1;
+         int sum=0;
+         
+           for(int i=0;i<n;i++){
+               sum+=weights[i];
+               if(sum>wt){
+                   sum=weights[i];
+                   cn++;
+                   if(cn>days)return false;
+               }
+           }
+        return true;
     }
-    return ans;
-}
+    
+    int binarySearch(vector<int>&weights,int days,int n){
+         int s=*max_element(weights.begin(),weights.end());
+         int e=accumulate(weights.begin(),weights.end(),0);
+         int ans=INT_MAX;
+            while(s<=e){
+                int mid=s+(e-s)/2;
+                 if(can(weights,days,n,mid)){
+                     ans=min(ans,mid);
+                     e=mid-1;
+                 }
+                else s=mid+1;
+            }
+        
+        return ans;
+    }
+    
+    int shipWithinDays(vector<int>& weights, int days) {
+          
+        int n=weights.size();
+         int ans=binarySearch(weights,days,n);
+         
+        return ans;
+        
+    }
+
 
 int main(int argc, char const *argv[])
 {
@@ -88,13 +90,7 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-     int t;cin>>t;
-     while(t--){
-     ll n;
-     cin>>n;
-     
-     cout<<fun(n)<<endl;
-}
+
 
 
 
@@ -106,5 +102,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-

@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->https://www.codechef.com/problems/MINEAT
+// problem link ->https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/
 
 #include <bits/stdc++.h>
 
@@ -43,44 +43,51 @@ void init_code(){
     #endif
 }
 
-// bool canEat(vector<ll>v,ll n,ll h,ll k){
-//     ll cn=0;
-//     for(int i=0;i<n;i++){
-//         cn=cn+(v[i]%k==0?v[i]/k:(v[i]/k)+1);
-
-//         if(cn>h)return false;
-//     }
-//     return true;
-// }
-
-// ll binarySearch(ll n){
-// 	ll s=0;
-//     ll e=1<<61;
-//     while(s<=e){
-
-//         ll mid=s+(e-s)/2;
-//         if(canRep(mid)){
-//             ans=mid;
+ 
+    bool valid(vector<int>& boom,int m,int k,int days){
+        int cn=0;
         
-//         }
-//         else s=mid+1;
-//     }
-//     return ans;
-// }
-
-
-ll fun(ll n){
-    ll ans=INT_MAX;
-    for(ll i=0;i<40;i++){
-        for(ll j=i+1;j<40;j++){
-           // if(i==j)continue;
-            ll temp=(1<<i)+(1<<j);
-           // cout<<temp<<endl;
-            ans=min(ans,abs(n-temp));
+        for(int i=0;i<boom.size();){
+             
+              int j=i;
+              int pos=0;
+               int f=0;
+               for( ;j<boom.size() and j<i+k;j++ ){
+                   if(boom[j]<=days)pos++;
+                   else{ f=1; break;}
+               }
+                
+                 if(f==1)i=j+1;
+                  else if(i==j)i=j+1;
+                   else i=j;
+                    
+            
+                if(pos==k)cn++;
+                
+            if(cn>=m)return true;
+             
         }
+        if(cn>=m)return true;
+        return false;
     }
-    return ans;
-}
+    
+    int minDays(vector<int>& bloomDay, int m, int k) {
+        int s=0;
+       
+         int e=*max_element(bloomDay.begin(),bloomDay.end())+10;
+        int ans=-1;
+        while(s<=e){
+            int mid=s+(e-s)/2;
+            if(valid(bloomDay,m,k,mid)){
+                ans=mid;
+                e=mid-1;
+            }
+            else s=mid+1;
+        }
+        return ans;
+    }
+
+
 
 int main(int argc, char const *argv[])
 {
@@ -88,13 +95,17 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-     int t;cin>>t;
-     while(t--){
-     ll n;
-     cin>>n;
-     
-     cout<<fun(n)<<endl;
-}
+      
+      int n,m,k;
+      cin>>n>>m>>k;
+      vector<int>v(n);
+      loop(i,n)cin>>v[i];
+
+      cout<<minDays(v,m,k)<<endl;
+
+
+
+
 
 
 

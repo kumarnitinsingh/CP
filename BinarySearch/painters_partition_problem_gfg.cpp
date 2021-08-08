@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->https://www.codechef.com/problems/MINEAT
+// problem link ->
 
 #include <bits/stdc++.h>
 
@@ -43,44 +43,38 @@ void init_code(){
     #endif
 }
 
-// bool canEat(vector<ll>v,ll n,ll h,ll k){
-//     ll cn=0;
-//     for(int i=0;i<n;i++){
-//         cn=cn+(v[i]%k==0?v[i]/k:(v[i]/k)+1);
 
-//         if(cn>h)return false;
-//     }
-//     return true;
-// }
-
-// ll binarySearch(ll n){
-// 	ll s=0;
-//     ll e=1<<61;
-//     while(s<=e){
-
-//         ll mid=s+(e-s)/2;
-//         if(canRep(mid)){
-//             ans=mid;
-        
-//         }
-//         else s=mid+1;
-//     }
-//     return ans;
-// }
-
-
-ll fun(ll n){
-    ll ans=INT_MAX;
-    for(ll i=0;i<40;i++){
-        for(ll j=i+1;j<40;j++){
-           // if(i==j)continue;
-            ll temp=(1<<i)+(1<<j);
-           // cout<<temp<<endl;
-            ans=min(ans,abs(n-temp));
+ bool valid(int arr[],int n,int k,long long t){
+        int cn=1;
+        long int sum=0;
+        for(int i=0;i<n;i++){
+            sum=sum+arr[i];
+            if(sum>t){
+                cn++;
+                sum=arr[i];
+                if(cn>k)return false;
+            }
         }
+        return true;
     }
-    return ans;
-}
+    long long minTime(int arr[], int n, int k)
+    {
+        // code here
+        // return minimum time
+        long long int s=*max_element(arr,arr+n);
+        long long e=1e18;
+         
+         long long int ans=INT_MAX;
+         while(s<=e){
+             long long mid=s+(e-s)/2;
+             if(valid(arr,n,k,mid)){
+                 ans=min(ans,mid);
+                 e=mid-1;
+             }
+             else s=mid+1;
+         }
+         return ans;
+    }
 
 int main(int argc, char const *argv[])
 {
@@ -88,13 +82,7 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-     int t;cin>>t;
-     while(t--){
-     ll n;
-     cin>>n;
-     
-     cout<<fun(n)<<endl;
-}
+
 
 
 
@@ -105,6 +93,4 @@ int main(int argc, char const *argv[])
     cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
     #endif
    return 0;
-}
-
-
+}]
