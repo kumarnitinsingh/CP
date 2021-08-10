@@ -43,26 +43,9 @@ void init_code(){
     #endif
 }
 
-        bool mycom(pair<ll,ll>a,pair<ll,ll>b){
-        if(a.second<b.second)return true;
-        if(a.second==b.second and a.first>b.first)return true;
-        return false;
-    }
- 
-
-   ll fun(vector<pair<ll,ll>>v,ll n){
-
-        ll ans=0;
-         ll maxtime=v[n-1].second;
-         if(v[0].second>=v[0].first and v[0].second<=maxtime)ans=1;
-        int j=0;
-        for(int i=1;i<n;i++){
-            if(v[i].second<=v[i].first)continue;
-          if(v[j].second<=v[i].first and v[i].second<=maxtime){ans++;j+=v[i].first;}
-        }
-
-        return ans;
-   }
+bool mycom(pair<string,ll> p1,pair<string,ll>p2){
+      return p1.second<p2.second;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -70,20 +53,25 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-       ll t;
-       cin>>t;
-       while(t--){
-        ll n;
-        cin>>n;
-        vector<pair<ll,ll>>v(n);
-        loop(i,n)cin>>v[i].first;
-        loop(i,n)cin>>v[i].second;
-        sort(v.begin(),v.end(),mycom);
 
-         ll ans=fun(v,n);
-         cout<<ans<<endl;
-       }
-       
+     int t;
+     cin>>t;
+     while(t--){
+          ll n;
+          cin>>n;
+          vector<pair<string,int>>v(n);
+          loop(i,n)cin>>v[i].first>>v[i].second;
+
+          sort(v.begin(),v.end(),mycom);
+
+          ll ans=0;
+          for(int i=0;i<n;i++){
+               ans+=abs(v[i].second-(i+1));
+          }
+          cout<<ans<<endl;
+     }
+
+
 
 
 

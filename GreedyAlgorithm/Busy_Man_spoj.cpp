@@ -53,12 +53,11 @@ void init_code(){
    ll fun(vector<pair<ll,ll>>v,ll n){
 
         ll ans=0;
-         ll maxtime=v[n-1].second;
-         if(v[0].second>=v[0].first and v[0].second<=maxtime)ans=1;
+        ll maxtime=v[n-1].second;
+        if(v[0].second<=maxtime)ans=1;
         int j=0;
         for(int i=1;i<n;i++){
-            if(v[i].second<=v[i].first)continue;
-          if(v[j].second<=v[i].first and v[i].second<=maxtime){ans++;j+=v[i].first;}
+          if(v[j].second<=v[i].first and v[i].second<=maxtime){ans++;j=i;}
         }
 
         return ans;
@@ -76,8 +75,7 @@ int main(int argc, char const *argv[])
         ll n;
         cin>>n;
         vector<pair<ll,ll>>v(n);
-        loop(i,n)cin>>v[i].first;
-        loop(i,n)cin>>v[i].second;
+        loop(i,n)cin>>v[i].first>>v[i].second;
         sort(v.begin(),v.end(),mycom);
 
          ll ans=fun(v,n);

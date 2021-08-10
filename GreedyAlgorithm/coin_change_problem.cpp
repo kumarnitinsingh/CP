@@ -43,26 +43,16 @@ void init_code(){
     #endif
 }
 
-        bool mycom(pair<ll,ll>a,pair<ll,ll>b){
-        if(a.second<b.second)return true;
-        if(a.second==b.second and a.first>b.first)return true;
-        return false;
-    }
- 
+int coin_change(int coins[],int n){
+	int ans=0;
+	while(n>0){
+		int idx=upper_bound(coins,coins+11,n)-1-coins;
+		n=n-coins[idx];
+		ans++;
+	}
+	return ans;
+}
 
-   ll fun(vector<pair<ll,ll>>v,ll n){
-
-        ll ans=0;
-         ll maxtime=v[n-1].second;
-         if(v[0].second>=v[0].first and v[0].second<=maxtime)ans=1;
-        int j=0;
-        for(int i=1;i<n;i++){
-            if(v[i].second<=v[i].first)continue;
-          if(v[j].second<=v[i].first and v[i].second<=maxtime){ans++;j+=v[i].first;}
-        }
-
-        return ans;
-   }
 
 int main(int argc, char const *argv[])
 {
@@ -70,19 +60,10 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-       ll t;
-       cin>>t;
-       while(t--){
-        ll n;
-        cin>>n;
-        vector<pair<ll,ll>>v(n);
-        loop(i,n)cin>>v[i].first;
-        loop(i,n)cin>>v[i].second;
-        sort(v.begin(),v.end(),mycom);
-
-         ll ans=fun(v,n);
-         cout<<ans<<endl;
-       }
+       int n;
+       cin>>n;
+       int coins[]={1,2,5,10,20,50,100,200,500,1000,2000};
+       cout<<coin_change(coins,n)<<endl;
        
 
 

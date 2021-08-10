@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://www.spoj.com/problems/EXPEDI/
 
 #include <bits/stdc++.h>
 

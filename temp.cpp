@@ -43,23 +43,34 @@ void init_code(){
     #endif
 }
 
+struct triple{
+   ll timereq;
+   ll timeHave;
+   ll idx;
+};
 
-ll solve(vector<ll>timeRec,vector<ll>timeHave,ll n,ll total,vect &v){
-	if(n==0)return 0;
+bool mycom(triple x,triple y){
+    if(x.timeHave<y.timeHave)return true;
+    if(x.timeHave==y.timeHave and  x.timereq<y.timereq)return true;
+    return false;
+}
 
-	ll ans=INT_MIN;
-	if(timeRec[n-1]<=timeHave[n-1] and timeHave[n-1]>=total){
-		ll op1=solve(timeRec,timeHave,n-1,total,v);
-		ll op2=	1+solve(timeRec,timeHave,n-1,total+timeRec[n-1],v);
-		if(op2>op1){
-			v.push_back({n,total,total+timeRec[n-1]});
-		}
-		else v.pop_back();
-		ans=max(op2,op1);
-	}
-	else ans=solve(timeRec,timeHave,n-1,total,v);
+ll solve(vector<triple>&v,ll n,vect &st){
+	sort(v.begin(),v.end(),mycom);
+    ll ans=0;
+     ll j=0;
+    
 
-	return ans;
+    for(int i=0;i<n;i++){
+        if(v[i].timereq<=v[i].timeHave and v[i].timeHave>=v[i].timereq+j){
+            ans++;
+             st.push_back({v[i].idx,j,v[i].timereq+j});
+            j+=v[i].timereq;
+        }
+
+    }
+    return ans;
+
 }
 
 int main(int argc, char const *argv[])
@@ -73,18 +84,22 @@ int main(int argc, char const *argv[])
        cin>>t;
        while(t--){
        	   ll n;cin>>n;
-       	   vector<ll>timeRec(n),timeHave(n);
-       	   loop(i,n)cin>>timeRec[i];
-       	   loop(i,n)cin>>timeHave[i];
+       	   vector<triple>v(n);
+       	   loop(i,n)cin>>v[i].timereq;
+       	   loop(i,n){cin>>v[i].timeHave;v[i].idx=i+1;}
 
-       	   	vect v;
+           for(int i=0;i<n;i++){
+             v[i].timereq=v[i].timeHave-v[i].timereq;
+           }
+
+       	   	vect st;
        	   	
-       	   ll ans=solve(timeRec,timeHave,n,0,v);
-
-       	   cout<<ans<<endl;
-       	   for(int i=0;i<v.size();i++){
-       	   	 cout<<v[i][0]<<" "<<v[i][1]<<" "<<v[i][2]<<endl;
-       	   }
+       	   ll ans=solve(v,n,st);
+            cout<<ans<<endl;
+            for(unsigned int i=0;i<st.size();i++){
+                cout<<st[i][0]<<" "<<st[i][1]<<" "<<st[i][2]<<endl;
+            }
+       	  
        }
 
 
