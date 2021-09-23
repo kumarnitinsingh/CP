@@ -44,6 +44,33 @@ void init_code(){
 }
 
 
+ll solve(vector<ll>v,vector<ll>wt,ll W,ll n){
+    //unordered_map<ll,ll>dp;
+    vector<vector<ll>>dp(n+1,vector<ll>(100001,0));
+
+    for(int i=1;i<=100000;i++){
+        dp[1][i]=INT_MAX;
+    }
+
+     dp[1][0]=0;
+     dp[1][v[0]]=wt[0];
+     for(int i=2;i<=n;i++){
+        for(int j=0;j<=100000;j++){
+           dp[i][j]=dp[i-1][j];
+           if(v[i-1]<=j){
+            dp[i][j]=min(dp[i][j],dp[i-1][j-v[i-1]]+wt[i-1]);
+           }
+           
+        }
+     }
+     ll ans=0;
+     for(ll i=0;i<=100000;i++){
+        if(dp[n][i]<=W)
+          {ans=max(ans,i);}
+     }
+     return ans;
+}
+
 
 int main(int argc, char const *argv[])
 {
@@ -51,82 +78,14 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-     ll t;cin>>t;
-     while(t--){
-          ll n;cin>>n;
-          vector<pair<ll,ll>>v(n);
-          loop(i,n)cin>>v[i].first>>v[i].second;
-          ll l,p;
-          cin>>l>>p;
 
-          sort(v.begin(),v.end(),greater<pair<ll,ll>>());
-          
-            
-          vector<pair<ll,ll>>temp;
-          for(int i=0;i<n;i++){
-               ll ch=l-v[i].first;
-               
-               temp.push_back({ch,v[i].second});
-          }
-          ll cn=0;
-         // loop(i,n)cout<<temp
-          priority_queue<pair<ll,ll>>pq;
+     ll n,w;cin>>n>>w;
+     vector<ll>v(n),wt(n);
+     loop(i,n)cin>>wt[i]>>v[i];
 
-          // for(int i=0;i<n;i++){
-          //      cout<<temp[i].first<<" "<<temp[i].second<<endl;
-          // }
-            
-            ll k=l;
-          
-            int o=0;
-            int f=0;
-            ll st=0;
-            int i=0;
-          while(i<n){
-                 int j=temp[i].first;
-               if(j-st<=p){
-                    pq.push({temp[i].second,temp[i].first});
-                   
-                    p=p-(j-st);
-                     st=j;
-                    
-               }
-               else{
-                    if(!pq.empty()){
-                        
-                              p+=pq.top().first;
-                                 cn++;
-                                 pq.pop();
-                         }
-                         
-                      
-                    
-                    else{f=-1;break;}
-                    
-                    continue;
-               }
-                i++;
-               }
+     ll ans=solve(v,wt,w,n);
+     cout<<ans<<endl;
 
-          
-          if(f==-1){cout<<-1<<endl;continue;}
-
-          else 
-               {
-               l-=temp[n-1].first;
-               if(p>=l){cout<<cn<<endl;continue;}
-               else {
-                     while(!pq.empty() and p<l){
-                         p+=pq.top().first;
-                         cn++;
-                         pq.pop();
-                     }
-                     if(p>=l){cout<<cn<<endl;continue;}
-                     else cout<<-1<<endl;
-               }
-     }
-
-}
 
 
 

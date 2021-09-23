@@ -51,40 +51,8 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-            // your code goes here
-    int t;
-    cin>>t;
-    while(t--){
-      ll n,p,k;
-      cin>>n>>p>>k;
-     // if(k>n){cout<<k<<endl;continue;}
-      //if(p%k==0){cout<<(p/k)+1<<endl;continue;}
-
-       ll x=((n-1)/k)+1;
 
 
-       
-
-        ll rows=(p%k)-1;
-
-        ll op=(n-1)-((n-1)/k)*k;
-
-        ll totalrow=k;
-        if(op>=rows){
-            unsigned ll temp=rows*x;
-           unsigned  ll ans=temp+x+(p/k)+1;
-            cout<<ans<<endl;
-            continue;
-        }
-        else{
-             unsigned temp=op*x;
-             unsigned temp2=(rows-op)*(x-1);
-       unsigned ll ans=temp+temp2+x+(p/k)+1;
-        cout<<ans<<endl;
-  }
-
-      
-    }
 
 
 

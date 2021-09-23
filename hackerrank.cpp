@@ -43,49 +43,12 @@ void init_code(){
     #endif
 }
 
-pair<double, double> find_Centroid(vector<pair<double, double> >& v)
-{
-    pair<double, double> ans = { 0, 0 };
-      
-    int n = v.size();
-    double signedArea = 0;
-      
-    // For all vertices
-    for (int i = 0; i < v.size(); i++) {
-          
-        double x0 = v[i].first, y0 = v[i].second;
-        double x1 = v[(i + 1) % n].first, y1 = 
-                            v[(i + 1) % n].second;
-                              
-        // Calculate value of A
-        // using shoelace formula
-        double A = (x0 * y1) - (x1 * y0);
-        signedArea += A;
-          
-        // Calculating coordinates of
-        // centroid of polygon
-        ans.first += (x0 + x1) * A;
-        ans.second += (y0 + y1) * A;
+long double fact(long double n){
+    long double ans=1;
+    for(int i=2;i<=n;i++){
+        ans=ans*i;
     }
-  
-    signedArea *= 0.5;
-    ans.first = (ans.first) / (6 * signedArea);
-    ans.second = (ans.second) / (6 * signedArea);
-  
     return ans;
-}
-
-double polygonArea(vector<pair<double,double>>v, int n)
-{
-   
-    double area = 0.0;
-    int j = n - 1;
-    for (int i = 0; i < n; i++)
-    {
-        area += (v[j].first + v[i].first) * (v[j].second - v[i].second);
-        j = i;  
-    }
-    return abs(area / 2.0);
 }
 
 int main(int argc, char const *argv[])
@@ -94,27 +57,53 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-     ll t;cin>>t;
-     while(t--){
-        ll n,q;
-        cin>>n>>q;
-        vector<pair<double,double>>v(n);
-        loop(i,n)cin>>v[i].first>>v[i].second;
-        double ar=polygonArea(v,n);
-            pair<double,double> cen=find_Centroid(v);
-            cout<<cen.first<<","<<cen.second<<endl;
-        while(q--){
-            ll v,t;
-            cin>>v>>t;
-            cout<<ar+<<endl;
-            
-        }
-        //cout<<endl;
-     }
+       
+       int t;
+       cin>>t;
+       int w=1;
+       while(t--){
+         
+         long double n;
+         cin>>n;
 
+         vector<ll>v;
+          for(int i=1;i<=n;i++)v.push_back(i);
 
+         double ans;
 
+         vector<ll>res;
+         do{
+            ll cn=1;
+            ll last=v[0];
+            cout<<v[0]<<" ";
+            for(int i=1;i<n;i++){
+                cout<<v[i]<<" ";
+                if(v[i]>last){
+                    cn++;
+                    last=v[i];
+                }
+            }
+            cout<<"->"<<cn<<endl;
+            res.push_back(cn);
 
+         }while(next_permutation(v.begin(),v.end()));
+
+         ll fc=fact(n);
+
+          long double total=accumulate(res.begin(),res.end(),0);
+
+          for(int i=0;i<res.size();i++)cout<<res[i]<<" ";
+            cout<<endl;
+
+          cout<<total<<endl;
+
+          ans=double(total)/double(fc);
+
+       
+          cout<<"case #"<<w<<": "<<fixed<<setprecision(8)<<ans<<endl;
+          w++;
+
+}
 
    
     #ifndef  ONLINE_JUDGE

@@ -44,6 +44,35 @@ void init_code(){
 }
 
 
+ll sum(vector<ll>&v,int i,int j){
+    ll sum=0;
+    for(int k=i;k<=j;k++){
+        sum=(sum%100+v[k]%100)%100;
+    }
+    return sum;
+}
+
+ll solve(vector<ll>v,ll n,int i,int j,vector<vector<ll>>&dp){
+    if(i>=j)return 0;
+
+    if(dp[i][j]!=-1)return dp[i][j];
+    ll ans=INT_MAX;
+
+    for(int k=i;k<j;k++){
+      
+        ll left=solve(v,n,i,k,dp);
+        ll right=solve(v,n,k+1,j,dp);
+      
+
+        ll temp2=left+right+(sum(v,i,k) * sum(v,k+1,j));
+      
+        ans=min(temp2,ans);
+    }
+    
+    return dp[i][j]=ans;
+}
+
+
 
 int main(int argc, char const *argv[])
 {
@@ -51,33 +80,20 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-       
-       int t;
-       cin>>t;
-       int w=1;
-       while(t--){
-          string s;cin>>s;
-          string p=s;
-          sort(s.begin(),s.end());
-          string ans="";
-          do{
-            int f=0;
-            for(int i=0;i<p.length();i++){
-                if(s[i]==p[i]){f=1;break;}
-            }
+     ll n;
+     while(cin>>n){
+     
+     vector<ll>v(n);loop(i,n)cin>>v[i];
+     
+    
+        vector<vector<ll>>dp(n+1,vector<ll>(n+1,-1));
 
-            if(f==0){ans=s;break;}
-            
-
-
-          }while(next_permutation(s.begin(),s.end()));
-
-        
-       
-          cout<<"case #"<<w<<": "<<(ans!=""?ans:"IMPOSSIBLE")<<endl;
-          w++;
+     ll ans=solve(v,n,0,n-1,dp);
+     cout<<ans<<endl;
 
 }
+
+
 
    
     #ifndef  ONLINE_JUDGE

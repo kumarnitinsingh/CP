@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://atcoder.jp/contests/dp/tasks/dp_e
 
 #include <bits/stdc++.h>
 
@@ -44,6 +44,33 @@ void init_code(){
 }
 
 
+ll solve(vector<ll>v,vector<ll>wt,ll W,ll n){
+    //unordered_map<ll,ll>dp;
+    vector<vector<ll>>dp(n+1,vector<ll>(100001,0));
+
+    for(int i=1;i<=100000;i++){
+        dp[1][i]=INT_MAX;
+    }
+
+     dp[1][0]=0;
+     dp[1][v[0]]=wt[0];
+     for(int i=2;i<=n;i++){
+        for(int j=0;j<=100000;j++){
+           dp[i][j]=dp[i-1][j];
+           if(v[i-1]<=j){
+            dp[i][j]=min(dp[i][j],dp[i-1][j-v[i-1]]+wt[i-1]);
+           }
+           
+        }
+     }
+     ll ans=0;
+     for(ll i=0;i<=100000;i++){
+        if(dp[n][i]<=W)
+          {ans=max(ans,i);}
+     }
+     return ans;
+}
+
 
 int main(int argc, char const *argv[])
 {
@@ -51,33 +78,17 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-       
-       int t;
-       cin>>t;
-       int w=1;
-       while(t--){
-          string s;cin>>s;
-          string p=s;
-          sort(s.begin(),s.end());
-          string ans="";
-          do{
-            int f=0;
-            for(int i=0;i<p.length();i++){
-                if(s[i]==p[i]){f=1;break;}
-            }
 
-            if(f==0){ans=s;break;}
-            
+     ll n,w;cin>>n>>w;
+     vector<ll>v(n),wt(n);
+     loop(i,n)cin>>wt[i]>>v[i];
+
+     ll ans=solve(v,wt,w,n);
+     cout<<ans<<endl;
 
 
-          }while(next_permutation(s.begin(),s.end()));
 
-        
-       
-          cout<<"case #"<<w<<": "<<(ans!=""?ans:"IMPOSSIBLE")<<endl;
-          w++;
 
-}
 
    
     #ifndef  ONLINE_JUDGE

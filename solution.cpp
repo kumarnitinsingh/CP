@@ -43,6 +43,25 @@ void init_code(){
     #endif
 }
 
+    void dfsHelper(vector<vector<int>>l,int node,int* visited,vector<int>& ans){
+         visited[node]=1;
+         ans.push_back(node);
+             for(auto nbrs:l[node]){
+            if(!visited[nbrs])dfsHelper(l,nbrs,visited,ans);
+            return;
+        }
+            
+        
+        
+    }   
+
+    vector<int> dfs(int source,vector<vector<int>>g,int n){
+        vector<int>ans;
+        int * visited=new int[n+2]{0};
+        dfsHelper(g,source,visited,ans);
+        return ans;
+    }
+
 
 
 int main(int argc, char const *argv[])
@@ -51,33 +70,38 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-        ll t;
-        cin>>t;
+        int t;cin>>t;
         while(t--){
-        	ll n,k;
-        	cin>>n>>k;
-        	vector<pair<ll,ll>>v(n);
-        	loop(i,n){
-                cin>>v[i].first;
-                v[i].second=i;
+            ll n;cin>>n;
+            vector<vector<int>>g(n+2);
+
+            vector<int>v(n);loop(i,n)cin>>v[i];
+
+            for(int i=0;i<n-1;i++){
+                g[i+1].push_back(i+2);
             }
 
-            sort(v.begin(),v.end());
-        	
-        	
-        	ll cn=1;
-        	for(int i=1;i<n;i++){
-                if(v[i-1].second+1!=v[i].second)cn++;
-
+            for(int i=0;i<n;i++){
+                if(v[i]==0){
+                    g[i+1].push_back(n+1);
+                }
+                else if(v[i]==1) g[n+1].push_back(i+1);
             }
 
-        	
-        	
-        	 //cout<<cn<<endl;
-        	if(cn<=k )cout<<"YES"<<endl;
-        	else cout<<"NO"<<endl;
-        	//cout<<v[n]<<endl;
-        	v.clear();
+                 vector<int>ans;
+          //       for(int i=1;i<=n+1;i++){
+                 ans=dfs(n+1,g,n);
+          //        if(ans.size()==n+1)break;
+
+          // }  
+                 if(ans.size()!=n+1){ans=dfs(1,g,n);}
+
+               if(ans.size()!=n+1){cout<<-1<<endl;continue;}
+              else  {
+                for(auto x:ans)cout<<x<<" ";;
+                    cout<<endl;
+              }
+
         }
 
 
@@ -90,3 +114,4 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
+

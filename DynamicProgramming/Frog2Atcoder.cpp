@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://atcoder.jp/contests/dp/tasks/dp_b
 
 #include <bits/stdc++.h>
 
@@ -45,39 +45,46 @@ void init_code(){
 
 
 
-int main(int argc, char const *argv[])
+ll DP(vector<ll>v,ll n,ll k){
+    vector<ll>dp(n+1);
+
+        dp[1]=0;
+        dp[2]=abs(v[2]-v[1]);
+
+
+        for(int i=3;i<=n;i++){
+                dp[i]=INT_MAX;
+            for(int j=1; j<=k && i-j>=1;j++){
+                
+                
+                 dp[i]=min(dp[i],dp[i-j]+abs(v[i]-v[i-j]));
+                
+            
+            }
+        }
+
+
+   return dp[n];
+}
+
+
+int main()
 {
      clock_t start=clock();
      init_code();
     
      //write your code here
-       
-       int t;
-       cin>>t;
-       int w=1;
-       while(t--){
-          string s;cin>>s;
-          string p=s;
-          sort(s.begin(),s.end());
-          string ans="";
-          do{
-            int f=0;
-            for(int i=0;i<p.length();i++){
-                if(s[i]==p[i]){f=1;break;}
-            }
 
-            if(f==0){ans=s;break;}
-            
+     ll n,k;cin>>n>>k;
+     vector<ll>v(n+1);
+     for(int i=1;i<=n;i++)cin>>v[i];
+   
+       ll ans=DP(v,n,k);
+     cout<<ans<<endl;
 
 
-          }while(next_permutation(s.begin(),s.end()));
 
-        
-       
-          cout<<"case #"<<w<<": "<<(ans!=""?ans:"IMPOSSIBLE")<<endl;
-          w++;
 
-}
 
    
     #ifndef  ONLINE_JUDGE

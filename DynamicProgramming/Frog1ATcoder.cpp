@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://atcoder.jp/contests/dp/tasks/dp_a
 
 #include <bits/stdc++.h>
 
@@ -43,41 +43,54 @@ void init_code(){
     #endif
 }
 
+ll solve(vector<ll>v,ll n, vector<ll>dp){
+    if(n==0)return 0;
+    if(n==1)return 0;
+    if(n==2)return abs(v[2]-v[1]);
+   
+    //if(n==3)return min(abs(v[n]-v[n-1]),abs(v[n]-v[n-2]));
+
+    if(dp[n]!=-1)return dp[n];
+     
+     ll op1=abs(v[n]-v[n-1])+solve(v,n-1,dp);
+     ll op2=abs(v[n]-v[n-2])+solve(v,n-2,dp);
+
+     return dp[n]=min(op1,op2);
+}
 
 
-int main(int argc, char const *argv[])
+ll DP(vector<ll>v,ll n){
+    vector<ll>dp(n+1,0);
+
+        dp[1]=0;
+        dp[2]=abs(v[2]-v[1]);
+    for(int i=3;i<=n;i++){
+        dp[i]=min(abs(v[i]-v[i-1])+dp[i-1],abs(v[i]-v[i-2])+dp[i-2]);
+    } 
+    return dp[n];
+}
+
+
+int main()
 {
      clock_t start=clock();
      init_code();
     
      //write your code here
-       
-       int t;
-       cin>>t;
-       int w=1;
-       while(t--){
-          string s;cin>>s;
-          string p=s;
-          sort(s.begin(),s.end());
-          string ans="";
-          do{
-            int f=0;
-            for(int i=0;i<p.length();i++){
-                if(s[i]==p[i]){f=1;break;}
-            }
 
-            if(f==0){ans=s;break;}
-            
+     ll n;cin>>n;
+     vector<ll>v(n+1);
+     for(int i=1;i<=n;i++)cin>>v[i];
+     vector<ll>dp(n+1,-1);
+
+     //ll ans=solve(v,n,dp);
+
+       ll ans=DP(v,n);
+     cout<<ans<<endl;
 
 
-          }while(next_permutation(s.begin(),s.end()));
 
-        
-       
-          cout<<"case #"<<w<<": "<<(ans!=""?ans:"IMPOSSIBLE")<<endl;
-          w++;
 
-}
 
    
     #ifndef  ONLINE_JUDGE
