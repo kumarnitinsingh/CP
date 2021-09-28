@@ -44,31 +44,37 @@ void init_code(){
 }
 
 
-
+int longestSubsequence(int n, vector<int>&arr)
+    {
+       // your code here
+       int dp[n+1];
+       dp[0]=1;
+       for(int i=1;i<n;i++){
+           int ans=0;
+           for(int j=i-1;j>=0;j--){
+               if(arr[i]>arr[j])ans=max(ans,dp[j]);
+           }
+           dp[i]=ans+1;
+       }
+       
+       int m=dp[0];
+       for(int i=1;i<n;i++){
+           m=max(dp[i],m);
+       }
+     return   m;
+    }
 int main(int argc, char const *argv[])
 {
      clock_t start=clock();
      init_code();
     
      //write your code here
+            
+       int n;
+       cin>>n;vector<int>v(n);loop(i,n)cin>>v[i];
+        int ans=longestSubsequence(n,v);
 
-     ll t;
-     cin>>t;
-     while(t--){
-        string s;
-        cin>>s;
-
-        ll a=0,b=0,c=0;
-        for(int i=0;i<s.size();i++){
-            if(s[i]=='A')a++;
-            else if(s[i]=='B')b++;
-            else if(s[i]=='C') c++;
-        }
-        if((a+c) == b){cout<<"YES"<<endl;}
-        else cout<<"NO"<<endl;
-
-     }
-
+       cout<<ans<<endl;      
 
 
 

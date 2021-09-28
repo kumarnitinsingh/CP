@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://atcoder.jp/contests/dp/tasks/dp_g
 
 #include <bits/stdc++.h>
 
@@ -43,7 +43,21 @@ void init_code(){
     #endif
 }
 
+ll dfs(vector<ll>g[], ll node,vector<ll>&dp){
 
+        if(dp[node]!=-1)return dp[node];
+        // visited[node]=true;
+         ll ans=0;
+         bool leaf=1;
+      for(auto x:g[node]){
+             leaf =0;
+      
+            ans=max(ans,dfs(g,x,dp));
+     }
+
+     return dp[node]=(leaf?0:1+ans);
+
+}
 
 int main(int argc, char const *argv[])
 {
@@ -52,23 +66,22 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-     ll t;
-     cin>>t;
-     while(t--){
-        string s;
-        cin>>s;
-
-        ll a=0,b=0,c=0;
-        for(int i=0;i<s.size();i++){
-            if(s[i]=='A')a++;
-            else if(s[i]=='B')b++;
-            else if(s[i]=='C') c++;
-        }
-        if((a+c) == b){cout<<"YES"<<endl;}
-        else cout<<"NO"<<endl;
-
+     ll n,m;cin>>n>>m;
+     vector<ll>g[n+1];
+     for(int i=1;i<=m;i++){
+        ll x,y;cin>>x>>y;
+            g[x].push_back(y);
      }
+        vector<ll>dp(n+1,-1);
+      
+        ll ans=0;
+        for(ll i=1;i<=n;i++){
+            {
+                ans=max(ans,dfs(g,i,dp));
+            }
+        }
 
+         cout<<ans<<endl;
 
 
 

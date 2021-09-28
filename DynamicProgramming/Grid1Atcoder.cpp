@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://atcoder.jp/contests/dp/tasks/dp_h
 
 #include <bits/stdc++.h>
 
@@ -43,6 +43,30 @@ void init_code(){
     #endif
 }
 
+ll solve(vector<string>v,ll h ,ll w){
+     vector<vector<ll>>dp(h+1,vector<ll>(w+1,0));
+    for(int i=0;i<w;i++){
+        if(v[0][i]=='#')break;
+
+            dp[0][i]=1;
+    }
+    for(int i=0;i<h;i++){
+        if(v[i][0]=='#')break;
+        
+            dp[i][0]=1;
+    }
+    
+    for(int i=1;i<h;i++){
+        for(int j=1;j<w;j++){
+            if(v[i][j]=='#')continue;
+           if(v[i-1][j]!='#')dp[i][j]=dp[i-1][j]%mod;
+           if(v[i][j-1]!='#'){dp[i][j]=(dp[i][j]%mod+dp[i][j-1]%mod)%mod; }
+        }
+    }
+       
+     
+    return dp[h-1][w-1]%mod;
+}
 
 
 int main(int argc, char const *argv[])
@@ -52,25 +76,23 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-     ll t;
-     cin>>t;
-     while(t--){
-        string s;
-        cin>>s;
-
-        ll a=0,b=0,c=0;
-        for(int i=0;i<s.size();i++){
-            if(s[i]=='A')a++;
-            else if(s[i]=='B')b++;
-            else if(s[i]=='C') c++;
-        }
-        if((a+c) == b){cout<<"YES"<<endl;}
-        else cout<<"NO"<<endl;
-
+     ll h,w;cin>>h>>w;
+     vector<string>v;
+     for(int i=0;i<h;i++){
+         string s;
+         cin>>s;
+         v.push_back(s);
      }
 
+   //  loop(i,h)cout<<v[i]<<endl;
+
+    
+
+     ll ans=solve(v,h,w);
+     cout<<ans<<endl;
 
 
+    
 
 
    

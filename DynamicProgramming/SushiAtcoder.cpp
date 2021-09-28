@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://atcoder.jp/contests/dp/tasks/dp_j
 
 #include <bits/stdc++.h>
 
@@ -43,7 +43,16 @@ void init_code(){
     #endif
 }
 
+double solve(ll x,ll y,ll z,ll &n,vector<vector<vector<double>>>&dp){
+    if(x<0 || y<0 || z<0)return 0;
+    if(x==0 and y==0 and z==0)return 0;
 
+    if(dp[x][y][z]>-0.9)return dp[x][y][z];
+
+    double exp=n+x*solve(x-1,y,z,n,dp)+y*solve(x+1,y-1,z,n,dp)+z*solve(x,y+1,z-1,n,dp);
+
+    return dp[x][y][z]=exp/(x+y+z);
+}
 
 int main(int argc, char const *argv[])
 {
@@ -52,25 +61,17 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-     ll t;
-     cin>>t;
-     while(t--){
-        string s;
-        cin>>s;
-
-        ll a=0,b=0,c=0;
-        for(int i=0;i<s.size();i++){
-            if(s[i]=='A')a++;
-            else if(s[i]=='B')b++;
-            else if(s[i]=='C') c++;
-        }
-        if((a+c) == b){cout<<"YES"<<endl;}
-        else cout<<"NO"<<endl;
-
-     }
-
-
-
+      ll n;cin>>n;
+      ll x=0,y=0,z=0;
+      for(int i=0;i<n;i++){
+          ll k;cin>>k;
+          if(k==1)x++;
+          else if(k==2)y++;
+          else z++;
+      }
+       vector<vector<vector<double>>>dp(301,vector<vector<double>>(301,vector<double>(301,-1.0)));
+      double ans=solve(x,y,z,n,dp);
+      cout<<fixed<<setprecision(10)<<ans<<endl;
 
 
    

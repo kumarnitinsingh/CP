@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://atcoder.jp/contests/dp/tasks/dp_k
 
 #include <bits/stdc++.h>
 
@@ -45,30 +45,37 @@ void init_code(){
 
 
 
+string solve(vector<ll>&v,ll k){
+    bool dp[k+1];
+    memset(dp,0,sizeof dp);
+
+    for(int i=1;i<=k;i++){
+
+        for(auto move:v){
+            if(move>i)continue;
+            if(dp[i-move]==0){
+                dp[i]=1;break;
+            }
+        }
+    }
+    return dp[k]?"First":"Second";
+}
+
 int main(int argc, char const *argv[])
 {
      clock_t start=clock();
      init_code();
     
      //write your code here
+            
+       ll n,k;
+       cin>>n>>k;
+       vector<ll>v(n);
+       loop(i,n)cin>>v[i];
+        
+        string ans=solve(v,k);
 
-     ll t;
-     cin>>t;
-     while(t--){
-        string s;
-        cin>>s;
-
-        ll a=0,b=0,c=0;
-        for(int i=0;i<s.size();i++){
-            if(s[i]=='A')a++;
-            else if(s[i]=='B')b++;
-            else if(s[i]=='C') c++;
-        }
-        if((a+c) == b){cout<<"YES"<<endl;}
-        else cout<<"NO"<<endl;
-
-     }
-
+       cout<<ans<<endl;      
 
 
 

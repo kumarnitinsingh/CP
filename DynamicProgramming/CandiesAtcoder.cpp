@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://atcoder.jp/contests/dp/tasks/dp_m
 
 #include <bits/stdc++.h>
 
@@ -44,6 +44,37 @@ void init_code(){
 }
 
 
+// ll dp[101][100001];
+
+
+// ll solve(vector<ll>&v,ll i,ll n,ll k){
+    
+//     if(k<0 or i>=n)return 0;
+//     if(k==0)return 1;
+
+//      if(dp[i][k]!=-1)return dp[i][k];
+//      ll ans=0;
+//      for(int j=0;j<=v[i];j++){
+//         ans=(ans %mod +solve(v,i+1,n,k-j)%mod)%mod;
+//      }
+//      return dp[i][k]=ans%mod;
+// }
+
+ll solve(vector<ll>&v,ll n,ll k){
+    ll dp[n+2][k+2];
+    for(int i=0;i<=k;i++){
+        dp[1][i]=(i>v[1])?0:1;
+    }
+
+    for(int i=2;i<=n;i++){
+        for(int j=0;j<=k;j++){
+            if(j==0)dp[i][j]=dp[i-1][j];
+            else {dp[i][j]=(mod+dp[i-1][j]+dp[i][j-1]-((j-v[i]-1)>=0?dp[i-1][j-v[i]-1]:0))%mod;}
+        }
+
+    }
+    return dp[n][k]%mod;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -51,25 +82,17 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-
-     ll t;
-     cin>>t;
-     while(t--){
-        string s;
-        cin>>s;
-
-        ll a=0,b=0,c=0;
-        for(int i=0;i<s.size();i++){
-            if(s[i]=='A')a++;
-            else if(s[i]=='B')b++;
-            else if(s[i]=='C') c++;
-        }
-        if((a+c) == b){cout<<"YES"<<endl;}
-        else cout<<"NO"<<endl;
-
-     }
-
-
+            
+       ll n,k;
+       cin>>n>>k;
+       vector<ll>v(n+1);
+       for(int i=1;i<=n;i++)cin>>v[i];
+        
+       
+       // memset(dp,-1,sizeof dp);
+        
+        ll ans=solve(v,n,k);
+        cout<<ans<<endl;
 
 
 
@@ -80,3 +103,4 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
+

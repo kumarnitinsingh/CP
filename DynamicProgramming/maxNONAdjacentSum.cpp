@@ -44,6 +44,17 @@ void init_code(){
 }
 
 
+ll solve(vector<ll>&v,ll n,ll i,vector<ll>&dp){
+    if(i>=n)return 0;
+    if(dp[i]!=-1)return dp[i];
+
+    ll ans=0;
+
+     ll op1=v[i]+solve(v,n,i+2,dp);
+     ll op2=solve(v,n,i+1,dp);
+     ans=max(op1,op2);
+     return dp[i]=ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -51,24 +62,13 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
+            
+       ll n;
+       cin>>n;vector<ll>v(n);loop(i,n)cin>>v[i];
+       vector<ll>dp(n+1,-1);
+       ll ans=solve(v,n,0,dp);
 
-     ll t;
-     cin>>t;
-     while(t--){
-        string s;
-        cin>>s;
-
-        ll a=0,b=0,c=0;
-        for(int i=0;i<s.size();i++){
-            if(s[i]=='A')a++;
-            else if(s[i]=='B')b++;
-            else if(s[i]=='C') c++;
-        }
-        if((a+c) == b){cout<<"YES"<<endl;}
-        else cout<<"NO"<<endl;
-
-     }
-
+       cout<<ans<<endl;      
 
 
 
