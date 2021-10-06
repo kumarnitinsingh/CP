@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://www.spoj.com/problems/KQUERYO/
 
 #include <bits/stdc++.h>
 
@@ -43,7 +43,33 @@ void init_code(){
     #endif
 }
 
+struct node{
+    vector<ll>arr;
+};
 
+void BuildTree(vector<ll>&v,vector<node>&tree,ll s,ll e,ll idx){
+    if(s==e){
+        tree[idx].arr.push_back(v[s]);
+        return;
+    }
+    ll mid=s+(e-s)/2;
+    BuildTree(v,tree,s,mid,2*idx);
+    BuildTree(v,tree,mid+1,e,2*idx+1);
+    merge(tree[2*idx].arr.begin(),tree[2*idx].arr.end(),tree[2*idx+1].arr.begin(),tree[2*idx+1].arr.end(),back_inserter(tree[idx].arr));
+}
+
+ll query(vector<ll>&v,vector<node>&tree,ll s,ll e,ll l,ll r,ll idx,ll k){
+    if(r<s or l>e)return 0;
+
+    if(l<=s and e<=r){
+        return (tree[idx].arr.size()-(upper_bound(tree[idx].arr.begin(),tree[idx].arr.end(),k)-tree[idx].arr.begin()));
+    }
+
+    ll mid=s+(e-s)/2;
+    ll left=query(v,tree,s,mid,l,r,2*idx,k);
+    ll right=query(v,tree,mid+1,e,l,r,2*idx+1,k);
+     return left+right;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -52,30 +78,25 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-     ll t;cin>>t;
-     while(t--){
-      ll n,u;
-      cin>>n>>u;
-      vector<ll>v(n+2,0);
+     ll  n;cin>>n;
+     vector<ll>v(n+1);
+     for(int i=1;i<=n;i++){
+        cin>>v[i];
+     }
 
-      for(int i=1;i<=u;i++){
-         ll l,r,x;
-         cin>>l>>r>>x;
-         v[l]+=x;
-         v[r+1]-=x;
-      }
-
-      for(int i=1;i<n;i++){
-         v[i]+=v[i-1];
-
-      }
-
-      ll q;cin>>q;
-      while(q--){
-         ll p;
-         cin>>p;
-         cout<<v[p]<<endl;
-      }
+     vector<node>tree(4*n+1);
+     BuildTree(v,tree,1,n,1);
+     ll q;cin>>q;
+     ll ans=0;
+     while(q--){
+        ll i,j,k;
+        cin>>i>>j>>k;
+        ll l,r;
+        l=i^ans;
+        r=j^ans;
+        k=k^ans;
+        ans=query(v,tree,1,n,l,r,1,k);
+        cout<<ans<<endl;
      }
 
 

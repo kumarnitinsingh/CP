@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://cses.fi/problemset/result/2954559/
 
 #include <bits/stdc++.h>
 
@@ -43,6 +43,33 @@ void init_code(){
     #endif
 }
 
+void build(vector<ll>&tree,vector<ll>&v,ll s,ll e,ll idx){
+    if(s==e){
+        tree[idx]=v[s];
+        return;}
+
+    ll mid=(s+e)/2;
+
+    build(tree,v,s,mid,2*idx);
+    build(tree,v,mid+1,e,2*idx+1);
+
+    tree[idx]=min(tree[2*idx],tree[2*idx+1]);
+    return;
+
+}
+
+ll query(vector<ll>&tree,ll s,ll e,ll l,ll r ,ll idx){
+    
+     if(l<=s and e<=r)return tree[idx];
+      if(l>e or r<s)return INT_MAX;
+    
+
+     ll mid=(e+s)/2;
+     ll left=query(tree,s,mid,l,r,2*idx);
+     ll right=query(tree,mid+1,e,l,r,2*idx+1);
+
+     return min(left,right);
+}
 
 
 int main(int argc, char const *argv[])
@@ -52,30 +79,17 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-     ll t;cin>>t;
-     while(t--){
-      ll n,u;
-      cin>>n>>u;
-      vector<ll>v(n+2,0);
+     ll n,q;cin>>n>>q;
+     vec v(n+1);
+     loopa(i,1,n)cin>>v[i];
+     vector<ll>tree(4*n+1);
 
-      for(int i=1;i<=u;i++){
-         ll l,r,x;
-         cin>>l>>r>>x;
-         v[l]+=x;
-         v[r+1]-=x;
-      }
+     build(tree,v,1,n,1);
 
-      for(int i=1;i<n;i++){
-         v[i]+=v[i-1];
-
-      }
-
-      ll q;cin>>q;
-      while(q--){
-         ll p;
-         cin>>p;
-         cout<<v[p]<<endl;
-      }
+     while(q--){
+        ll l,r;cin>>l>>r;
+        ll ans=query(tree,1,n,l,r,1);
+        cout<<ans<<endl;
      }
 
 

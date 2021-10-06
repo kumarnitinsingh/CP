@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://cses.fi/problemset/task/1648/
 
 #include <bits/stdc++.h>
 
@@ -43,7 +43,22 @@ void init_code(){
     #endif
 }
 
+ void update(vector<ll>&b,ll i,ll inc){
+   ll n=b.size();
+     while(i<=n){
+        b[i]=b[i]+inc;
+        i=i+(i&(-i));
+     }
+ }
 
+ ll sum(vector<ll>&b,ll i){
+    ll sum=0;
+    while(i>0){
+        sum=sum+b[i];
+        i=i-(i&(-i));
+    }
+    return sum;
+ }
 
 int main(int argc, char const *argv[])
 {
@@ -52,31 +67,35 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-     ll t;cin>>t;
-     while(t--){
-      ll n,u;
-      cin>>n>>u;
-      vector<ll>v(n+2,0);
+     ll n,q;
+     cin>>n>>q;
+     vec v(n+1);
+     loopa(i,1,n)cin>>v[i];
 
-      for(int i=1;i<=u;i++){
-         ll l,r,x;
-         cin>>l>>r>>x;
-         v[l]+=x;
-         v[r+1]-=x;
-      }
+     vec b(n+1,0);
+     for(int i=1;i<=n;i++){
+     update(b,i,v[i]);
+}
+     
+     while(q--){
+        ll type,l,r;cin>>type>>l>>r;
+         if(type==1){
+            ll x=r-v[l];
+            v[l]=r;
+            
+            update(b,l,x);
+         }
+         else{
 
-      for(int i=1;i<n;i++){
-         v[i]+=v[i-1];
-
-      }
-
-      ll q;cin>>q;
-      while(q--){
-         ll p;
-         cin>>p;
-         cout<<v[p]<<endl;
-      }
+            ll x1=sum(b,r);
+            ll x2=sum(b,l-1);
+            ll ans=x1-x2;
+        cout<<ans<<endl;
      }
+     
+
+ }
+
 
 
 

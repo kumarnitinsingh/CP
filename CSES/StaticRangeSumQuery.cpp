@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://cses.fi/problemset/task/1646
 
 #include <bits/stdc++.h>
 
@@ -52,31 +52,18 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-     ll t;cin>>t;
-     while(t--){
-      ll n,u;
-      cin>>n>>u;
-      vector<ll>v(n+2,0);
+     ll n,q;cin>>n>>q;
+     vec v(n+1);
 
-      for(int i=1;i<=u;i++){
-         ll l,r,x;
-         cin>>l>>r>>x;
-         v[l]+=x;
-         v[r+1]-=x;
-      }
-
-      for(int i=1;i<n;i++){
-         v[i]+=v[i-1];
-
-      }
-
-      ll q;cin>>q;
-      while(q--){
-         ll p;
-         cin>>p;
-         cout<<v[p]<<endl;
-      }
+     loopa(i,1,n)cin>>v[i];
+     for(int i=1;i<=n;i++){
+        v[i]=v[i]+v[i-1];
      }
+
+      while(q--){
+        ll l,r;cin>>l>>r;
+        cout<<v[r]-v[l-1]<<endl;
+      }
 
 
 

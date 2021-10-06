@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://cses.fi/problemset/task/1648/
 
 #include <bits/stdc++.h>
 
@@ -43,7 +43,22 @@ void init_code(){
     #endif
 }
 
+ void update(vector<ll>&b,ll i,ll inc){
+   ll n=b.size();
+     while(i<=n){
+        b[i]=b[i]+inc;
+        i=i+(i&(-i));
+     }
+ }
 
+ ll query(vector<ll>&b,ll i){
+    ll sum=0;
+    while(i>0){
+        sum=sum+b[i];
+        i=i-(i&(-i));
+    }
+    return sum;
+ }
 
 int main(int argc, char const *argv[])
 {
@@ -52,31 +67,50 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-     ll t;cin>>t;
-     while(t--){
-      ll n,u;
-      cin>>n>>u;
-      vector<ll>v(n+2,0);
+     ll n;
+     cin>>n;
+     vec v(n+1);
+     loopa(i,1,n)cin>>v[i];
 
-      for(int i=1;i<=u;i++){
-         ll l,r,x;
-         cin>>l>>r>>x;
-         v[l]+=x;
-         v[r+1]-=x;
-      }
+     set<ll>s;
+     for(int i=1;i<=n;i++)s.insert(v[i]);
+      unordered_map<ll,ll>mp;
 
-      for(int i=1;i<n;i++){
-         v[i]+=v[i-1];
+         int idx=1;
 
-      }
+       while(!s.empty()){
+         ll s1=*s.begin();
+          mp[s1]=idx;
+          idx++;
+          s.erase(s1);
 
-      ll q;cin>>q;
-      while(q--){
-         ll p;
-         cin>>p;
-         cout<<v[p]<<endl;
-      }
+       }
+
+     vector<ll>temp(n+1);
+
+     for(int i=1;i<=n;i++){
+       temp[i]=mp[v[i]];
      }
+
+
+     ll maxelement=*max_element(temp.begin(),temp.end());
+
+     vec b(maxelement+1,0);
+     ll cn=0;
+     for(int i=n;i>=1;i--){
+      ll ans=query(b,temp[i]-1);
+      cn+=ans;
+      update(b,temp[i],1);
+      
+      
+}
+     
+   
+     cout<<cn<<endl;
+     
+
+ 
+
 
 
 

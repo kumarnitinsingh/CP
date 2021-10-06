@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://atcoder.jp/contests/dp/tasks/dp_p
 
 #include <bits/stdc++.h>
 
@@ -43,7 +43,31 @@ void init_code(){
     #endif
 }
 
+ll dp[100001][2];
+ll solve(vector<ll>g[],ll u,ll par,bool cons){
 
+    if(dp[u][cons]!=-1)return dp[u][cons];
+    ll ans=0;
+    ll w1=1;
+    for(auto child:g[u]){
+        if(child!=par){
+            w1=(w1 * solve(g,child,u,0))%mod;
+        }
+    }
+    ans=(ans+w1)%mod;
+    
+    if(!cons){
+        ll w2=1;
+         for(ll child:g[u]){
+        if(child!=par){
+            w2=(w2 * solve(g,child,u,1))%mod;
+        }
+    }
+        ans=(ans+w2)%mod;
+    }
+
+    return dp[u][cons]=ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -51,32 +75,21 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
+     ll n;cin>>n;
+     vector<ll>g[n+1];
 
-     ll t;cin>>t;
-     while(t--){
-      ll n,u;
-      cin>>n>>u;
-      vector<ll>v(n+2,0);
-
-      for(int i=1;i<=u;i++){
-         ll l,r,x;
-         cin>>l>>r>>x;
-         v[l]+=x;
-         v[r+1]-=x;
-      }
-
-      for(int i=1;i<n;i++){
-         v[i]+=v[i-1];
-
-      }
-
-      ll q;cin>>q;
-      while(q--){
-         ll p;
-         cin>>p;
-         cout<<v[p]<<endl;
-      }
+     for(int i=1;i<n;i++){
+        ll x,y;
+        cin>>x>>y;
+        g[x].push_back(y);
+        g[y].push_back(x);
      }
+
+     memset(dp,-1,sizeof (dp));
+
+     ll ans = solve(g,1,-1,0);
+
+     cout<<ans<<endl;
 
 
 
