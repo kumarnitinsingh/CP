@@ -61,8 +61,8 @@ ll lis(vector<ll>&v,ll n){
       //instead of above commented for loop we can use binary search to reduce complexity from O(n^2) to O(nlogn)
 
          auto it=upper_bound(dp.begin(),dp.end(),v[i])-dp.begin();
-         if(dp[it-1]<v[i] and v[i]<dp[it]){
-      //       dp[j+1]=v[i];
+         if(it!=n+1 and dp[it-1]<v[i] and v[i]<dp[it]){
+    
               dp[it]=v[i];
           }
        
