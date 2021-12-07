@@ -43,39 +43,71 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
 
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
+// O(N*N)
+void merge( vector<ll>ar1,vector<ll>ar2,ll m,ll n){
+     for(ll i=n-1;i>=0;i--){
+
+          ll j;ll last=ar1[m-1];
+
+          for(j=m-2;j>=0 and ar1[j]>ar2[i] ;j--){
+               ar1[j+1]=ar1[j];
           }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
+
+          if(last>ar2[i] || m-2!=j){
+               ar1[j+1]=ar2[i];
+               ar2[i]=last;
           }
      }
+}
 
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
+//optimised way (n+m)*log(m+n);
+
+void merge2( vector<ll>& ar1,vector<ll>& ar2,ll m,ll n){
+  ll k=m+n;
+  ll gap=ceil((m+n)/2);
+
+   while(gap>=1){
+      ll i=0;
+      ll j=gap;
+
+      while(j<n+m){
+          if(i<m and j<m and ar1[i]>ar1[j]){
+              
+
+               swap(ar1[i],ar1[j]);
+          } 
+          else if(i<m and j>=m and j<m+n and ar1[i]>ar2[j-m]){
+            
+              swap(ar1[i],ar2[j-m]);
+          }
+          else if(i>=m and j>=m and j<m+n and ar2[i-m]>ar2[j-m]){
+             
+              swap(ar2[i-m],ar2[j-m]);
+          }
+          i++;j++;
+          
+      } 
+      gap=ceil(gap/2);
+   }
+}
+
+//insertionsort Type approach
+void merge3(int arr1[], int arr2[], int n, int m)
+{
+ for (int i = 0; i < n; i++)
+ {
+  bool flag = 0;
+  if (arr1[i] > arr2[0])
+  {
+   flag = 1;
+   swap(arr1[i], arr2[0]);
+  }
+  if (flag)
+  {
+   sort(arr2, arr2 + m);
+  }
+ }
 }
 
 int main(int argc, char const *argv[])
@@ -84,13 +116,17 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
+   ll m,n;cin>>m>>n;
+     vector<ll>v1(m);loop(i,m)cin>>v1[i];
+     vector<ll>v2(n);loop(i,n)cin>>v2[i];
+     merge2(v1,v2,m,n);
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+     for(int i=0;i<m;i++)cout<<v1[i]<<" ";
+     for(int i=0;i<n;i++)cout<<v2[i]<<" ";     
+
+       
+
+
 
 
 
@@ -101,5 +137,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-nitin kumar singh

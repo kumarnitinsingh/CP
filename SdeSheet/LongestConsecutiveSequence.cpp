@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/longest-consecutive-sequence/
 
 #include <bits/stdc++.h>
 
@@ -43,40 +43,40 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
+ int longestConsecutive(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        unique(nums.begin(),nums.end());
+        int n=nums.size();
+        int ans=0;
+        for(int i=0;i<n;i++){
+            int j=i;
+            int cn=1;
+           while(j<n-1 and (nums[j+1]== (nums[j]+1))){cn++;j++;i=j;} 
+            ans=max(cn,ans);
+        }
+        return ans;
+    }
 
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
-     }
-
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
-}
+     int longestConsecutive(vector<int>& nums) {
+       int n=nums.size();
+       unordered_set<int>s;
+        int ans=0;
+        for(int i=0;i<n;i++)s.insert(nums[i]);
+        
+        for(int i=0;i<n;i++){
+            int no=nums[i];
+            if(s.find(no-1)==s.end()){
+                int nextno=no+1;
+                int cn=1;
+                while(s.find(nextno)!=s.end()){
+                    cn++;
+                    nextno++;
+                }
+                ans=max(ans,cn);
+            }
+        }
+        return ans;
+    }
 
 int main(int argc, char const *argv[])
 {
@@ -85,12 +85,7 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+
 
 
 
@@ -102,4 +97,3 @@ int main(int argc, char const *argv[])
    return 0;
 }
 
-nitin kumar singh

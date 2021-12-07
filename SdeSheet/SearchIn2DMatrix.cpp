@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://leetcode.com/problems/search-a-2d-matrix/
 
 #include <bits/stdc++.h>
 
@@ -43,40 +43,20 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
-
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
-     }
-
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
-}
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int i=0;int n=matrix.size();int j=matrix[0].size()-1;
+        
+        while(i>=0 and i<n and j>=0 and j<matrix[0].size()){
+            if(matrix[i][j]== target){
+                return true;
+            }
+            else if(matrix[i][j]>target){
+                j--;
+            }
+            else i++;
+        }
+        return false;
+    }
 
 int main(int argc, char const *argv[])
 {
@@ -85,12 +65,7 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+
 
 
 
@@ -101,5 +76,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-nitin kumar singh

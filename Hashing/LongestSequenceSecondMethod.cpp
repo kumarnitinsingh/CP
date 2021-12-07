@@ -44,39 +44,31 @@ void init_code(){
 }
 
 ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
+     unordered_set<ll>s;
+
+     for(int i=0;i<n;i++){
+          s.insert(v[i]);
+     }
+     ll ans=0;
 
      for(int i=0;i<n;i++){
           ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
+          if(s.find(no-1)==s.end()){
+               ll nextNo=no+1;
+               ll cn=1;
+               while(s.find(nextNo)!=s.end()){
+                    cn++;
+                    nextNo++;
+
+               }
+               ans=max(ans,cn);
           }
      }
 
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
      return ans;
 }
+
+
 
 int main(int argc, char const *argv[])
 {
@@ -101,5 +93,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-nitin kumar singh

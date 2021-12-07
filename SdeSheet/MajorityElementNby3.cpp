@@ -43,40 +43,49 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
 
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
-     }
+//Moore voting algorithm space O(1) and time O(N)
+ vector<int> majorityElement(vector<int>& nums) {
+       int num1=0,num2=0,count1=0,count2=0;
+        int n=nums.size();
+        vector<int>ans;
+        for(int num:nums){
+            if(num==num1){count1++;}
+            else if(num==num2){count2++;}
+            else if(count1==0){num1=num;count1++;}
+            else if(count2==0){num2=num;count2++;}
+            else {count1--;count2--;}
+        }
+        
+        count1=0,count2=0;
+        for(int i=0;i<nums.size();i++){
+            if(num1==nums[i])count1++;
+            else if(num2==nums[i])count2++;
+                
+        }
+        
+        if(count1>n/3)ans.push_back(num1);
+        if(count2>n/3)ans.push_back(num2);
+        return ans;
+    }
 
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
-}
+
+
+// space O(N) and Time O(n);
+     vector<int> majorityElement(vector<int>& nums) {
+         unordered_map<int,int>mp;
+        vector<int>v;
+        int n=nums.size();
+        for(int i=0;i<nums.size();i++){
+            mp[nums[i]]++;
+        }
+        
+         for(auto p:mp){
+             if(p.second>n/3){v.push_back(p.first);}
+         }
+        return v;
+    }
+
 
 int main(int argc, char const *argv[])
 {
@@ -85,12 +94,7 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+
 
 
 
@@ -101,5 +105,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-nitin kumar singh

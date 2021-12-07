@@ -43,40 +43,26 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
-
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
-     }
-
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
+ll solve(vector<ll>v,ll n,ll k){
+	unordered_map<ll,ll>m;
+	ll pre=0;
+	ll length=0;
+	for(ll i=0;i<n;i++){
+		pre+=v[i];
+		if(pre==k){
+			length=max(length,i+1);
+		}
+		if(m.find(pre-k)!=m.end()){
+			length=max(length,i-m[pre-k]);
+		}
+		else {
+			m[pre]=i;
+		}
+	}
+	return length;
 }
+
+
 
 int main(int argc, char const *argv[])
 {
@@ -85,12 +71,11 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+     ll n,k;cin>>n>>k;
+     vector<ll>v(n);
+     loop(i,n)cin>>v[i];
+
+      cout<<solve(v,n,k)<<endl;
 
 
 
@@ -101,5 +86,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-nitin kumar singh

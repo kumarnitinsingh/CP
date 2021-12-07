@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/reverse-pairs/
 
 #include <bits/stdc++.h>
 
@@ -43,40 +43,63 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
+ int merge(vector<int>& arr,int temp[],int left,int mid,int right)
+    {
+        int count=0;
+        int i = left;
+        int j = mid+1;
+        int k = left;
+        for(i=left;i<=mid;i++){
+            while(j<=right and arr[i] > 2LL*arr[j]){
+                j++;
+            }
+            count += (j - (mid+1));
+        }
+        i = left,j=mid+1;
+        while((i <= mid) && (j <= right)){
+            if(arr[i] <= arr[j]){
+                temp[k++]=arr[i++];
+            }
+            else
+            {
+                temp[k++] = arr[j++];
+            }
+        }
 
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
-     }
+        while(i <= mid)
+            temp[k++]=arr[i++];
 
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
-}
+        while(j <= right)
+            temp[k++]=arr[j++];
+
+        for(i = left ; i <= right ; i++)
+            arr[i] = temp[i];
+
+        return count;
+    }
+
+    int merge_Sort(vector<int>& arr,int temp[],int left,int right)
+    {
+        int mid,count = 0;
+        if(right > left)
+        {
+            mid = (left + right)/2;
+
+            count += merge_Sort(arr,temp,left,mid);
+            count += merge_Sort(arr,temp,mid+1,right);
+
+            count += merge(arr,temp,left,mid,right);
+        }
+        return count;
+    }
+   
+
+
+    int reversePairs(vector<int>& nums) {
+         int n = nums.size();
+        int temp[n];
+        return merge_Sort(nums,temp,0,n-1);
+    }
 
 int main(int argc, char const *argv[])
 {
@@ -85,12 +108,7 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+
 
 
 
@@ -101,5 +119,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-nitin kumar singh

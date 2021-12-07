@@ -3,14 +3,14 @@
 
 #include <bits/stdc++.h>
 
-//#include<ext/pb_ds/assoc_container.hpp>
-//#include<ext/pb_ds/tree_policy.hpp>
-//#include<ext/pb_ds/trie_policy.hpp>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+#include<ext/pb_ds/trie_policy.hpp>
 
 using namespace std;
 
-//using namespace __gnu_pbds;
-//typedef tree <int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update>Set;
+using namespace __gnu_pbds;
+typedef tree <int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update>Set;
 
 //find_by_order(k) and order_of_key(k)
 
@@ -43,41 +43,97 @@ void init_code(){
     #endif
 }
 
-ll lis(vector<ll>&v,ll n){
-   vector<ll>dp(n+1,INT_MAX);
+ void merge(vec& arr,long long  left,long long mid,long long right,long long int& ans){
+        //   long long temp[h-l+1];
+        //   long long i=l,k=0,j=mid+1;
 
-   ll ans=1;
-   dp[0]=INT_MIN;
+        //    for(ll p=mid+1;p<=h;p++){
+        //        ll q=l;ll cn=0;
+        //     while(q<=mid and arr[q] < 2LL*arr[p]){
+        //         q++;
+                
+        //     }
+        //     ans += mid-q+1;
+        // }
+          
+        //       // int p,cn=0;
+        //       //  for( p=i;p<=mid;p++){
+        //       //     if(arr[p]>2*arr[j])cn++;
+        //       // }
+        //       // ans+=cn;
+        //   for(;i<=mid and j<=h;){
+           
+        //       if(arr[i]<=arr[j]){
+        //           temp[k++]=arr[i++];
+        //       }
 
-   for(int i=0;i<n;i++){
+        //       else {
+        //           temp[k++]=arr[j++];
+                 
+        //       }
+        //   }
+        //   for(;i<=mid;)temp[k++]=arr[i++];
+        //   for(;j<=h;)temp[k++]=arr[j++];
+          
+        //   k=0;
+        //   for(long long i=l;i<=h;i++){
+        //       arr[i]=temp[k++];
+        //   }
 
-       
-      // for(int j=0;j<n;j++){
 
-      //    if(dp[j]<v[i] and v[i]<dp[j+1]){
-      //       dp[j+1]=v[i];
-      //    }}
-
-      //instead of above commented for loop we can use binary search to reduce complexity from O(n^2) to O(nlogn)
-
-         auto it=upper_bound(dp.begin(),dp.end(),v[i])-dp.begin();
-         if(dp[it-1]<v[i] and v[i]<dp[it]){
-      //       dp[j+1]=v[i];
-              dp[it]=v[i];
-          }
-       
+           vector<ll>temp(right-left+1);    
       
-   
+        ll i = left;
+        ll j = mid;
+        ll k = left;
+        for(i=left;i<=mid;i++){
+            while(j<=right and arr[i] > 2LL*arr[j]){
+                j++;
+            }
+            ans += (j - mid);
+        }
+        i = left,j=mid;
+        while((i <= mid-1) && (j <= right)){
+            if(arr[i] <= arr[j]){
+                temp[k++]=arr[i++];
+            }
+            else
+            {
+                temp[k++] = arr[j++];
+            }
+        }
+
+        while(i <= mid - 1)
+            temp[k++]=arr[i++];
+
+        while(j <= right)
+            temp[k++]=arr[j++];
+
+        for(i = left ; i <= right ; i++)
+            arr[i] = temp[i];
+
+        
+          
       }
-
-      for(int i=1;i<=n;i++){
-         if(dp[i]!=INT_MAX)ans=i;
+        
+          
+      
+      void mergeSort(vec &arr,long long  l,long long h,long long int& ans){
+         // long long int l=0,h=n-1;
+          if(l<h){
+              long long int mid=l+(h-l)/2;
+              mergeSort(arr,l,mid,ans);
+              mergeSort(arr,mid+1,h,ans);
+              merge(arr,l,mid,h,ans);
+          }
       }
-
-
-   return ans;
-}
-
+    long long int inversionCount(vec& arr, long long n)
+    {
+        // Your Code Here
+        long long int ans=0;
+        mergeSort(arr,0,n-1,ans);
+        return ans;
+    }
 
 
 int main(int argc, char const *argv[])
@@ -87,12 +143,19 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-     ll n;cin>>n;
-     vector<ll>v(n);
-     loop(i,n)cin>>v[i];
+     int n;cin>>n;
+      vector<ll>v(n);
+      loop(i,n)cin>>v[i];
 
-     ll ans=lis(v,n);
-      cout<<ans<<endl;
+         
+        long long ans=0;
+        mergeSort(v,0,n-1,ans);
+        cout<<ans<<endl;         
+      
+          
+
+
+
 
 
 
@@ -105,3 +168,6 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
+
+
+

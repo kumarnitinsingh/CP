@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/rotate-image/
 
 #include <bits/stdc++.h>
 
@@ -43,40 +43,38 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
+//transpose the matrix and reverse its each row;
+   void rotate(vector<vector<int>>& matrix) {
+       int n=matrix.size();
 
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
-     }
-
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
+       //matrix transpose
+    for(int i=0;i<n;i++){
+        for(int j=0;j<=i;j++){
+            swap(matrix[i][j],matrix[j][i]);
+        }
+    }
+    
+    //reversing each rows
+    for(int i=0;i<n;i++){
+        reverse(matrix[i].begin(),matrix[i].end());
+    }
 }
+
+  void rotateby90degree(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        vector<vector<int>>v(n,vector<int>(n));
+        
+        for(int i=n-1,k=0;i>=0 and k<n;i--,k++){
+            for(int j=0,l=0;j<n and l<n;j++,l++){
+                v[l][k]=matrix[i][j];
+            }
+        }
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++)matrix[i][j]=v[i][j];
+        }
+    }
+
 
 int main(int argc, char const *argv[])
 {
@@ -85,12 +83,7 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+
 
 
 
@@ -101,5 +94,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-nitin kumar singh

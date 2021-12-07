@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/unique-paths/
 
 #include <bits/stdc++.h>
 
@@ -43,40 +43,40 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
 
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
-     }
+// Time O(n*m);
+ int uniquePaths(int m, int n) {
+       int grid[m][n];
+         for(int i=0;i<m;i++)grid[i][0]=1;
+         for(int i=0;i<n;i++)grid[0][i]=1;
+        
+        for(int i=1;i<m;i++){
+            for(int j=1;j<n;j++){
+                grid[i][j]=grid[i][j-1]+grid[i-1][j];
+            }
+        }
+        
+        return grid[m-1][n-1];
+        
+    }
 
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
-}
+  // totalUniquePaths=((m+n-2)! / (m-1)!(n-1)!)  
+
+       int uniquePaths1(int m, int n) {
+        int N = n+m-2; // total steps = n-1 + m-1
+        int r = min(n,m) - 1; // will iterate on the minimum for efficiency = (total) C (min(right, down))
+        
+        double res = 1;
+        
+        // compute nCr
+        for(int i=1; i<=r; ++i, N--){
+            
+            res = res * (N) / i;
+        }
+        
+        return (int)res;
+    }
+
 
 int main(int argc, char const *argv[])
 {
@@ -85,12 +85,7 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+
 
 
 
@@ -101,5 +96,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-nitin kumar singh

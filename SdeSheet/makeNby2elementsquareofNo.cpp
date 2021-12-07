@@ -43,54 +43,56 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
+void f();
 
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
-     }
-
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
-}
 
 int main(int argc, char const *argv[])
 {
      clock_t start=clock();
      init_code();
     
-     //write your code here
-
+       vector<ll>temp;
+       for(ll i=0;i<100000;i++){
+          ll k=i*i;
+          temp.push_back(k);
+       }   
+      ll t;
+      cin>>t;
+      while(t--){
           ll n;
           cin>>n;
           vector<ll>v(n);
           loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+
+
+          vector<pair<ll,ll>>ans;
+          for(int i=0;i<n;i++){
+               ll op2=*upper_bound(temp.begin(),temp.end(),v[i]);
+               ll p=sqrt(op2);
+               ll op1=(p-1)*(p-1);
+
+               ll temp1=abs(op1-v[i]);
+               ll temp2=abs(op2-v[i]);
+
+               ans.push_back({min(temp1,temp2),v[i]});
+          }
+
+          sort(ans.begin(),ans.end());
+
+          ll f=0;
+          for(ll i=0;i<n/2;i++){
+               f+=ans[i].first;
+          }
+
+          for(ll i=n/2;i<n;i++){
+               if(binary_search(temp.begin(),temp.end(),ans[i].second)){
+                    if(ans[i].second==0)f+=2;
+                    else f+=1;
+               }
+          }
+
+          cout<<f<<endl;
+      }
 
 
 
@@ -102,4 +104,6 @@ int main(int argc, char const *argv[])
    return 0;
 }
 
-nitin kumar singh
+void f(){
+     cout<<"faltu"<<endl;
+}

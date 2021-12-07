@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> squareroot decomposition (range sum query);
 
 #include <bits/stdc++.h>
 
@@ -43,39 +43,45 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
 
+void buildBlockArray(vector<ll>&v,ll n,vec &b,ll bs){
+     int block_idx=-1;
      for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
+          if(i%bs==0)block_idx++;
+          b[block_idx]+=v[i];
      }
+}
 
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
+ll query(vec &v,vec &b,ll rn,ll l,ll r){
+     ll ans=0;
+
+     //left part
+     while(l<r and l!=0 and l%rn!=0){
+          ans+=v[l];
+          l++;
      }
-     return ans;
+     //middle part
+       while(l+rn<=r){
+           ll block_idx=l/rn;
+            ans+=b[block_idx];
+            l+=rn;
+       }
+
+       // right part
+       while(l<=r){
+          ans+=v[l];
+          l++;
+       }
+
+
+       return ans;
+}
+
+void update(vec& v,vec &b,ll rn,ll i,ll val){
+        
+          b[i/rn]+=(val-v[i]);
+            v[i]=val;
+
 }
 
 int main(int argc, char const *argv[])
@@ -84,13 +90,24 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
+     ll t;cin>>t;
+          while(t--){
+               ll n;cin>>n;
+               vector<ll>v(n);
+               loop(i,n)cin>>v[i];
+               ll bs=sqrt(n);
+               vector<ll>b(bs+1,0);
+               buildBlockArray(v,n,b,bs);
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+               cout<<query(v,b,bs,2,4)<<endl;
+
+               update(v,b,bs,3,10);
+
+               cout<<query(v,b,bs,2,4)<<endl;
+
+          }
+
+
 
 
 
@@ -101,5 +118,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-nitin kumar singh

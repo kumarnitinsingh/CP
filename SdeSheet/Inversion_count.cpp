@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://practice.geeksforgeeks.org/problems/inversion-of-array-1587115620/1
 
 #include <bits/stdc++.h>
 
@@ -43,40 +43,47 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
-
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
+ void merge(long long arr[],long long  l,long long mid,long long h,long long int& ans){
+          long long temp[h-l+1];
+          long long i=l,k=0,j=mid+1;
+          
+          for(;i<=mid and j<=h;){
+              if(arr[i]<=arr[j]){
+                  temp[k++]=arr[i++];
+              }
+              else {
+                  temp[k++]=arr[j++];
+                  ans+=mid-i+1;
+              }
           }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
+          for(;i<=mid;)temp[k++]=arr[i++];
+          for(;j<=h;)temp[k++]=arr[j++];
+          
+          k=0;
+          for(long long i=l;i<=h;i++){
+              arr[i]=temp[k++];
           }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
+          
+      }
+        
+          
+      
+      void mergeSort(long long arr[],long long  l,long long h,long long int& ans){
+         // long long int l=0,h=n-1;
+          if(l<h){
+              long long int mid=l+(h-l)/2;
+              mergeSort(arr,l,mid,ans);
+              mergeSort(arr,mid+1,h,ans);
+              merge(arr,l,mid,h,ans);
           }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
-     }
-
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
-}
+      }
+    long long int inversionCount(long long arr[], long long n)
+    {
+        // Your Code Here
+        long long int ans=0;
+        mergeSort(arr,0,n-1,ans);
+        return ans;
+    }
 
 int main(int argc, char const *argv[])
 {
@@ -85,12 +92,7 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+
 
 
 
@@ -101,5 +103,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-nitin kumar singh

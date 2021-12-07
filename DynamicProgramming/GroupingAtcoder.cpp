@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://atcoder.jp/contests/dp/tasks/dp_u
 
 #include <bits/stdc++.h>
 
@@ -43,40 +43,45 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
+ll dp[(1<<16)];
+ll sum[(1<<16)];
 
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
+
+ll calculate(vector<vector<ll>>&v,ll mask,ll n){
+     ll sum=0;
+
+     for(ll i=0;i<=16;i++){
+          for(ll j=i+1;j<=16;j++){
+               if((mask & (1<<i))!=0  and (mask&(1<<j))!=0)sum+=v[i][j];
           }
      }
 
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
+     return sum;
 }
+
+void calculateSum(vector<vector<ll>>&v,ll n){
+
+           for(ll i=1;i<(1<<n);i++){
+         dp[i]=INT_MAX;
+     }   
+     for(ll i=1;i<(1<<n);i++){
+          sum[i]=calculate(v,i,n);
+     }
+
+}
+
+ll solve(vector<vector<ll>>&v,ll mask){
+     if(mask==0)return 0;
+     if(dp[mask]!=INT_MAX)return dp[mask];
+
+     ll ans=0;
+     for(ll submask=mask;submask!=0;submask=(submask-1) & mask){
+          ans=max(ans,sum[submask]+solve(v,mask^submask));
+     }
+
+     return dp[mask]=ans;
+}
+
 
 int main(int argc, char const *argv[])
 {
@@ -85,12 +90,21 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+     //divisble subarray;
+
+     ll n;
+     cin>>n;
+     vector<vector<ll>>v(n,vector<ll>(n));
+
+     for(int i=0;i<n;i++){
+          for(int j=0;j<n;j++)
+               cin>>v[i][j];
+     }
+     calculateSum(v,n);
+     ll g=(1<<n)-1;
+     ll ans=solve(v,g);
+     cout<<ans<<endl;
+
 
 
 
@@ -102,4 +116,3 @@ int main(int argc, char const *argv[])
    return 0;
 }
 
-nitin kumar singh

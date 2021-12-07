@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link ->https://practice.geeksforgeeks.org/problems/largest-subarray-with-0-sum/1#
 
 #include <bits/stdc++.h>
 
@@ -43,40 +43,31 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
 
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
-     }
+  int maxLen(vector<int>&A, int n)
+    {   
+        // Your code here
+        vector<int>p(n);
+        p[0]=A[0];
+        int ans=0;
+        for(int i=1;i<n;i++){
+            p[i]=A[i]+p[i-1];
+            if(p[i]==0)ans=max(ans,i+1);
+        }
+        
+        unordered_map<int,int>mp;
+        
+        for(int i=0;i<n;i++){
+            if(mp.count(p[i])){
+                ans=max(ans,i-mp[p[i]]);
+            }
+            else mp[p[i]]=i;
+        }
+        
+        
+        return ans;
+    }
 
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
-     }
-     return ans;
-}
 
 int main(int argc, char const *argv[])
 {
@@ -85,12 +76,7 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+
 
 
 
@@ -101,5 +87,3 @@ int main(int argc, char const *argv[])
     #endif
    return 0;
 }
-
-nitin kumar singh

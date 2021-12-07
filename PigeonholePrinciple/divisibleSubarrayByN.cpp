@@ -43,40 +43,27 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<ll>v,ll n){
-     unordered_map<ll,ll>m;
-
-     for(int i=0;i<n;i++){
-          ll no=v[i];
-          if(m.count(no-1)==0 and m.count(no+1)==0){
-               m[no]=1;
-          }
-          else if(m.count(no-1) and m.count(no+1)){
-               ll len1=m[no-1];
-               ll len2=m[no+1];
-               ll streak=len1+1+len2;
-               m[no-len1]=streak;
-               m[no+len2]=streak;
-               m[no]=streak;
-          }
-          else if(m.count(no-1) and m.count(no+1)==0){
-               ll len1=m[no-1];
-               m[no]=len1+1;
-               m[no-len1]=len1+1;
-          }
-          else if(m.count(no+1) and m.count(no-1)==0){
-               ll len2=m[no+1];
-               m[no]=len2+1;
-               m[no+len2]=len2+1;
-          }
+ll solve(vec & v,ll n){
+     vector<ll>pre(n);
+     pre[0]=v[0];
+     for(int i=1;i<n;i++){
+          pre[i]=v[i]+pre[i-1];
+          pre[i]=pre[i]%n;
      }
 
-     ll ans=INT_MIN;
-     for(auto p:m){
-          ans=max(ans,p.second);
+     unordered_map<ll,ll>mp;
+     for(int i=0;i<n;i++){
+          mp[pre[i]]++;
+     }
+
+     ll ans=0;
+     for(auto p:mp){
+          ans+=(p.second*(p.second-1))/2;
      }
      return ans;
 }
+
+
 
 int main(int argc, char const *argv[])
 {
@@ -85,12 +72,15 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
-          ll n;
-          cin>>n;
-          vector<ll>v(n);
-          loop(i,n)cin>>v[i];
-          ll ans=solve(v,n);
-          cout<<ans<<endl;
+     //divisble subarray;
+
+     ll n;
+     cin>>n;
+     vec v(n);loop(i,n)cin>>v[i];
+     ll ans=solve(v,n);
+     cout<<ans<<endl;
+
+
 
 
 
@@ -102,4 +92,4 @@ int main(int argc, char const *argv[])
    return 0;
 }
 
-nitin kumar singh
+nitin singh nitin singh nitin singh nitin singgh nitin singh nitin singh nitin singh
