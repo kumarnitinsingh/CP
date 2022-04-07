@@ -302,13 +302,64 @@ void LeftView(node* root){
 }
 
 //--------------------------------------------------------------------------------------------------------------------------
-void TopView(node* root){
-    if(root!=NULL){
-        cout<<root->data<<endl;
+    vector<int> topView(node *root)
+    {
+        //Your code here
+             if(!root)return {};
+   vector<int>ans;
+   map<int,int>mp;
+     queue<pair<node*,int>>q;
+  
+     q.push({root,0});
+     while(!q.empty()){
+    
+          node* temp=q.front().first;
+          int hd=q.front().second;
+             q.pop();
+             if(mp.count(hd)==0){mp[hd]=temp->data;}
+            
+             if(temp->left){q.push({temp->left,hd-1});}
+             if(temp->right){q.push({temp->right,hd+1});}
+         
+     }
+     
+      for (auto i = mp.begin(); i != mp.end(); i++) {
+         ans.push_back(i->second);
     }
-     LeftView(root->left);
-     RightView(root->right);
-}
+  
+     return ans;
+    
+    }
+
+     vector<int> bottomView(node *root)
+    {
+        //Your code here
+             if(!root)return {};
+   vector<int>ans;
+   map<int,int>mp;
+     queue<pair<node*,int>>q;
+  
+     q.push({root,0});
+     while(!q.empty()){
+    
+          node* temp=q.front().first;
+          int hd=q.front().second;
+             q.pop();
+             mp[hd]=temp->data;
+            
+             if(temp->left){q.push({temp->left,hd-1});}
+             if(temp->right){q.push({temp->right,hd+1});}
+         
+     }
+     
+      for (auto i = mp.begin(); i != mp.end(); i++) {
+         ans.push_back(i->second);
+    }
+  
+     return ans;
+    
+    }
+
 
 //-------------------------------------------------------------------------------------------------------------------------
 
@@ -555,6 +606,31 @@ void VerticalPrint(node* root){
     }
 }
 
+//------------------------------------------------------------------------------------------------------------------
+//maximumPathSum
+
+int solve(TreeNode* root,int& ans){
+     if(root==NULL)return 0;
+        int left=solve(root->left,ans);
+        int right=solve(root->right,ans);
+        int temp1=left+root->val;
+         int temp2=right+root->val;
+         int temp3=root->val;
+          int temp4=0;
+         ans=max(ans,left+right+root->val);
+         return max({temp1,temp2,temp3,temp4});
+
+}
+
+    
+    int maxPathSum(TreeNode* root) {
+        int ans=INT_MIN;
+        solve(root,ans);
+        return ans;
+        
+    }
+
+//-----------------------------------------------------------------------------------------------------------------
 
 
 int main(int argc, char const *argv[])

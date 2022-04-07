@@ -32,27 +32,19 @@ using namespace std;
 #define cube(x)        x*x*x
 
 
-
-void init_code(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    #ifndef ONLINE_JUDGE
-    freopen("input.txt","r",stdin);
-    freopen("output.txt","w",stdout);
-    #endif
-}
-
-double solve(ll x,ll y,ll z,ll &n,vector<vector<vector<double>>>&dp){
-    if(x<0 || y<0 || z<0)return 0;
-    if(x==0 and y==0 and z==0)return 0;
-
-    if(dp[x][y][z]>-0.9)return dp[x][y][z];
-
-    double exp=n+x*solve(x-1,y,z,n,dp)+y*solve(x+1,y-1,z,n,dp)+z*solve(x,y+1,z-1,n,dp);
+double dp[301][301][301];
+double solve(ll x,ll y, ll z,ll n){
+    if(x<0 or y<0 or z<0 )return 0.0;
+    if(x==0 and y==0 and z==0 )return 0.0;
+     if(dp[x][y][z]>-0.9)return dp[x][y][z];   
+    double exp =n+x*solve(x-1,y,z,n)+y*solve(x+1,y-1,z,n)+z*solve(x,y+1,z-1,n);
 
     return dp[x][y][z]=exp/(x+y+z);
+
+        
 }
+
+
 
 int main(int argc, char const *argv[])
 {
@@ -60,18 +52,24 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
+     memset(dp,-1,sizeof dp);
+     ll n;
+     cin>>n;
+     vector<ll>v(n);
+     loop(i,n)cin>>v[i];
+     ll x=0,y=0,z=0;
+     loop(i,n){
+        if(v[i]==1)x++;
+        else if(v[i]==2)y++;
+        else z++;
+     }
 
-      ll n;cin>>n;
-      ll x=0,y=0,z=0;
-      for(int i=0;i<n;i++){
-          ll k;cin>>k;
-          if(k==1)x++;
-          else if(k==2)y++;
-          else z++;
-      }
-       vector<vector<vector<double>>>dp(301,vector<vector<double>>(301,vector<double>(301,-1.0)));
-      double ans=solve(x,y,z,n,dp);
-      cout<<fixed<<setprecision(10)<<ans<<endl;
+     double ans=solve(x,y,z,n);
+
+     cout<<fixed<<setprecision(12)<<ans<<endl;
+
+
+
 
 
    

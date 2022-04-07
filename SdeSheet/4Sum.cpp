@@ -43,7 +43,7 @@ void init_code(){
     #endif
 }
 
-//T O(N^3LogN)
+//T O(N^3)
  vector<vector< int>> fourSum1(vector<int>& nums, int target) {
         
         vector<vector< int>>ans,temp;
@@ -78,7 +78,7 @@ void init_code(){
     }
 
 
-    //T O(N^3) ans space(N)
+    //T O(N^3logN) ans space(N)
 vector<vector< int>> fourSum2(vector<int>& nums, int target) {
         
         vector<vector< int>>ans;

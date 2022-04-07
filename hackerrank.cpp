@@ -39,16 +39,50 @@ void init_code(){
     cout.tie(0);
     #ifndef ONLINE_JUDGE
     freopen("input.txt","r",stdin);
-    freopen("output.txt","w",stdout);
+    freopen("output2.txt","w",stdout);
     #endif
 }
 
-long double fact(long double n){
-    long double ans=1;
-    for(int i=2;i<=n;i++){
-        ans=ans*i;
+
+bool ispalindrome1(string s){
+    int i=s.size()-5,j=s.size()-1;
+    while(i<j){
+        if(s[i]!=s[j])return false;
+        i++;
+        j--;
     }
-    return ans;
+    return true;
+}
+
+bool ispalindrome2(string s){
+    int i=s.size()-6,j=s.size()-1;
+    while(i<j){
+        if(s[i]!=s[j])return false;
+        i++;
+        j--;
+    }
+    return true;
+}
+
+map<string,int>mp;
+bool solve(string& s,int i,string osf){
+     if(osf.size()>=5 and ispalindrome1(osf) )return 0;
+     if(osf.size()>=6 and ispalindrome2(osf) )return 0;
+    
+     if(i==s.size())return 1;
+   // if(s.size()<5)return 1;
+        string temp=osf.size()>5?osf.substr(osf.size()-5,5):osf  +to_string(i);
+    if(mp.find(temp)!=mp.end())return mp[temp];
+
+    
+    if(s[i]!='?')return mp[temp] =solve(s,i+1,osf+s[i]);
+
+    bool op1=solve(s,i+1,osf+"1");
+    
+    bool op2=solve(s,i+1,osf+"0");
+
+    return mp[temp]=op1 or op2; 
+
 }
 
 int main(int argc, char const *argv[])
@@ -58,50 +92,24 @@ int main(int argc, char const *argv[])
     
      //write your code here
        
-       int t;
-       cin>>t;
+       int T;
+       cin>>T;
        int w=1;
-       while(t--){
-         
-         long double n;
-         cin>>n;
-
-         vector<ll>v;
-          for(int i=1;i<=n;i++)v.push_back(i);
-
-         double ans;
-
-         vector<ll>res;
-         do{
-            ll cn=1;
-            ll last=v[0];
-            cout<<v[0]<<" ";
-            for(int i=1;i<n;i++){
-                cout<<v[i]<<" ";
-                if(v[i]>last){
-                    cn++;
-                    last=v[i];
-                }
-            }
-            cout<<"->"<<cn<<endl;
-            res.push_back(cn);
-
-         }while(next_permutation(v.begin(),v.end()));
-
-         ll fc=fact(n);
-
-          long double total=accumulate(res.begin(),res.end(),0);
-
-          for(int i=0;i<res.size();i++)cout<<res[i]<<" ";
-            cout<<endl;
-
-          cout<<total<<endl;
-
-          ans=double(total)/double(fc);
-
-       
-          cout<<"case #"<<w<<": "<<fixed<<setprecision(8)<<ans<<endl;
+       while(T--){
+        cout<<"case #"<<w<<": ";
           w++;
+         // memset(dp,-1,sizeof dp);
+          ll n;cin>>n;
+          string s;cin>>s;
+          string osf="";
+          bool f=solve(s,0,osf);
+          if(f)cout<<"POSSIBLE"<<endl;
+          else cout<<"IMPOSSIBLE"<<endl;
+
+       mp.clear();
+       
+          
+          
 
 }
 

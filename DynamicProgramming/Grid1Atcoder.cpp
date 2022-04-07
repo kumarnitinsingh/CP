@@ -43,57 +43,49 @@ void init_code(){
     #endif
 }
 
-ll solve(vector<string>v,ll h ,ll w){
-     vector<vector<ll>>dp(h+1,vector<ll>(w+1,0));
-    for(int i=0;i<w;i++){
-        if(v[0][i]=='#')break;
 
-            dp[0][i]=1;
+ll solve(vector<vector<char>>&g,ll n,ll m){
+ vector<vector<ll>>v(n,vector<ll>(m,0));
+    for(int i=1;i<n;i++){
+        if(g[i][0]=='#')break;
+        v[i][0]=1;
     }
-    for(int i=0;i<h;i++){
-        if(v[i][0]=='#')break;
-        
-            dp[i][0]=1;
+      for(int i=1;i<m;i++){
+        if(g[0][i]=='#')break;
+         v[0][i]=1;
     }
-    
-    for(int i=1;i<h;i++){
-        for(int j=1;j<w;j++){
-            if(v[i][j]=='#')continue;
-           if(v[i-1][j]!='#')dp[i][j]=dp[i-1][j]%mod;
-           if(v[i][j-1]!='#'){dp[i][j]=(dp[i][j]%mod+dp[i][j-1]%mod)%mod; }
+
+    for(int i=1;i<n;i++){
+        for(int j=1;j<m;j++){
+            if(g[i][j]=='.'){
+            v[i][j]=((v[i-1][j])%mod+(v[i][j-1])%mod)%mod;
         }
-    }
        
-     
-    return dp[h-1][w-1]%mod;
-}
+    }}
 
+  
+   
+   return v[n-1][m-1];
+}
 
 int main(int argc, char const *argv[])
 {
      clock_t start=clock();
      init_code();
-    
-     //write your code here
+     ll n,m;
+     cin>>n>>m;
+      vector<vector<char>>g(n,vector<char>(m));
 
-     ll h,w;cin>>h>>w;
-     vector<string>v;
-     for(int i=0;i<h;i++){
-         string s;
-         cin>>s;
-         v.push_back(s);
-     }
+      for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            char x;
+            cin>>x;
+            g[i][j]=x;
+        }
+      }
 
-   //  loop(i,h)cout<<v[i]<<endl;
-
-    
-
-     ll ans=solve(v,h,w);
-     cout<<ans<<endl;
-
-
-    
-
+      ll ans=solve(g,n,m);
+      cout<<ans<<endl;
 
    
     #ifndef  ONLINE_JUDGE

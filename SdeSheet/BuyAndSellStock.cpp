@@ -43,6 +43,8 @@ void init_code(){
     #endif
 }
 
+
+//first approach
  int maxProfit(vector<int>& prices) {
         for(int i=0;i<prices.size()-1;i++){
             prices[i]=prices[i+1]-prices[i];
@@ -61,6 +63,22 @@ void init_code(){
     }
 
 
+
+//second approach
+
+     int maxProfit(vector<int>& prices) {
+        int n=prices.size();
+       vector<int>m(n);
+        m[0]=prices[0];
+        for(int i=1;i<n;i++)m[i]=min(m[i-1],prices[i]);
+        
+        int ans=0;
+        for(int i=1;i<n;i++){
+            ans=max(ans,prices[i]-m[i-1]);
+        }
+        return ans;
+    }
+    
 int main(int argc, char const *argv[])
 {
      clock_t start=clock();

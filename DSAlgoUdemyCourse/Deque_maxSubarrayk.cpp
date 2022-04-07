@@ -60,6 +60,7 @@ void maxSubarrayK(vector<int>a,int k){
     
 
     }
+     cout<<a[q.front()]<<" ";
 }
 
 

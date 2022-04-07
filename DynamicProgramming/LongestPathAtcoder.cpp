@@ -46,16 +46,15 @@ void init_code(){
 ll dfs(vector<ll>g[], ll node,vector<ll>&dp){
 
         if(dp[node]!=-1)return dp[node];
-        // visited[node]=true;
+        
          ll ans=0;
-         bool leaf=1;
+        
       for(auto x:g[node]){
-             leaf =0;
-      
-            ans=max(ans,dfs(g,x,dp));
+          
+        ans=max(ans,1+dfs(g,x,dp));
      }
 
-     return dp[node]=(leaf?0:1+ans);
+     return dp[node]=ans;
 
 }
 

@@ -43,6 +43,7 @@ void init_code(){
     #endif
 }
 
+// O(N*N) approach
 
 int longestSubsequence(int n, vector<int>&arr)
     {
@@ -63,6 +64,24 @@ int longestSubsequence(int n, vector<int>&arr)
        }
      return   m;
     }
+
+    // O(N*LogN) aprroach
+
+   int longestIncresingSubsequence (int n,vector<int>&arr){
+
+     for(int i=0;i<n;i++){
+        int x=arr[i];
+      auto it=lower_bound(dp.begin(),dp.end(),x);
+        if(it==dp.end()){
+            dp.push_back(x);
+        }
+        else{
+            *it=x;
+        }
+    
+}
+         return dp.size();
+   }
 int main(int argc, char const *argv[])
 {
      clock_t start=clock();

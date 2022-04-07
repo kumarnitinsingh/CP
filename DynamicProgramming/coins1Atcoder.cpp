@@ -44,40 +44,32 @@ void init_code(){
 }
 
 
- double solve(vector<double>&v,ll i,ll x, vector<vector<double>>&dp){
-       if(x==0)return 1;
-       if(i==0)return 0;
+ double dp[3000][3000];
+double solve(vector<double>&v,ll n,ll i,ll hc){
+    if(i==n){
+        if(hc>n/2)return 1.00;
+        else return 0.0;
+    }
+    if(dp[i][hc]>-1)return dp[i][hc];
 
-       if(dp[i][x]>-0.90)return dp[i][x];
+    double op1=v[i]*solve(v,n,i+1,hc+1);
+    double op2=(1-v[i])*solve(v,n,i+1,hc);
 
- 
-
-       return dp[i][x]=v[i]*solve(v,i-1,x-1,dp)+(1-v[i])*solve(v,i-1,x,dp);
- }
-
+    return dp[i][hc]=op1+op2;
+}
 
 int main(int argc, char const *argv[])
 {
      clock_t start=clock();
      init_code();
-    
-     //write your code here
+     memset(dp,-1.00,sizeof dp);
+     ll n;
+     cin>>n;
+     vector<double>v(n);
+     loop(i,n)cin>>v[i];
 
-     ll n;cin>>n;
-     vector<double>v(n+1);
-     for(int i=1;i<=n;i++)cin>>v[i];
-
-
-
-     vector<vector<double>>dp(3001,vector<double>(3001,-1.00));
-    
-     double ans= solve(v,n,(n+1)/2,dp);
-
+     double ans=solve(v,n,0,0);
      cout<<fixed<<setprecision(10)<<ans<<endl;
-
-
-
-
 
    
     #ifndef  ONLINE_JUDGE

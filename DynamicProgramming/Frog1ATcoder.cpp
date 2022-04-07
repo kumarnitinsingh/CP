@@ -48,7 +48,6 @@ ll solve(vector<ll>v,ll n, vector<ll>dp){
     if(n==1)return 0;
     if(n==2)return abs(v[2]-v[1]);
    
-    //if(n==3)return min(abs(v[n]-v[n-1]),abs(v[n]-v[n-2]));
 
     if(dp[n]!=-1)return dp[n];
      
