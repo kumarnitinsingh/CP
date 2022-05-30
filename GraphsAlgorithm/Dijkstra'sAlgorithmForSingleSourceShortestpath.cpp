@@ -47,6 +47,7 @@ void init_code(){
     {
         // Code here
         vector<int>dist(V+1,1e7);
+        vector<int>visited(V+1,0)
         dist[S]=0;
         //creating min heap to store {weight,node};
         priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
@@ -55,6 +56,8 @@ void init_code(){
         while(!pq.empty()){
             pair<int,int>p=pq.top();pq.pop();
             int u=p.second;
+            if(visited[u])continue;
+            visited[u]=1;
             for(auto nbrpair:adj[u]){
                     int v=nbrpair[0];
                     int w=nbrpair[1];

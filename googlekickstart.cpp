@@ -18,7 +18,7 @@ using namespace std;
 
 #define ll             long long int
 #define ld             long double
-#define mod            1000000007
+#define mod            1000000007ll
 #define inf            1e18
 #define vec            vector<long long>
 #define vect           vector<vector<long long>>
@@ -39,57 +39,105 @@ void init_code(){
     cout.tie(0);
     #ifndef ONLINE_JUDGE
     freopen("input.txt","r",stdin);
-    freopen("output2.txt","w",stdout);
+    freopen("output3.txt","w",stdout);
     #endif
 }
 
 
-//bool ispossible(vector<int>v,int i,int mid){}
+//     ll x;
+//     ll y;
+//     ll gc;
 
-ll dp[101][2][2][2];
+// void ExtendedEuclideanAlgorithm(ll a,ll b){
+
+// if(b==0){
+//     x=1;
+//     y=0;
+//     gc=a;return;
+// }
+//  ExtendedEuclideanAlgorithm( b,a%b);
+// ll cx=y;
+// ll cy=x-(a/b)*y;
+// x=cx;
+// y=cy;
+
+// }
+
+// ll InverseModulo(ll a,ll m){
+//     x=0,y=0,gc=0;
+// ExtendedEuclideanAlgorithm(a,m);
+// return x;
+// }
+
+vector<ll>factorial;
 
 
-ll solve(string & num,ll n,ll even ,ll leading,ll tight){
-    if(n==0)return 1;
-
-    if(dp[n][even][leading][tight]!=-1)return dp[n][even][leading][tight];
-
+ll gcdExtended(ll a, ll b, ll* x, ll* y)
+{
+     
+    // Base Case
+    if (a == 0)
+    {
+        *x = 0, *y = 1;
+        return b;
+    }
+     
+    // To store results of recursive call
+    ll x1, y1;
+    ll gc = gcdExtended(b % a, a, &x1, &y1);
  
-
-
-    if(even){
-           ll ub=tight?(num[num.size()-n]-'0'):9;
-        vector<int>digits={0,2,4,6,8};
-        ll ans=0;
-        for(auto d:digits){
-          if(d<=ub){
-            ans+=solve(num,n-1,0,0,(tight and (d==ub)));
-          }  
-        }
-        return dp[n][even][leading][tight]=ans;
-    }
-    else{
-           ll ub=tight?(num[num.size()-n]-'0'):9;
-        ll ans=0;
-
-        if(leading){
-           ans+=solve(num,n-1,0,1,0);
-        }
-           vector<int>digits={1,3,5,7,9};
-           
-           for(auto d:digits){
-            if(d<=ub){
-                ans+=solve(num,n-1,1,0,(tight and (d==ub)));
-            }
-           } 
-
-        
-
-        return dp[n][even][leading][tight]=ans;
-
-    }
+    // Update x and y using results of recursive
+    // call
+    *x = y1 - (b / a) * x1;
+    *y = x1;
+ 
+    return gc;
 }
 
+ll modInverse(int a, int m)
+{
+    ll x, y;
+    ll g = gcdExtended(a, m, &x, &y);
+    
+   
+         
+        // m is added to handle negative x
+        ll res = (x % m + m) % m;
+     
+     return res;
+}
+
+bool ispalindrome(string s){
+    int i=0,j=s.size()-1;
+    while(i<=j){
+        if(s[i]!=s[j])return false;
+        i++;
+        j--;
+    }
+    return true;
+}
+
+map<pair<string,int>,ll>mp;
+
+ll  solve(string s,int i){
+    
+    if(i==1)return 1;
+    if(mp.find({s,i})!=mp.end())return mp[{s,i}];
+     ll ways=0;
+    for(int k=0;k<i;k++){
+        string temp1=s.substr(0,k);
+        string temp2=s.substr(k+1,i-k-1);
+
+
+         string str=temp1+temp2;
+         if(ispalindrome(str))ways+=factorial[i-1];
+       //  cout<<str<<endl;
+         ways+=solve(str,i-1);
+         
+
+    }
+    return mp[{s,i}]=ways;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -97,6 +145,16 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
+
+     
+
+     ll i=1;
+     factorial.push_back(i);
+     factorial.push_back(i);
+     for(int i=2;i<=401;i++){
+        ll temp=(factorial.back()%mod*i%mod)%mod;
+        factorial.push_back(temp);
+     }
        
        int T;
        cin>>T;
@@ -104,18 +162,36 @@ int main(int argc, char const *argv[])
        while(T--){
           cout<<"case #"<<w<<": "; 
             w++;
+            //cn=0;
+            mp.clear();
+
+            ll n;
+            cin>>n;
+            string s;
+            cin>>s;
+
+            
+            ll p=solve(s,n);
+            ll q=factorial[n];
+            ll a=__gcd(p,q);
+            p=p/a;
+            q=q/a;
+
+          //expr=(e*q-p)%mod==0;
+            // cout<<p<<endl;
+            // cout<<q<<endl;
+
+          ll d=modInverse(q,mod);
+
+           ll ans=(p%mod * d%mod)%mod;
+           cout<<ans<<endl;
+
+
+
+
 
         
-     ll  x,y;
-     cin>>x>>y;
-     x--;
-     string s=to_string(y);
-     string r=to_string(x);
-     memset(dp,-1,sizeof dp);
-     ll ans=solve(s,s.size(),0,1,1);
-     memset(dp,-1,sizeof dp);
-      ll ans2=solve(r,r.size(),0,1,1);
-      cout<<ans-ans2<<endl;
+        
 
 }
 

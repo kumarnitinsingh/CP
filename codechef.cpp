@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1074/
+// problem link ->
 
 #include <bits/stdc++.h>
 
@@ -43,54 +43,66 @@ void init_code(){
     #endif
 }
 
+int n,q;
+const int maxn=2e5+5;
+const int l=30;
 
- 
+int mat[maxn][l];
+//what is the par of maxn if we move to 2^l level up;
+
+
+
+
+
+int lca(int u,int v){
+
+     
+}
+
+
+
 
 int main(int argc, char const *argv[])
 {
-     clock_t start=clock();
+     //clock_t start=clock();
      init_code();
     
      //write your code here
-        ll n;
-        cin>>n;
-      vector<ll>v(n);
-      loop(i,n)cin>>v[i];
+      cin>>n>>q;
 
-      sort(v.begin(),v.end());
+      for(int i=1;i<=n;i++){
+         int x;
+         cin>>x;
+         mat[i][0]=x;
+      }
+      
 
-      set<int>st,temp;
-        
-        for(int i=0;i<n;i++){
-            int num=v[i];
-            temp=st;
-            temp.insert(num);
-            for(auto e:st){
-                temp.insert(num+e);
-            }
-            st=temp;
-        }
+      for(int j=1;j<30;j++){
+      for(int i=1;i<=n;i++){
+         
+            mat[i][j]=mat[mat[i][j-1]][j-1];
+         }
+      }
 
-        int ans;
 
-        for(int i=1;i<=999999;i++){
-            if(st.find(i)==st.end()){
-                ans=i;
-                break;
-            }
-        }
+       while(q--){
+        int u,v;
+        cin>>u>>v;
 
-        cout<<ans<<endl;
+        int ans=lca(u,v);
+       
+
+       }
 
 
 
-    
-     
 
-   
+
+   /*
     #ifndef  ONLINE_JUDGE
      clock_t end=clock();
     cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
     #endif
+    */
    return 0;
 }

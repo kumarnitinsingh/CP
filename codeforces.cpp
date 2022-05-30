@@ -44,51 +44,64 @@ void init_code(){
 }
 
 
+void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
+    if(i==n){
+        temp.push_back(sum);
+        return ;
+
+    }
+
+    subsetSum(v,i+1,n,sum,temp);
+    subsetSum(v,i+1,n,sum+v[i],temp);
+}
+
+
+
+
+
+
 
 int main(int argc, char const *argv[])
 {
-     clock_t start=clock();
+     //clock_t start=clock();
      init_code();
     
      //write your code here
 
 
-     int n;
-     cin>>n;
-     vector<int>v(n);
-     loop(i,n)cin>>v[i];
+      ll n,x;
+      cin>>n>>x;
+       ll k=n-n/2;
+      vector<ll>v1(n/2),v2(k);
+     
+      loop(i,n/2)cin>>v1[i];
+      loop(i,k)cin>>v2[i];
 
-     set<pair<int,int>>st;
-     for(int i=0;i<n;i++)st.insert({i,v[i]});
+      ll sum=0;
+      vector<ll>left;
+      subsetSum(v1,0,n/2,sum,left);
+      sum=0;
+      vector<ll>right;
+      subsetSum(v2,0,k,sum,right);
 
-        int cn=0;
-      while(!st.empty()){
-                cn++;
-                int last=(*st.begin()).second;
-                st.erase(st.begin());
-            for(auto it=st.begin();it!=st.end() and !st.empty();){
-                if( it->second>last){
-                    last=it->second;
-                    auto temp=it;
-                    it++;
-                    st.erase(temp);
-                }
-                else it++;
 
-            }
-      }  
+      sort(right.begin(),right.end());
+      ll ans=0;
 
-      cout<<cn<<endl;
+      for(auto e:left){
 
+          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
+      }
+
+      cout<<ans<<endl;
 
 
 
-
-
-   
+   /*
     #ifndef  ONLINE_JUDGE
      clock_t end=clock();
     cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
     #endif
+    */
    return 0;
 }
