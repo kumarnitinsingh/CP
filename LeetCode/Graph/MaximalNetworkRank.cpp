@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/maximal-network-rank/
 
 #include <bits/stdc++.h>
 
@@ -44,16 +44,43 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
 
+class Solution {
+public:
+    int maximalNetworkRank(int n, vector<vector<int>>& roads) {
+        vector<int>graph[n+1];
+        for(auto e:roads){
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+        }
+        
+        vector<int>indegree(n,0);
+        for(int i=0;i<n;i++)indegree[i]=graph[i].size();
+         
+         vector<int>temp=indegree;
+        sort(temp.begin(),temp.end());
+        int k=temp[n-1]+temp[n-2];
+        
+        int ans=0;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int sum=indegree[i]+indegree[j];
+                if(sum==k){
+                    int f=0;
+                    for(int x:graph[j]){
+                        if(x==i){
+                            ans=max(ans,sum-1);
+                            f=1;
+                            break;
+                        }
+                    }
+                    if(f==0)ans=max(ans,sum);
+                }
+            }
+        }
+         return ans;
     }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
-}
+};
 
 
 
@@ -69,31 +96,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +107,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-

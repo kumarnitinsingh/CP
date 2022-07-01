@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/satisfiability-of-equality-equations/
 
 #include <bits/stdc++.h>
 
@@ -44,18 +44,50 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
 
+
+void dfs(vector<int>graph[],int src,vector<int>&color,int t){
+     color[src]=t;
+    for(auto e:graph[src]){
+        if(color[e]==0)dfs(graph,e,color,t);
     }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
 }
 
-
+class Solution {
+public:
+    bool equationsPossible(vector<string>& equations) {
+        vector<int>graph[26];
+        for(auto e:equations){
+            if(e[1]=='='){
+             int x=e[0]-'a';
+              int y=e[3]-'a';
+                graph[x].push_back(y);
+                graph[y].push_back(x);
+                }
+        }
+         
+        vector<int>color(26,0);
+        
+        int t=0;
+         for(int i=0;i<26;i++){
+             t++;
+             if(color[i]==0){
+                 dfs(graph,i,color,t);
+             }
+         }
+        
+        
+        for(auto e:equations){
+            if(e[1]=='!'){
+                int x=e[0]-'a';
+                int y=e[3]-'a';
+                
+                if(x==y or x!=y and color[x]==color[y])return false;
+            }
+        }
+        return true;
+    }
+};
 
 
 
@@ -69,31 +101,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +112,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-

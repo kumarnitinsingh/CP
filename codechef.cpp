@@ -43,21 +43,12 @@ void init_code(){
     #endif
 }
 
-int n,q;
-const int maxn=2e5+5;
-const int l=30;
-
-int mat[maxn][l];
-//what is the par of maxn if we move to 2^l level up;
 
 
 
 
 
-int lca(int u,int v){
 
-     
-}
 
 
 
@@ -68,31 +59,9 @@ int main(int argc, char const *argv[])
      init_code();
     
      //write your code here
-      cin>>n>>q;
+   
 
-      for(int i=1;i<=n;i++){
-         int x;
-         cin>>x;
-         mat[i][0]=x;
-      }
-      
-
-      for(int j=1;j<30;j++){
-      for(int i=1;i<=n;i++){
-         
-            mat[i][j]=mat[mat[i][j-1]][j-1];
-         }
-      }
-
-
-       while(q--){
-        int u,v;
-        cin>>u>>v;
-
-        int ans=lca(u,v);
-       
-
-       }
+    cout<<"hello h h" <<endl;
 
 
 

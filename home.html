@@ -1,0 +1,48 @@
+<!Doctype html>
+	<html>
+		<head>
+			
+			<script type="text/javascript" src=test.js></script>
+			<title>
+				MY NEW WEBPAGE!
+			</title>
+
+
+		</head>
+		<body>
+			
+			<h1>I am very excited!</h1>
+			<form>
+			number1 : 	<input type="number" id="num1" name="num1" value="01"></br>
+			number2 :	<input type="number" id="num2" name="num2" value="02"></br>
+
+
+				<input type=button value=add onclick="ADD()">
+			</form>
+			<script type="text/javascript">
+				 let flag=true;
+function qw(){
+	let data="Name:<input type='text' name='name'><br>Comment:<br><textarea rows='5' cols='80'></textarea>  <br><input type='submit' value='Post Comment'>";    
+	if(flag){document.getElementById("mylocation").innerHTML=data;
+	flag=false;
+}
+	else {
+		document.getElementById("mylocation").innerHTML="";
+		flag=true;
+	} 
+}
+			</script>
+
+			<form>
+				<input type="button" name="comment" value="comment" onclick="qw()">
+				<div id="mylocation"></div>
+
+			</form>
+			
+
+		</body>
+
+
+	
+
+	</html>

@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/
 
 #include <bits/stdc++.h>
 
@@ -44,19 +44,67 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
 
+
+
+
+class DSU{
+   
+
+     vector<int>parent;
+     vector<int>rank;
+
+public:
+	 DSU(int n){
+	      parent.resize(n);
+	      rank.resize(n);
+
+	 	for(int i=0;i<n;i++){
+	 		parent[i]=-1;
+	 		rank[i]=1;
+	 	}
+	 }
+
+	 int Find(int x){
+	 	if(parent[x]==-1)return x;
+	 	return parent[x]=Find(parent[x]);
+	 }
+
+	 bool Union(int x,int y){
+	 	 x=Find(x);
+	 	 y=Find(y);
+	 	if(x!=y){
+	 		if(rank[x]>rank[y]){
+	 			parent[y]=x;
+	 			rank[x]+=rank[y];}
+	 		else{
+	 				parent[x]=y;
+	 				rank[y]+=rank[x];
+	 			}
+            
+            return true;
+	 	}
+         return false;
+	 }
+ 
+};
+
+class Solution {
+public:
+    int removeStones(vector<vector<int>>& stones) {
+        int n=stones.size();
+        DSU d(n);
+        int groups=n;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                if(stones[i][0]==stones[j][0]  or stones[i][1]==stones[j][1]){
+                    if(d.Union(i,j))groups--;
+                }
+            }
+        }
+         return n-groups;
     }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
-}
-
-
-
+};
 
 
 
@@ -69,31 +117,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +128,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-

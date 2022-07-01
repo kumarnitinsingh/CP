@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/loud-and-rich/
 
 #include <bits/stdc++.h>
 
@@ -44,17 +44,41 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
 
-    }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
+vector<int>ans;
+void dfs(vector<int>graph[],int src,vector<int>&quiet)
+{
+     if(ans[src]==-1){
+         ans[src]=src;
+         for(auto child:graph[src]){
+             dfs(graph,child,quiet);
+             if(quiet[ans[child]]<quiet[ans[src]])ans[src]=ans[child];
+         }
+     }
+    return ;
 }
 
+class Solution {
+public:
+    vector<int> loudAndRich(vector<vector<int>>& richer, vector<int>& quiet) {
+        int n=quiet.size();
+        vector<int>graph[n+1];
+        
+        
+        for(auto e:richer){
+            graph[e[1]].push_back(e[0]);
+        }
+        
+        ans.resize(n);
+       fill(ans.begin(),ans.end(),-1);
+        
+        for(int i=0;i<n;i++)dfs(graph,i,quiet);
+        
+        return ans;
+        
+        
+    }
+};
 
 
 
@@ -69,31 +93,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +104,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-

@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/course-schedule-iv/
 
 #include <bits/stdc++.h>
 
@@ -44,16 +44,49 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
 
+
+
+
+class Solution {
+public:
+    vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        
+        vector<int>graph[n];
+        for(auto e:prerequisites){
+            graph[e[0]].push_back(e[1]);
+        }
+      
+         vector<bool>f;
+        vector<vector<int>>vis(n,vector<int>(n,0)); // Visited Vector
+		vector<vector<int>>isReach(n,vector<int>(n,0)); // Can Reach from i to j
+		queue<int>q;
+		for(int i=0;i<n;i++){
+			q.push(i);
+			while(q.size()){
+				int cur=q.front();
+				q.pop();
+				for(auto a:graph[cur]){
+					if(!vis[i][a]){
+						vis[i][a]=1; 
+						isReach[i][a]=1; // We can reach from i to j 
+						q.push(a);
+					}
+				}
+			}
+		}
+     
+        for(auto q:queries){
+            int u=q[0];
+            int v=q[1];
+            f.push_back(isReach[u][v]);
+          
+        }
+        
+        return f;
+        
     }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
-}
+};
 
 
 
@@ -69,31 +102,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +113,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-

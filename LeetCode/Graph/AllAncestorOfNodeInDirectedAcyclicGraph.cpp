@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/all-ancestors-of-a-node-in-a-directed-acyclic-graph/
 
 #include <bits/stdc++.h>
 
@@ -44,16 +44,42 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
-
+ void dfs(vector<int>graph[],int src,vector<int>&visited){
+     visited[src]=1;
+     
+     for(auto nbr:graph[src]){
+         if(visited[nbr]==0){
+             dfs(graph,nbr,visited);
+         }
+     }
+ }
+class Solution {
+public:
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+        vector<int>graph[n];
+         
+        for(auto e:edges){
+            graph[e[0]].push_back(e[1]);
+           
+        }
+         
+        int mi=1e7;
+        vector<vector<int>>ans(n);
+         for(int i=0;i<n;i++){
+             vector<int>temp(n,0);
+             dfs(graph,i,temp);
+             for(int j=0;j<n;j++){
+                 if(i==j)continue;
+                 if(temp[j]){
+                     ans[j].push_back(i);
+                 }
+             }
+         }
+        
+        
+        return ans;
     }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
-}
+};
 
 
 
@@ -69,31 +95,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +106,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-

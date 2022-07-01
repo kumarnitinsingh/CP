@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/number-of-operations-to-make-network-connected/
 
 #include <bits/stdc++.h>
 
@@ -44,17 +44,40 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
 
-    }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
+void dfs(vector<int>graph[],int src,int par,vector<int>&visited){
+    visited[src]=1;
+    
+     for(auto nbr:graph[src]){
+         if(visited[nbr]==0)dfs(graph,nbr,src,visited);
+     }
 }
 
+class Solution {
+public:
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        vector<int>graph[n+1];
+        
+        for(auto e:connections){
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+        }
+         
+        vector<int>visited(n+1,0);
+        
+        int ans=0;
+        for(int i=0;i<n;i++){
+            if(visited[i]==0){
+                dfs(graph,i,-1,visited);
+                ans++;
+            }
+        }
+        
+        int k=connections.size();
+        if(k<n-1)return -1;
+        return ans-1;
+    }
+};
 
 
 
@@ -69,31 +92,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +103,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-

@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/
 
 #include <bits/stdc++.h>
 
@@ -44,16 +44,43 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
 
+
+class Solution {
+public:
+    vector<string> findAllRecipes(vector<string>& recipes, vector<vector<string>>& ingredients, vector<string>& supplies) {
+           int n=recipes.size();
+          map<string,vector<string>>graph;
+            map<string,int>indegree;
+           for(int i=0;i<n;i++){
+               for(auto g:ingredients[i]){
+                    graph[g].push_back(recipes[i]);
+                     indegree[recipes[i]]++;
+               }
+           }
+        queue<string>q;
+        vector<string>ans;
+        for(auto e:supplies){
+            if(indegree[e]==0)q.push(e);
+        }
+        
+        
+        while(q.size()){
+            string u=q.front();
+            q.pop();
+            for(auto nbr:graph[u]){
+                indegree[nbr]--;
+                if(indegree[nbr]==0){
+                    ans.push_back(nbr);
+                    q.push(nbr);
+                }
+            }
+      
+        }
+        
+        return ans;
     }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
-}
+};
 
 
 
@@ -69,31 +96,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +107,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-

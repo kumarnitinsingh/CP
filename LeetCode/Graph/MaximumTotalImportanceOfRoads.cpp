@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/maximum-total-importance-of-roads/
 
 #include <bits/stdc++.h>
 
@@ -44,16 +44,38 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
-
+class Solution {
+public:
+    long long maximumImportance(int n, vector<vector<int>>& roads) {
+        vector<int>graph[n];
+        
+        for(auto e:roads){
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+        }
+        vector<int>indegree(n,0);
+        for(int i=0;i<n;i++)indegree[i]=graph[i].size();
+        
+         vector<pair<int,int>>v(n);
+        for(int i=0;i<n;i++)v[i]={indegree[i],i};
+        
+        sort(v.begin(),v.end());
+         
+        vector<int>val(n);
+        int i=1;
+        for(auto e:v){
+            val[e.second]=i++;
+        }
+        
+        long long sum=0;
+        for(auto e:roads){
+            int u=e[0];
+            int v=e[1];
+            sum=sum+val[u]+val[v];
+        }
+        return sum;
     }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
-}
+};
 
 
 
@@ -69,31 +91,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +102,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-

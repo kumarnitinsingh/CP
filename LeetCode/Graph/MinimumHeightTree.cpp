@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/minimum-height-trees/
 
 #include <bits/stdc++.h>
 
@@ -20,9 +20,9 @@ using namespace std;
 #define ld             long double
 #define mod            1000000007
 #define inf            1e18
-#define vec            vector<long long>
+#define vecl            vector<long long>
 #define vect           vector<vector<long long>>
-#define vecb           vector<vector<bool>
+#define vecb           vector<vector<bool>>
 #define pb             push_back
 #define all(n)         n.begin(),n.end()
 #define loop(i,n)      for(int i=0;i<(n);++i)
@@ -30,7 +30,7 @@ using namespace std;
 #define loopr(i,a,n)   for(int i=a;i>=(n);--i)
 #define sq(x)          x*x
 #define cube(x)        x*x*x
-
+#define endl           "\n"
 
 
 void init_code(){
@@ -39,45 +39,22 @@ void init_code(){
     cout.tie(0);
     #ifndef ONLINE_JUDGE
     freopen("input.txt","r",stdin);
-    freopen("output.txt","w",stdout);
+    freopen("output3.txt","w",stdout);
     #endif
 }
 
 
-
-int main(int argc, char const *argv[])
-{
-     clock_t start=clock();
-     init_code();
-    
-     //write your code here
-
-        //input graph
-     
-        // 10 9
-        // 0 1
-        // 1 2
-        // 2 9
-        // 2 6
-        // 6 7
-        // 6 8
-        // 2 3
-        // 3 4
-        // 3 5
-
-
-      
-    int n,m;
-    cin>>n>>m;
-    vector<int>g[n];
-    for(int i=0;i<m;i++){
-        int u,v;
-        cin>>u>>v;
-        g[u].push_back(v);
-        g[v].push_back(u);
-    }
-
-     vector<int>degree(n);
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        
+        vector<int>g[n];
+        for(auto e:edges){
+            g[e[0]].push_back(e[1]);
+            g[e[1]].push_back(e[0]);
+        }
+        
+         vector<int>degree(n);
      int counter=0;
      //calculating degrees
      for(int i=0;i<n;i++){
@@ -109,18 +86,35 @@ int main(int argc, char const *argv[])
         counter+=temp_leaves.size();
         leaves=temp_leaves;
      }
+        
+        return leaves;
+    }
+};
 
-     for(auto centers:leaves){
-        cout<<centers<<" ";
-     }
 
 
 
-   
+
+
+
+
+
+int main(int argc, char const *argv[])
+{
+     //clock_t start=clock();
+     init_code();
+    
+     //write your code here
+
+
+
+
+
+   /*
     #ifndef  ONLINE_JUDGE
      clock_t end=clock();
     cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
     #endif
+    */
    return 0;
 }
-

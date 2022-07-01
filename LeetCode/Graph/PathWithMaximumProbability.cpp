@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/path-with-maximum-probability/
 
 #include <bits/stdc++.h>
 
@@ -44,17 +44,50 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
 
+
+  double bfs(vector<pair<int,double>>graph[],int src,int des,int n){
+       
+      queue<int>q;
+       vector<double>ans(n,-1);
+      
+      ans[src]=1.00;
+      q.push(src);
+      while(!q.empty()){
+          int u=q.front();
+           q.pop();
+          for(auto nbr:graph[u]){
+              int v=nbr.first;
+              double p=nbr.second;
+              
+              if(ans[v]<ans[u]*p){
+                  ans[v]=ans[u]*p;
+                  q.push(v);
+              }
+          }
+      }
+       
+      return ans[des];
+  }
+
+
+class Solution {
+public:
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
+       
+         vector<pair<int,double>>graph[n];
+        int i=0;
+        for(auto e:edges){
+            graph[e[0]].push_back({e[1],succProb[i]});
+            graph[e[1]].push_back({e[0],succProb[i]});
+            i++;
+        }
+        
+        double ans=bfs(graph,start,end,n);
+        if(ans<0)return 0;
+        return ans;
     }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
-}
-
+};
 
 
 
@@ -69,31 +102,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +113,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-

@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/flower-planting-with-no-adjacent/
 
 #include <bits/stdc++.h>
 
@@ -44,16 +44,36 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
 
+class Solution {
+public:
+    vector<int> gardenNoAdj(int n, vector<vector<int>>& paths) {
+        vector<int>graph[n+1];
+        for(auto p:paths){
+            graph[p[0]].push_back(p[1]);
+            graph[p[1]].push_back(p[0]);
+        }
+         
+         vector<int>color(n+1,0);
+         for(int i=1;i<=n;i++){
+             vector<bool>p(5,false);
+             for(auto nbr:graph[i]){
+                  p[color[nbr]]=true;
+             }
+             for(int j=1;j<5;j++){
+                 if(p[j]==false){
+                     color[i]=j;
+                     break;
+                 }
+             }
+            
+         }
+        vector<int>ans(n);
+        for(int i=0;i<n;i++)ans[i]=color[i+1];
+        return ans;
     }
+};
 
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
-}
 
 
 
@@ -69,31 +89,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +100,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-

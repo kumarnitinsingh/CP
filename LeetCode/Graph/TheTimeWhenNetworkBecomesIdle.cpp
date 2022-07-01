@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link -> https://leetcode.com/problems/the-time-when-the-network-becomes-idle/
 
 #include <bits/stdc++.h>
 
@@ -44,17 +44,48 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
 
+class Solution {
+public:
+    int networkBecomesIdle(vector<vector<int>>& edges, vector<int>& patience) {
+        
+         int n=patience.size();
+         vector<int>graph[n];
+        
+        for(auto e:edges){
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+            
+        }
+        
+         vector<int>visited(n,0),dist(n,0);
+        queue<int>q;
+        
+         q.push(0);
+         visited[0]=1;
+         while(!q.empty()){
+             int u=q.front();
+             q.pop();
+             
+             for(auto nbr:graph[u]){
+                 if(visited[nbr]==0){
+                     dist[nbr]=dist[u]+1;
+                     q.push(nbr);
+                     visited[nbr]=1;
+                 }
+             }
+         }
+        
+        
+         int ans=INT_MIN;
+         
+        
+        
+        for(int i=1;i<n;i++)
+          ans = max(ans,(int)(dist[i]*2) + (int)(ceil((2*dist[i]*1.0)/patience[i])-1)*patience[i]);
+        return ans+1;
     }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
-}
-
+};
 
 
 
@@ -69,31 +100,6 @@ int main(int argc, char const *argv[])
      //write your code here
 
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
-
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
-
-
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
 
 
 
@@ -105,4 +111,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-
