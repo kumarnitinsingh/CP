@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/critical-connections-in-a-network/submissions/
 
 #include <bits/stdc++.h>
 
@@ -44,20 +44,56 @@ void init_code(){
 }
 
 
+vector<int>visited;
+vector<int>tin,lo;
+int timer;
+vector<vector<int>>ans;
 
 
+void dfs(vector<int>graph[],int src,int par){
+    visited[src]=1;
+    tin[src]=lo[src]=timer++;
+    for(auto nbr:graph[src]){
+        if(par==nbr)continue;
+        if(visited[nbr])lo[src]=min(lo[src],tin[nbr]);
+        else{
+            
+            dfs(graph,nbr,src);
+            lo[src]=min(lo[src],lo[nbr]);
+            if(tin[src]<lo[nbr]){
+                ans.push_back({src,nbr});
+            }
+        }
+    }
+}
+
+class Solution {
+public:
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        ans.clear();
+        visited.resize(n+1);
+        tin.resize(n+1);
+        lo.resize(n+1);
+        timer=1;
+        fill(visited.begin(),visited.end(),0);
+        fill(tin.begin(),tin.end(),0);
+        fill(lo.begin(),lo.end(),0);
+         vector<int>graph[n+1];
+        for(auto v:connections){
+            graph[v[0]].push_back(v[1]);
+            graph[v[1]].push_back(v[0]);
+        }
+        dfs(graph,0,-1);
+        return ans;
+    }
+};
 
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
-   
-     int n;
-     cin>>n;
-     long long int ans=0;
 
-     for(int i=1;i<=n;i++)ans+=i;
-     cout<<ans<<endl;
+
 
 
 

@@ -47,21 +47,11 @@ void init_code(){
 
 
 
-
-
-
-
-
-
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
-    
-     //write your code here
-   
-
-    cout<<"hello h h" <<endl;
+     cout<<"hello"<<endl;
 
 
 

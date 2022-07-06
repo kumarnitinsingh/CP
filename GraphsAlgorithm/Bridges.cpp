@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/critical-connections-in-a-network/submissions/
 
 #include <bits/stdc++.h>
 
@@ -44,20 +44,36 @@ void init_code(){
 }
 
 
+vector<int>visited;
+vector<int>tin,lo;
+int timer;
+vector<vector<int>>ans;
 
+
+void dfs(vector<int>graph[],int src,int par){
+    visited[src]=1;
+    tin[src]=lo[src]=timer++;
+    for(auto nbr:graph[src]){
+        if(par==nbr)continue;
+        if(visited[nbr])lo[src]=min(lo[src],tin[nbr]);
+        else{
+            
+            dfs(graph,nbr,src);
+            lo[src]=min(lo[src],lo[nbr]);
+            if(tin[src]<lo[nbr]){
+                ans.push_back({src,nbr});
+            }
+        }
+    }
+}
 
 
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
-   
-     int n;
-     cin>>n;
-     long long int ans=0;
 
-     for(int i=1;i<=n;i++)ans+=i;
-     cout<<ans<<endl;
+
 
 
 
