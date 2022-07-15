@@ -1,12 +1,20 @@
 // Created by Nitin kumar singh
+// problem link ->https://atcoder.jp/contests/dp/tasks/dp_k
+
 #include <bits/stdc++.h>
+
 //#include<ext/pb_ds/assoc_container.hpp>
 //#include<ext/pb_ds/tree_policy.hpp>
 //#include<ext/pb_ds/trie_policy.hpp>
 
-
-//using namespace_-gnu_pbds;
 using namespace std;
+
+//using namespace __gnu_pbds;
+//typedef tree <int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update>Set;
+
+//find_by_order(k) and order_of_key(k)
+
+
 
 #define ll             long long int
 #define ld             long double
@@ -31,41 +39,46 @@ void init_code(){
     cout.tie(0);
     #ifndef ONLINE_JUDGE
     freopen("input.txt","r",stdin);
-    freopen("output3.txt","w",stdout);
+    freopen("output.txt","w",stdout);
     #endif
+}
+
+
+
+string solve(vector<ll>&v,ll k){
+    bool dp[k+1];
+    memset(dp,0,sizeof dp);
+
+    for(int i=1;i<=k;i++){
+
+        for(auto move:v){
+            if(move>i)continue;
+            if(dp[i-move]==0){
+                dp[i]=1;break;
+            }
+        }
+    }
+    return dp[k]?"First":"Second";
 }
 
 int main(int argc, char const *argv[])
 {
-    clock_t start=clock();
-    init_code();
+     clock_t start=clock();
+     init_code();
     
+     //write your code here
+            
+       ll n,k;
+       cin>>n>>k;
+       vector<ll>v(n);
+       loop(i,n)cin>>v[i];
+        
+        string ans=solve(v,k);
 
-    //write your code here
-    int n;
-    cin>>n;
-    vector<int>v(n);
-    for(int i=0;i<n;i++)cin>>v[i];
+       cout<<ans<<endl;      
 
-    vector<int>left(n);
-    vector<int>right(n);
-    int max1=v[0];
-    for(int i=0;i<n;i++){
-        max1=max(max1,v[i]);
-        left[i]=max1;
-    }   
-  int max2=v[n-1];
-  for(int i=n-1;i>=0;i--){
-      max2=max(max2,v[i]);
-      right[i]=max2;
-  }
- 
- int ans=0;
-    for(int i=0;i<n;i++){
-       ans+=min(left[i],right[i])-v[i];
-    }
 
-  cout<<ans<<endl;
+
 
    
     #ifndef  ONLINE_JUDGE

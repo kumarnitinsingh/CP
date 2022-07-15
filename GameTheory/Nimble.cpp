@@ -1,20 +1,28 @@
 // Created by Nitin kumar singh
+// problem link -> https://www.hackerrank.com/challenges/nimble-game-1/problem?isFullScreen=true
+
 #include <bits/stdc++.h>
+
 //#include<ext/pb_ds/assoc_container.hpp>
 //#include<ext/pb_ds/tree_policy.hpp>
 //#include<ext/pb_ds/trie_policy.hpp>
 
-
-//using namespace_-gnu_pbds;
 using namespace std;
+
+//using namespace __gnu_pbds;
+//typedef tree <int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update>Set;
+
+//find_by_order(k) and order_of_key(k)
+
+
 
 #define ll             long long int
 #define ld             long double
 #define mod            1000000007
 #define inf            1e18
-#define vec            vector<long long>
+#define vecl            vector<long long>
 #define vect           vector<vector<long long>>
-#define vecb           vector<vector<bool>
+#define vecb           vector<vector<bool>>
 #define pb             push_back
 #define all(n)         n.begin(),n.end()
 #define loop(i,n)      for(int i=0;i<(n);++i)
@@ -22,7 +30,7 @@ using namespace std;
 #define loopr(i,a,n)   for(int i=a;i>=(n);--i)
 #define sq(x)          x*x
 #define cube(x)        x*x*x
-
+#define endl           "\n"
 
 
 void init_code(){
@@ -35,42 +43,39 @@ void init_code(){
     #endif
 }
 
+string nimbleGame(vector<int> s) {
+    
+    int xo=0;
+    int cn=0;
+    for(auto e:s){
+        if(e==0)cn++;
+    }
+    
+   for(int i=0;i<s.size();i++){
+       if(s[i]%2==1)xo^=i;
+   }
+    if(xo==0)return "Second";
+    return "First";
+}
+
+
+
+
 int main(int argc, char const *argv[])
 {
-    clock_t start=clock();
-    init_code();
-    
+     //clock_t start=clock();
+     init_code();
 
-    //write your code here
-    int n;
-    cin>>n;
-    vector<int>v(n);
-    for(int i=0;i<n;i++)cin>>v[i];
 
-    vector<int>left(n);
-    vector<int>right(n);
-    int max1=v[0];
-    for(int i=0;i<n;i++){
-        max1=max(max1,v[i]);
-        left[i]=max1;
-    }   
-  int max2=v[n-1];
-  for(int i=n-1;i>=0;i--){
-      max2=max(max2,v[i]);
-      right[i]=max2;
-  }
- 
- int ans=0;
-    for(int i=0;i<n;i++){
-       ans+=min(left[i],right[i])-v[i];
-    }
 
-  cout<<ans<<endl;
 
-   
+
+
+   /*
     #ifndef  ONLINE_JUDGE
      clock_t end=clock();
     cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
     #endif
+    */
    return 0;
 }

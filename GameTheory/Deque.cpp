@@ -1,12 +1,20 @@
 // Created by Nitin kumar singh
+// problem link -> https://atcoder.jp/contests/dp/tasks/dp_l
+
 #include <bits/stdc++.h>
+
 //#include<ext/pb_ds/assoc_container.hpp>
 //#include<ext/pb_ds/tree_policy.hpp>
 //#include<ext/pb_ds/trie_policy.hpp>
 
-
-//using namespace_-gnu_pbds;
 using namespace std;
+
+//using namespace __gnu_pbds;
+//typedef tree <int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update>Set;
+
+//find_by_order(k) and order_of_key(k)
+
+
 
 #define ll             long long int
 #define ld             long double
@@ -31,41 +39,44 @@ void init_code(){
     cout.tie(0);
     #ifndef ONLINE_JUDGE
     freopen("input.txt","r",stdin);
-    freopen("output3.txt","w",stdout);
+    freopen("output.txt","w",stdout);
     #endif
 }
 
+ll dp[3001][3001];
+
+ll solve(vector<ll>&v,ll n,ll i,ll j){
+        if(i>j)return 0;
+        if(i==j)return v[i];
+        if(dp[i][j]!=-1)return dp[i][j];
+
+        ll op1=v[i]+min(solve(v,n,i+2,j),solve(v,n,i+1,j-1));
+        ll op2=v[j]+min(solve(v,n,i+1,j-1),solve(v,n,i,j-2));
+
+       return dp[i][j]=max(op1,op2);
+}
+  
+
+
+
 int main(int argc, char const *argv[])
 {
-    clock_t start=clock();
-    init_code();
+     clock_t start=clock();
+     init_code();
     
+     //write your code here
+     memset(dp,-1,sizeof dp);
+     ll n;cin>>n;
+     vector<ll>v(n);loop(i,n)cin>>v[i];
 
-    //write your code here
-    int n;
-    cin>>n;
-    vector<int>v(n);
-    for(int i=0;i<n;i++)cin>>v[i];
+     ll ans=solve(v,n,0,n-1);
+     ll sum=0;
+     loop(i,n)sum=sum+v[i];
+     ll finalAns=ans-(sum-ans);
+     cout<<finalAns<<endl;    
 
-    vector<int>left(n);
-    vector<int>right(n);
-    int max1=v[0];
-    for(int i=0;i<n;i++){
-        max1=max(max1,v[i]);
-        left[i]=max1;
-    }   
-  int max2=v[n-1];
-  for(int i=n-1;i>=0;i--){
-      max2=max(max2,v[i]);
-      right[i]=max2;
-  }
- 
- int ans=0;
-    for(int i=0;i<n;i++){
-       ans+=min(left[i],right[i])-v[i];
-    }
+     
 
-  cout<<ans<<endl;
 
    
     #ifndef  ONLINE_JUDGE
