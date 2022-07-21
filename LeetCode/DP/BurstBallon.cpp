@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/burst-balloons/
 
 #include <bits/stdc++.h>
 
@@ -44,50 +44,40 @@ void init_code(){
 }
 
 
+int dp[305][305];
 
+int solve(vector<int>&nums,int i ,int j){
+    if(i>j)return 0;
+    if(dp[i][j]!=-1)return dp[i][j];
+    
+    int ans=INT_MIN;
+    for(int k=i;k<=j;k++){
+        int temp=nums[i-1]*nums[k]*nums[j+1] +solve(nums,i,k-1)+solve(nums,k+1,j);
+        ans=max(ans,temp);
+    }
+    return dp[i][j]=ans;
+}
+ 
+
+class Solution {
+public:
+    int maxCoins(vector<int>& nums) {
+      nums.push_back(1);
+      nums.insert(nums.begin(),1);
+        
+        int n=nums.size();
+    memset(dp,-1,sizeof dp);        
+        int ans= solve(nums,1,n-2);
+        return ans;
+    }
+};
 
 
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
-     
 
-      int t;
-      cin>>t;
-      while(t--){
-
-        ll n;
-        cin>>n;
-        vector<ll>v(n);
-        loop(i,n)cin>>v[i];
-
-        multiset<ll>mp;
-        for(auto e:v){mp.insert(e);}
-
-
-        
-        int cn=1;
-        int i=1;
-        while(!mp.empty()){
-           
-           auto it=mp.lower_bound(i);
-           if(it==mp.end()){
-            i=1;
-            cn++;
-            continue;
-           }
-
-           i++;
-           mp.erase(it);
-
-           
-        }
-       cout<<cn<<endl;
-
-   
-
-     }
 
 
 

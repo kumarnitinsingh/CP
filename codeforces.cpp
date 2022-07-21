@@ -44,16 +44,7 @@ void init_code(){
 }
 
 
-void subsetSum(vector<ll>&v,ll i,ll n,ll sum,vector<ll>&temp){
-    if(i==n){
-        temp.push_back(sum);
-        return ;
 
-    }
-
-    subsetSum(v,i+1,n,sum,temp);
-    subsetSum(v,i+1,n,sum+v[i],temp);
-}
 
 
 
@@ -68,32 +59,57 @@ int main(int argc, char const *argv[])
     
      //write your code here
 
+     ll t;
+     cin>>t;
+     while(t--){
+       ll x,a,b,c;
+       cin>>x>>a>>b>>c;
 
-      ll n,x;
-      cin>>n>>x;
-       ll k=n-n/2;
-      vector<ll>v1(n/2),v2(k);
-     
-      loop(i,n/2)cin>>v1[i];
-      loop(i,k)cin>>v2[i];
+       bool f1=false,f2=false,f3=false;
+        if(x==1){
+            if(a!=0 and a==2 and b==3 and c==0){
+                f1=true;
+                f2=true;
+                f3=true;
+            }
+            else if(a!=0 and a==3 and c==2 and b==0){
+                 f1=true;
+                f2=true;
+                f3=true;
+            }
+        }
+        else if(x==2){
+             if(b!=0 and b==1 and a==3 and c==0){
+                f1=true;
+                f2=true;
+                f3=true;
+            }
+            else if(b!=0 and b==3 and c==1 and a==0){
+                 f1=true;
+                f2=true;
+                f3=true;
+            }
+        }
+        else{
+             if(c!=0 and c==1 and a==2 and b==0){
+                f1=true;
+                f2=true;
+                f3=true;
+            }
+            else if(c!=0 and c==2 and b==1 and a==0){
+                 f1=true;
+                f2=true;
+                f3=true;
+            }
 
-      ll sum=0;
-      vector<ll>left;
-      subsetSum(v1,0,n/2,sum,left);
-      sum=0;
-      vector<ll>right;
-      subsetSum(v2,0,k,sum,right);
+        }
 
 
-      sort(right.begin(),right.end());
-      ll ans=0;
-
-      for(auto e:left){
-
-          ans+=upper_bound(right.begin(),right.end(),x-e)-lower_bound(right.begin(),right.end(),x-e);
-      }
-
-      cout<<ans<<endl;
+       if(f1 and f2 and f3){
+        cout<<"YES"<<endl;
+       }
+       else cout<<"NO"<<endl;
+     }
 
 
 
@@ -105,4 +121,5 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
+
 

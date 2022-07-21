@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/russian-doll-envelopes/
 
 #include <bits/stdc++.h>
 
@@ -44,50 +44,38 @@ void init_code(){
 }
 
 
+bool mycom(vector<int>&v1,vector<int>&v2){
+    if(v1[0]==v2[0])return v1[1]>v2[1];
+     return v1[0]<v2[0];
+}
 
+class Solution {
+public:
+    int maxEnvelopes(vector<vector<int>>& card) {
+         sort(card.begin(),card.end(),mycom);
+        int n=card.size();
+      vector<int>ans;
+        ans.push_back(card[0][1]);
+        for(int i=1;i<n;i++){
+            if(ans.back()<card[i][1]){
+                ans.push_back(card[i][1]);
+            }
+            else{
+                
+                auto it=lower_bound(ans.begin(),ans.end(),card[i][1])-ans.begin();
+                ans[it]=card[i][1];
+            }
+         }
+        return ans.size();
+    }
+};
 
 
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
-     
 
-      int t;
-      cin>>t;
-      while(t--){
-
-        ll n;
-        cin>>n;
-        vector<ll>v(n);
-        loop(i,n)cin>>v[i];
-
-        multiset<ll>mp;
-        for(auto e:v){mp.insert(e);}
-
-
-        
-        int cn=1;
-        int i=1;
-        while(!mp.empty()){
-           
-           auto it=mp.lower_bound(i);
-           if(it==mp.end()){
-            i=1;
-            cn++;
-            continue;
-           }
-
-           i++;
-           mp.erase(it);
-
-           
-        }
-       cout<<cn<<endl;
-
-   
-
-     }
 
 
 
