@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://cses.fi/problemset/task/1717/
 
 #include <bits/stdc++.h>
 
@@ -43,65 +43,27 @@ void init_code(){
     #endif
 }
 
-bool isValid(string& s){
-    stack<char>st;
-    for(auto e:s){
-        if(e=='('){
-            st.push(e);
-        }
-        else{
-            if(!st.empty() and st.top()=='(')st.pop();
-            else return false;
-        }
-    }
-    return st.empty()!=0;
-}
 
-int cn=0;;
-int dp[100000];
-bool solve(string & s,int i,string osf){
-    if(i==s.size()){
-        if(isValid(osf)){
-            cn++;
-            if(cn>1)return false;
-        }
-        return true;
-    }
-    if(cn>1)return false;
-    if(dp[i]!=-1)return dp[i];
 
-    bool op1=false,op2=false,op3=false;
-    if(s[i]!='?'){
-     op1=solve(s,i+1,osf+s[i]);
-    }
-   
-    if(s[i]=='?'){
-      op2=  solve(s,i+1,osf+'(');
-       op3= solve(s,i+1,osf+')');
-    }
 
-    return dp[i]=op1 or op2 or op3;
-}
 
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
+     
+     int n;
+     cin>>n;
+     vector<ll>v(n+1);
+     v[0]=1;
+     v[1]=0;
 
-     ll t;
-     cin>>t;
-     while(t--){
-        memset(dp,-1,sizeof dp);
-          string s;
-          cin>>s;
-          cn=0;
-          bool ans=solve(s,0,"");
-          if(ans)cout<<"YES"<<endl;
-          else cout<<"NO"<<endl;
-          int k=0;
+     for(int i=2;i<=n;i++){
+          v[i]=((i-1)*(v[i-2]+v[i-1]))%mod;
      }
 
-cout<<endl;
+     cout<<v[n]<<endl;
+
 
 
 

@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link -> https://cses.fi/problemset/task/1628/
+// problem link ->
 
 #include <bits/stdc++.h>
 
@@ -47,69 +47,24 @@ void init_code(){
 
 
 
-
-
-
-
-
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
-    
-     //write your code here
+     
+     int n;
+     cin>>n;
+     vector<ll>v(n+1);
+     v[0]=1;
+     v[1]=0;
 
-     ll t;
-     cin>>t;
-     while(t--){
-       ll x,a,b,c;
-       cin>>x>>a>>b>>c;
-
-       bool f1=false,f2=false,f3=false;
-        if(x==1){
-            if(a!=0 and a==2 and b==3 and c==0){
-                f1=true;
-                f2=true;
-                f3=true;
-            }
-            else if(a!=0 and a==3 and c==2 and b==0){
-                 f1=true;
-                f2=true;
-                f3=true;
-            }
-        }
-        else if(x==2){
-             if(b!=0 and b==1 and a==3 and c==0){
-                f1=true;
-                f2=true;
-                f3=true;
-            }
-            else if(b!=0 and b==3 and c==1 and a==0){
-                 f1=true;
-                f2=true;
-                f3=true;
-            }
-        }
-        else{
-             if(c!=0 and c==1 and a==2 and b==0){
-                f1=true;
-                f2=true;
-                f3=true;
-            }
-            else if(c!=0 and c==2 and b==1 and a==0){
-                 f1=true;
-                f2=true;
-                f3=true;
-            }
-
-        }
-
-
-       if(f1 and f2 and f3){
-        cout<<"YES"<<endl;
-       }
-       else cout<<"NO"<<endl;
+     for(int i=2;i<=n;i++){
+          v[i]=((i-1)*(v[i-2]+v[i-1]))%mod;
      }
+
+     cout<<v[n]<<endl;
+
+
 
 
 
@@ -121,5 +76,3 @@ int main(int argc, char const *argv[])
     */
    return 0;
 }
-
-
