@@ -1,6 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
-
+// problem link -> https://cses.fi/problemset/task/2064/
 #include <bits/stdc++.h>
 
 //#include<ext/pb_ds/assoc_container.hpp>
@@ -43,64 +42,58 @@ void init_code(){
     #endif
 }
 
-const int maxn=1e6+5;
-vector<int>primes,isprime(maxn,1);
 
-void sieve(int n){
+const int maxn=2e6+5;
+vector<ll>fact(maxn),invfact(maxn);
 
-     isprime[0]=isprime[1];
-     for(ll i=2;i<=n;i++){
-          if(isprime[i]==0)continue;
 
-          for(ll j=i*i;j<=n;j+=i){
-               isprime[j]=0;
-          }
-     }
-
-     for(ll i=2;i<=n;i++){
-          if(isprime[i])primes.push_back(i);
-     }
-
+ll binaryExponentiation(ll x,ll p,ll m){
+    ll ans=1;
+    while(p){
+        if(p&1){
+            ans=(ans*x)%mod;
+        }
+        x=(x*x)%mod;
+        p=p>>1;
+    }
+    return ans;
 }
 
-int divisors(int n){
-     int temp=n+1;
-    
-     int ans=1;
-     auto it=lower_bound(primes.begin(),primes.end(),temp)-primes.begin();
-     for( int i=0;i<it and n;i++){
-          if(n!=0 and n%primes[i]==0){
-               //mp[primes[i]]=1;
-               n=n/primes[i];
-               ll cn=1;
-               while(n!=0 and n%primes[i]==0){
-                    n=n/primes[i];
-                    cn++;
-               }
-               ans=ans*(cn+1);
-          }
+void factorial(){
+    invfact[0]=fact[0]=(1);
+    for(ll i=1;i<maxn;i++){
+        fact[i]=(fact[i-1]*i)%mod;
+       
+    }
 
-     }
-    
-     return ans;
+    for(int i=1;i<maxn;i++){
+        invfact[i]=binaryExponentiation(fact[i],mod-2,mod);
+    }
 }
+
 
 
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
-     int total=1e6+5;
-     sieve(total);
+     factorial();
 
-     int t;
-     cin>>t;
-     while(t--){
-         int n;
-         cin>>n;
-         int ans=divisors(n);
-         cout<<ans<<endl;
-     }
+        ll t=1;
+        //cin>>t;
+        while(t--){
+            ll n;cin>>n;
+            if(n%2==1){
+                cout<<0<<endl;
+                continue;
+            }
+            n=n/2;
+            
+             ll ans=(((fact[n+n]*invfact[n])%mod)*invfact[n])%mod;
+             ans=(ans*binaryExponentiation(n+1,mod-2,mod))%mod;
+             cout<<ans<<endl;
+
+        }
 
 
 

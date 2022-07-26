@@ -43,65 +43,31 @@ void init_code(){
     #endif
 }
 
-const int maxn=1e6+5;
-vector<int>primes,isprime(maxn,1);
 
-void sieve(int n){
 
-     isprime[0]=isprime[1];
-     for(ll i=2;i<=n;i++){
-          if(isprime[i]==0)continue;
-
-          for(ll j=i*i;j<=n;j+=i){
-               isprime[j]=0;
-          }
-     }
-
-     for(ll i=2;i<=n;i++){
-          if(isprime[i])primes.push_back(i);
-     }
-
-}
-
-int divisors(int n){
-     int temp=n+1;
-    
-     int ans=1;
-     auto it=lower_bound(primes.begin(),primes.end(),temp)-primes.begin();
-     for( int i=0;i<it and n;i++){
-          if(n!=0 and n%primes[i]==0){
-               //mp[primes[i]]=1;
-               n=n/primes[i];
-               ll cn=1;
-               while(n!=0 and n%primes[i]==0){
-                    n=n/primes[i];
-                    cn++;
-               }
-               ans=ans*(cn+1);
-          }
-
-     }
-    
-     return ans;
-}
 
 
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
-     int total=1e6+5;
-     sieve(total);
+
 
      int t;
      cin>>t;
      while(t--){
-         int n;
-         cin>>n;
-         int ans=divisors(n);
-         cout<<ans<<endl;
+        int n;
+        cin>>n;
+        int cn=0;
+        for(int i=1;i*i<=n;i++){
+            if(n%i!=0)continue;
+            cn++;
+            if(i*i!=n) {
+               cn++;
+            }
+        }
+        cout<<cn<<endl;
      }
-
 
 
 

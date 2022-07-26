@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://cses.fi/problemset/task/1712/
 
 #include <bits/stdc++.h>
 
@@ -43,63 +43,40 @@ void init_code(){
     #endif
 }
 
-const int maxn=1e6+5;
-vector<int>primes,isprime(maxn,1);
+ll binaryExponentiation(ll n,ll p,ll mod1){
+     ll ans=1;
 
-void sieve(int n){
-
-     isprime[0]=isprime[1];
-     for(ll i=2;i<=n;i++){
-          if(isprime[i]==0)continue;
-
-          for(ll j=i*i;j<=n;j+=i){
-               isprime[j]=0;
+     while(p){
+          if(p&1){
+               ans=(ans*(n))%mod1;
           }
+           n=(n*n)%mod1;
+
+          p=p>>1;
      }
-
-     for(ll i=2;i<=n;i++){
-          if(isprime[i])primes.push_back(i);
-     }
-
-}
-
-int divisors(int n){
-     int temp=n+1;
-    
-     int ans=1;
-     auto it=lower_bound(primes.begin(),primes.end(),temp)-primes.begin();
-     for( int i=0;i<it and n;i++){
-          if(n!=0 and n%primes[i]==0){
-               //mp[primes[i]]=1;
-               n=n/primes[i];
-               ll cn=1;
-               while(n!=0 and n%primes[i]==0){
-                    n=n/primes[i];
-                    cn++;
-               }
-               ans=ans*(cn+1);
-          }
-
-     }
-    
      return ans;
 }
+
 
 
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
-     int total=1e6+5;
-     sieve(total);
 
      int t;
      cin>>t;
      while(t--){
-         int n;
-         cin>>n;
-         int ans=divisors(n);
-         cout<<ans<<endl;
+          ll a,b,c;
+          cin>>a>>b>>c;
+
+          //fermat little theorem
+          // a^(p-1) % p=1; where p is prime
+          
+         ll ans=binaryExponentiation(b,c,mod-1);
+         ll ans2=binaryExponentiation(a,ans,mod);
+         cout<<ans2<<endl;
+          
      }
 
 

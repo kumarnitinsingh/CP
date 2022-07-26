@@ -1,6 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
-
+// problem link -> https://cses.fi/problemset/task/2064/
 #include <bits/stdc++.h>
 
 //#include<ext/pb_ds/assoc_container.hpp>
@@ -43,65 +42,82 @@ void init_code(){
     #endif
 }
 
-bool isValid(string& s){
-    stack<char>st;
-    for(auto e:s){
-        if(e=='('){
-            st.push(e);
+
+const int maxn=2e6+5;
+vector<ll>fact(maxn),invfact(maxn);
+
+
+ll binaryExponentiation(ll x,ll p,ll m){
+    ll ans=1;
+    while(p){
+        if(p&1){
+            ans=(ans*x)%mod;
         }
-        else{
-            if(!st.empty() and st.top()=='(')st.pop();
-            else return false;
-        }
+        x=(x*x)%mod;
+        p=p>>1;
     }
-    return st.empty()!=0;
+    return ans;
 }
 
-int cn=0;;
-int dp[100000];
-bool solve(string & s,int i,string osf){
-    if(i==s.size()){
-        if(isValid(osf)){
-            cn++;
-            if(cn>1)return false;
-        }
-        return true;
-    }
-    if(cn>1)return false;
-    if(dp[i]!=-1)return dp[i];
-
-    bool op1=false,op2=false,op3=false;
-    if(s[i]!='?'){
-     op1=solve(s,i+1,osf+s[i]);
-    }
-   
-    if(s[i]=='?'){
-      op2=  solve(s,i+1,osf+'(');
-       op3= solve(s,i+1,osf+')');
+void factorial(){
+    invfact[0]=fact[0]=(1);
+    for(ll i=1;i<maxn;i++){
+        fact[i]=(fact[i-1]*i)%mod;
+       
     }
 
-    return dp[i]=op1 or op2 or op3;
+    for(int i=1;i<maxn;i++){
+        invfact[i]=binaryExponentiation(fact[i],mod-2,mod);
+    }
 }
+
+
 
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
+     factorial();
 
-     ll t;
-     cin>>t;
-     while(t--){
-        memset(dp,-1,sizeof dp);
-          string s;
-          cin>>s;
-          cn=0;
-          bool ans=solve(s,0,"");
-          if(ans)cout<<"YES"<<endl;
-          else cout<<"NO"<<endl;
-          int k=0;
-     }
+        ll t=1;
+        //cin>>t;
+        while(t--){
+            ll n;cin>>n;
+            string s;cin>>s;
+            if(n%2==1){
+                cout<<0<<endl;
+                continue;
+            }
+             
+             int x=0,y=0;
+             for(auto e:s){
+                if(e=='('){x++;y++;}
+                else {y--;x++;}
+             }  
 
-cout<<endl;
+             //cout<<x<<" "<<y<<endl;
+             if(y<0){
+                cout<<0<<endl;
+                continue;
+             }
+
+              ll xcor=abs(n-x);
+              ll ycor=abs(0-y);
+
+              ll temp=(xcor+ycor)/2;
+
+              ll nx=x,ny=-2-y;
+              ll nxcor=n-nx;
+              ll nycor=0-ny;
+              ll temp2=(nxcor+nycor)/2;
+              ll ans2=(fact[nxcor]*invfact[temp2])%mod;
+
+          //  cout<<xcor<<" "<<temp<<endl;
+             ll ans=((fact[xcor]*invfact[temp])%mod);
+           //  ans=(ans*binaryExponentiation(n+1,mod-2,mod))%mod;
+             cout<<ans-ans2<<endl;
+
+        }
 
 
 

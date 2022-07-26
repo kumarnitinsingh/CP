@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://cses.fi/problemset/task/1081/
 
 #include <bits/stdc++.h>
 
@@ -43,65 +43,46 @@ void init_code(){
     #endif
 }
 
-const int maxn=1e6+5;
-vector<int>primes,isprime(maxn,1);
 
-void sieve(int n){
 
-     isprime[0]=isprime[1];
-     for(ll i=2;i<=n;i++){
-          if(isprime[i]==0)continue;
-
-          for(ll j=i*i;j<=n;j+=i){
-               isprime[j]=0;
-          }
-     }
-
-     for(ll i=2;i<=n;i++){
-          if(isprime[i])primes.push_back(i);
-     }
-
-}
-
-int divisors(int n){
-     int temp=n+1;
-    
-     int ans=1;
-     auto it=lower_bound(primes.begin(),primes.end(),temp)-primes.begin();
-     for( int i=0;i<it and n;i++){
-          if(n!=0 and n%primes[i]==0){
-               //mp[primes[i]]=1;
-               n=n/primes[i];
-               ll cn=1;
-               while(n!=0 and n%primes[i]==0){
-                    n=n/primes[i];
-                    cn++;
-               }
-               ans=ans*(cn+1);
-          }
-
-     }
-    
-     return ans;
-}
 
 
 int main(int argc, char const *argv[])
 {
      //clock_t start=clock();
      init_code();
-     int total=1e6+5;
-     sieve(total);
+
 
      int t;
-     cin>>t;
+     t=1;
      while(t--){
-         int n;
-         cin>>n;
-         int ans=divisors(n);
-         cout<<ans<<endl;
-     }
+        int n;
+        cin>>n;
+        vector<int>v(n);
+        int k=1e6+5;
+        vector<int>cn(k,0);
+        loop(i,n)cin>>v[i];
+        for(auto e:v){
+           
+        for(int i=1;i*i<=e;i++){
+            if(e%i !=0)continue;
+           
+             cn[i]++;
+            if(i*i !=e) {
+               cn[e/i]++;
+            }
+        }
+    }
 
+        int ans=1;
+        for(int i=k-1;i>=0;i--){
+            if(cn[i]>=2){
+                ans=i;
+                break;
+            }
+        }
+        cout<<ans<<endl;
+     }
 
 
 
