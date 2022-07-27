@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://www.codechef.com/START49B/problems/MONKS
 
 #include <bits/stdc++.h>
 
@@ -44,7 +44,7 @@ void init_code(){
 }
 
 bool ispossible(vector<ll>&v,ll n,ll mid,vector<ll>&prefix){
-    //ll val=sum/(n-mid);
+    
     ll temp=v[n-mid]*(n-mid);
 
     ll total=prefix[n-mid];
@@ -54,7 +54,6 @@ bool ispossible(vector<ll>&v,ll n,ll mid,vector<ll>&prefix){
     ll left=prefix[n]-prefix[n-mid];
    
     if(req>left)return false;
-    //if(cn>mid)return false;
     return true;
 }
 
@@ -91,14 +90,11 @@ int main(int argc, char const *argv[])
         cin>>n;
         vector<ll>v(n+1);
         for(int i=1;i<=n;i++)cin>>v[i];
-        ll sum=0;
-
-            sort(v.begin(),v.end());
-
+        sort(v.begin(),v.end());
         vector<ll>prefix(v);
         for(int i=1;i<=n;i++)prefix[i]+=prefix[i-1];
 
-            ll ans=solve(v,n,prefix);
+        ll ans=solve(v,n,prefix);
         cout<<ans<<endl;
 
      }
