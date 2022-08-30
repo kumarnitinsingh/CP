@@ -33,35 +33,62 @@ using namespace std;
 #define endl           "\n"
 
 
-void init_code() {
+void init_code(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-#endif
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt","r",stdin);
+    freopen("output3.txt","w",stdout);
+    #endif
 }
 
 
+vector<vector<ll>>multiply(vector<vector<ll>>&mat1,vector<vector<ll>>& mat2,ll sz){
+    vector<vector<ll>>mat3(sz,vector<ll>(sz,0));
+
+    for(int i=0;i<sz;i++){
+        for(int j=0;j<sz;j++){
+           
+            for(int k=0;k<sz;k++){
+                mat3[i][j]= (mat3[i][j]+(mat1[i][k]*mat2[k][j])%mod)%mod;
+            }
+        }
+    }
+    return mat3;
+}
+
+vector<vector<ll>> matrixExpoentiation(vector<vector<ll>>&mat,ll n,ll sz){
+    if(n==0 or n==1)return mat;
+
+    if(n%2==0){
+
+        vector<vector<ll>> temp=matrixExpoentiation(mat,n/2,sz);
+        return multiply(temp,temp,sz);
+    }
+    else {
+         vector<vector<ll>> temp=matrixExpoentiation(mat,n-1,sz);
+        return multiply(mat,temp,sz);
+}
+}
 
 
 
 int main(int argc, char const *argv[])
 {
-    //clock_t start=clock();
-    init_code();
+     //clock_t start=clock();
+     init_code();
 
 
 
 
 
 
-    /*
-     #ifndef  ONLINE_JUDGE
-      clock_t end=clock();
-     cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
-     #endif
-     */
-    return 0;
+   /*
+    #ifndef  ONLINE_JUDGE
+     clock_t end=clock();
+    cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
+    #endif
+    */
+   return 0;
 }

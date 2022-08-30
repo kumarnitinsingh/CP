@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/longest-string-chain/submissions/
 
 #include <bits/stdc++.h>
 
@@ -34,34 +34,59 @@ using namespace std;
 
 
 void init_code() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
 #ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
 #endif
 }
 
 
 
 
+class Solution {
+public:
+	int longestStrChain(vector<string>& words) {
+		int n = words.size();
+		int ans = 0;
+		sort(words.begin(), words.end(), mycom);
+		unordered_map<string, int>mp;
+		for (auto e : words)mp[e] = 1;
+
+		for (auto str : words) {
+			int cur = 1;
+			for (int i = 0; i < str.size(); i++) {
+				string temp = str.substr(0, i) + str.substr(i + 1);
+				if (mp[temp]) {
+					cur = max(1 + mp[temp], cur);
+				}
+			}
+			mp[str] = cur;
+			ans = max(ans, mp[str]);
+		}
+		return ans;
+	}
+};
+
+
 
 int main(int argc, char const *argv[])
 {
-    //clock_t start=clock();
-    init_code();
+	//clock_t start=clock();
+	init_code();
 
 
 
 
 
 
-    /*
-     #ifndef  ONLINE_JUDGE
-      clock_t end=clock();
-     cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
-     #endif
-     */
-    return 0;
+	/*
+	 #ifndef  ONLINE_JUDGE
+	  clock_t end=clock();
+	 cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
+	 #endif
+	 */
+	return 0;
 }

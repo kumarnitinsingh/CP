@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://cses.fi/problemset/task/1727/
 
 #include <bits/stdc++.h>
 
@@ -33,14 +33,14 @@ using namespace std;
 #define endl           "\n"
 
 
-void init_code() {
+void init_code(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-#endif
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt","r",stdin);
+    freopen("output3.txt","w",stdout);
+    #endif
 }
 
 
@@ -49,19 +49,25 @@ void init_code() {
 
 int main(int argc, char const *argv[])
 {
-    //clock_t start=clock();
-    init_code();
+     //clock_t start=clock();
+     init_code();
+
+     int n,k;
+     cin>>n>>k;
+     double ans=0;
+     for(double i=1;i<=k;i++){
+        ans+=(pow(double(i/k),n) -pow(double(i-1)/k,n))*i;
+     }
+     cout<<fixed<<setprecision(6)<<ans<<endl;
 
 
 
 
-
-
-    /*
-     #ifndef  ONLINE_JUDGE
-      clock_t end=clock();
-     cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
-     #endif
-     */
-    return 0;
+   /*
+    #ifndef  ONLINE_JUDGE
+     clock_t end=clock();
+    cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
+    #endif
+    */
+   return 0;
 }

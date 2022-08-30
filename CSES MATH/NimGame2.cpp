@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://cses.fi/problemset/task/1098/
 
 #include <bits/stdc++.h>
 
@@ -33,14 +33,14 @@ using namespace std;
 #define endl           "\n"
 
 
-void init_code() {
+void init_code(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-#endif
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt","r",stdin);
+    freopen("output3.txt","w",stdout);
+    #endif
 }
 
 
@@ -49,19 +49,29 @@ void init_code() {
 
 int main(int argc, char const *argv[])
 {
-    //clock_t start=clock();
-    init_code();
+     //clock_t start=clock();
+     init_code();
 
+     int t;
+     cin>>t;
+     while(t--){
+     ll n;
+     cin>>n;
+     ll xo=0;
+     for(int i=0;i<n;i++){
+        ll  x;cin>>x;
+        x=x%4;
+        xo=xo^x;
+     }
+     if(xo)cout<<"first"<<endl;
+     else cout<<"second"<<endl;
+}
 
-
-
-
-
-    /*
-     #ifndef  ONLINE_JUDGE
-      clock_t end=clock();
-     cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
-     #endif
-     */
-    return 0;
+   /*
+    #ifndef  ONLINE_JUDGE
+     clock_t end=clock();
+    cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
+    #endif
+    */
+   return 0;
 }

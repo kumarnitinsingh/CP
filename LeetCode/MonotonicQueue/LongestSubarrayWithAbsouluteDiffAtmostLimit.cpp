@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/
 
 #include <bits/stdc++.h>
 
@@ -34,34 +34,60 @@ using namespace std;
 
 
 void init_code() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
 #ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+	freopen("input.txt", "r", stdin);
+	freopen("output3.txt", "w", stdout);
 #endif
 }
 
 
+class Solution {
+public:
+	int longestSubarray(vector<int>& nums, int limit) {
+		int ans = 0;
+		int n = nums.size();
+		int i = 0; int j = 0;
+		map<int, int>mp;
 
+		while (j < n) {
+			mp[nums[j]]++;
+			int mini = mp.begin()->first;
+			int maxi = mp.rbegin()->first;
+			while (i < n and abs(maxi - mini) > limit) {
+				mp[nums[i]]--;
+				if (mp[nums[i]] == 0) {
+					mp.erase(nums[i]);
+				}
+				mini = mp.begin()->first;
+				maxi = mp.rbegin()->first;
+				i++;
+			}
+
+			ans = max(ans, j - i + 1);
+			j++;
+		}
+		return ans;
+	}
+};
 
 
 int main(int argc, char const *argv[])
 {
-    //clock_t start=clock();
-    init_code();
+	//clock_t start=clock();
+	init_code();
 
 
 
 
 
-
-    /*
-     #ifndef  ONLINE_JUDGE
-      clock_t end=clock();
-     cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
-     #endif
-     */
-    return 0;
+	/*
+	 #ifndef  ONLINE_JUDGE
+	  clock_t end=clock();
+	 cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
+	 #endif
+	 */
+	return 0;
 }
