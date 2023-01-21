@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/count-nodes-with-the-highest-score/description/
 
 #include <bits/stdc++.h>
 
@@ -43,42 +43,56 @@ void init_code() {
 #endif
 }
 
-const int maxn = 2e5 + 1;
-
-int dp[maxn][2];
-
-void dfs(vector<int>tree[], int src, int par) {
-	int f = 0;
-	for (auto child : tree[src]) {
+const int maxn = 1e5 + 1;
+long subtree[maxn];
+long ans[maxn];
+void dfs(vector<int>Tree[], int src, int par) {
+	subtree[src] = 1;
+	for (auto child : Tree[src]) {
 		if (child != par) {
-			f = 1;
-			dfs(tree, child, src);
+			dfs(Tree, child, src);
+			subtree[src] += subtree[child];
 		}
 	}
-	if (f == 0)return;
-	vector<int>prefix, suffix;
-	for (auto child : tree[src]) {
-		if (child != par) {
-			prefix.push_back(max(dp[child][0], dp[child][1]));
-			suffix.push_back(max(dp[child][0], dp[child][1]));
-		}
-	}
-
-	for (int i = 1; i < prefix.size(); i++)prefix[i] += prefix[i - 1];
-	for (int i = suffix.size() - 2; i >= 0; i--)suffix[i] += suffix[i + 1];
-	dp[src][0] = suffix[0];
-	int child_no = 0;
-
-	for (auto child : tree[src]) {
-		if (child == par) continue;
-		int left = child_no == 0 ? 0 : prefix[child_no - 1];
-		int right = child_no == suffix.size() - 1 ? 0 : suffix[child_no + 1];
-		dp[src][1] = max(dp[src][1], 1 + left + right + dp[child][0]);
-		child_no++;
-
-	}
-
 }
+
+void dfs2(vector<int>Tree[], int src, int par, int total) {
+	if (src == 0)ans[src] = 1;
+	else  ans[src] = total - subtree[src];
+	for (auto child : Tree[src]) {
+		if (child != par) {
+			ans[src] *= subtree[child];
+			dfs2(Tree, child, src, total);
+		}
+	}
+}
+
+class Solution {
+public:
+	int countHighestScoreNodes(vector<int>& parents) {
+		int n = parents.size();
+		vector<int>Tree[n];
+		for (int i = 1; i < n; i++)Tree[parents[i]].push_back(i);
+		dfs(Tree, 0, -1);
+		dfs2(Tree, 0, -1, n);
+		long ans1 = 0;
+		int fi = 0;
+		for (int i = 0; i < n; i++) {
+			if (ans1 < ans[i]) {
+				ans1 = ans[i];
+
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			if (ans1 == ans[i]) {
+				fi++;
+
+			}
+		}
+		return fi;
+
+	}
+};
 
 
 
@@ -86,20 +100,6 @@ int main(int argc, char const *argv[])
 {
 	//clock_t start=clock();
 	init_code();
-	memset(dp, 0, sizeof dp);
-	int n;
-	cin >> n;
-	vector<int>tree[n + 1];
-	for (int i = 1; i < n ; i++) {
-		int x, y; cin >> x >> y;
-		tree[x].push_back(y);
-		//tree[y].push_back(x);
-	}
-
-
-	dfs(tree, 1, -1);
-
-	cout << max(dp[1][0], dp[1][1]);
 
 
 

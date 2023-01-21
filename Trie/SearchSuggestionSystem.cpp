@@ -1,5 +1,5 @@
 // Created by Nitin kumar singh
-// problem link ->
+// problem link -> https://leetcode.com/problems/search-suggestions-system/description/
 
 #include <bits/stdc++.h>
 
@@ -43,63 +43,91 @@ void init_code() {
 #endif
 }
 
-const int maxn = 2e5 + 1;
 
-int dp[maxn][2];
+class node {
+public:
+	char data;
+	unordered_map<char, node*>mp;
+	bool isterminal;
+	node(char data) {
+		this->data = data;
+		isterminal = false;
+	}
+};
 
-void dfs(vector<int>tree[], int src, int par) {
-	int f = 0;
-	for (auto child : tree[src]) {
-		if (child != par) {
-			f = 1;
-			dfs(tree, child, src);
+class trie {
+public:
+	node* root;
+	trie() {
+		root = new node('\0');
+	}
+
+	void insert(string& s) {
+		node* temp = root;
+
+		for (auto ch : s) {
+			if (temp->mp.count(ch)) {
+				temp = temp->mp[ch];
+			}
+			else {
+				node *k = new node(ch);
+				temp->mp[ch] = k;
+				temp = k;
+			}
 		}
+		temp->isterminal = true;
 	}
-	if (f == 0)return;
-	vector<int>prefix, suffix;
-	for (auto child : tree[src]) {
-		if (child != par) {
-			prefix.push_back(max(dp[child][0], dp[child][1]));
-			suffix.push_back(max(dp[child][0], dp[child][1]));
+	bool isMatching(string &s, int n) {
+		node* temp = root;
+		int f = 0;
+		for (auto ch : s) {
+			if (temp->mp.count(ch)) {
+				f++;
+				temp = temp->mp[ch];
+			}
+			else break;
+
 		}
+		return f == n;
 	}
+};
 
-	for (int i = 1; i < prefix.size(); i++)prefix[i] += prefix[i - 1];
-	for (int i = suffix.size() - 2; i >= 0; i--)suffix[i] += suffix[i + 1];
-	dp[src][0] = suffix[0];
-	int child_no = 0;
 
-	for (auto child : tree[src]) {
-		if (child == par) continue;
-		int left = child_no == 0 ? 0 : prefix[child_no - 1];
-		int right = child_no == suffix.size() - 1 ? 0 : suffix[child_no + 1];
-		dp[src][1] = max(dp[src][1], 1 + left + right + dp[child][0]);
-		child_no++;
 
+class Solution {
+public:
+	vector<vector<string>> suggestedProducts(vector<string>& products, string searchWord) {
+		vector<vector<string>>ans;
+		trie *t = new trie();
+		int n = searchWord.size();
+		for (int i = 0; i < n; i++) {
+			string str = searchWord.substr(0, i + 1);
+			t->insert(str);
+			vector<string>temp;
+			for (auto w : products) {
+
+				if (t->isMatching(w, i + 1)) {
+					temp.push_back(w);
+				}
+			}
+			sort(temp.begin(), temp.end());
+			int sz = temp.size();
+			vector<string>p;
+			for (int k = 0; k < min(sz, 3); k++) {
+				p.push_back(temp[k]);
+			}
+			ans.push_back(p);
+
+		}
+		return ans;
 	}
-
-}
-
+};
 
 
 int main(int argc, char const *argv[])
 {
 	//clock_t start=clock();
 	init_code();
-	memset(dp, 0, sizeof dp);
-	int n;
-	cin >> n;
-	vector<int>tree[n + 1];
-	for (int i = 1; i < n ; i++) {
-		int x, y; cin >> x >> y;
-		tree[x].push_back(y);
-		//tree[y].push_back(x);
-	}
-
-
-	dfs(tree, 1, -1);
-
-	cout << max(dp[1][0], dp[1][1]);
 
 
 

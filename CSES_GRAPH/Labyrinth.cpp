@@ -33,86 +33,86 @@ using namespace std;
 #define endl           "\n"
 
 
-void init_code(){
+void init_code() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    #ifndef ONLINE_JUDGE
-    freopen("input.txt","r",stdin);
-    freopen("output3.txt","w",stdout);
-    #endif
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output3.txt", "w", stdout);
+#endif
 }
 
 
-string ans="";
+string ans = "";
 
 
 
-void dfs(vector<string>&grid,int i,int j,vector<vector<int>>&visited,string osf){
-    if(i<0 or j<0 or i>=grid.size() or j>=grid[0].size()){
+void dfs(vector<string>&grid, int i, int j, vector<vector<int>>&visited, string osf) {
+    if (i<0 or j<0 or i >= grid.size() or j >= grid[0].size()) {
         return;
     }
-      if(visited[i][j]==1)return;
-       
-    if(grid[i][j]=='#')return;
-  
-    if(grid[i][j]=='B'){
-        if(ans.size()>osf.size()){
-            ans=osf;
+    if (visited[i][j] == 1)return;
+
+    if (grid[i][j] == '#')return;
+
+    if (grid[i][j] == 'B') {
+        if (ans.size() > osf.size()) {
+            ans = osf;
         }
-        if(ans.size()==0){
-            ans=osf;
+        if (ans.size() == 0) {
+            ans = osf;
         }
-        
+
         return;
 
     }
 
 
-      visited[i][j]=1;
-     
-
-     dfs(grid,i,j+1,visited,osf+"R");
-     dfs(grid,i,j-1,visited,osf+"L");
-     dfs(grid,i+1,j,visited,osf+"D");
-     dfs(grid,i-1,j,visited,osf+"U");
-
-      visited[i][j]=0;
-
-     return;
-
- }
+    visited[i][j] = 1;
 
 
- const int max_n=1005;
- const int max_m=1005;
- int n,m;
- vector<vector<char>>grid(max_n,vector<char>(max_m));
+    dfs(grid, i, j + 1, visited, osf + "R");
+    dfs(grid, i, j - 1, visited, osf + "L");
+    dfs(grid, i + 1, j, visited, osf + "D");
+    dfs(grid, i - 1, j, visited, osf + "U");
+
+    visited[i][j] = 0;
+
+    return;
+
+}
 
 
-vector<vector<char>>dir={{0,1,'R'},{1,0,'D'},{0,-1,'L'},{-1,0,'U'}};
+const int max_n = 1005;
+const int max_m = 1005;
+int n, m;
+vector<vector<char>>grid(max_n, vector<char>(max_m));
 
-vector<vector<char>>visited(max_n,vector<char>(max_m,'0'));
 
-void bfs(int a,int b){
-    queue<pair<int,int>>q;
-    q.push({a,b});
-    visited[a][b]='-';
-    while(!q.empty()){
-         pair<int,int>node=q.front();q.pop();
+vector<vector<char>>dir = {{0, 1, 'R'}, {1, 0, 'D'}, {0, -1, 'L'}, { -1, 0, 'U'}};
 
-         int x=node.first;
-         int y=node.second;
+vector<vector<char>>visited(max_n, vector<char>(max_m, '0'));
 
-        for(auto d:dir){
-            int new_x=x+d[0];
-            int new_y=y+d[1];
-            if(0<=new_x and new_x<n){
-                if(0<=new_y and new_y<m){
+void bfs(int a, int b) {
+    queue<pair<int, int>>q;
+    q.push({a, b});
+    visited[a][b] = '-';
+    while (!q.empty()) {
+        pair<int, int>node = q.front(); q.pop();
 
-                    if(visited[new_x][new_y]=='0' and grid[new_x][new_y]!='#'){
-                         visited[new_x][new_y]=d[2];
-                         q.push({new_x,new_y});
+        int x = node.first;
+        int y = node.second;
+
+        for (auto d : dir) {
+            int new_x = x + d[0];
+            int new_y = y + d[1];
+            if (0 <= new_x and new_x < n) {
+                if (0 <= new_y and new_y < m) {
+
+                    if (visited[new_x][new_y] == '0' and grid[new_x][new_y] != '#') {
+                        visited[new_x][new_y] = d[2];
+                        q.push({new_x, new_y});
                     }
                 }
             }
@@ -123,63 +123,63 @@ void bfs(int a,int b){
 
 int main(int argc, char const *argv[])
 {
-     //clock_t start=clock();
-     init_code();
-    
-     //write your code here
+    //clock_t start=clock();
+    init_code();
 
-     cin>>n>>m;
+    //write your code here
 
-     pair<int,int>p1,p2;
+    cin >> n >> m;
 
-     for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++){
-            cin>>grid[i][j];
+    pair<int, int>p1, p2;
 
-            if(grid[i][j]=='A')p1={i,j};
-            if(grid[i][j]=='B')p2={i,j};
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cin >> grid[i][j];
+
+            if (grid[i][j] == 'A')p1 = {i, j};
+            if (grid[i][j] == 'B')p2 = {i, j};
         }
-     } 
+    }
 
-     bfs(p1.first,p1.second);
-     if(visited[p2.first][p2.second]=='0'){cout<<"NO"<<endl;return 0;}
+    bfs(p1.first, p1.second);
+    if (visited[p2.first][p2.second] == '0') {cout << "NO" << endl; return 0;}
 
-     else{
-           string ans="";
-           int x=p2.first;
-           int y=p2.second;
+    else {
+        string ans = "";
+        int x = p2.first;
+        int y = p2.second;
 
-            while(visited[x][y]!='-'){
+        while (visited[x][y] != '-') {
 
-                for(auto d:dir){
-                    if(d[2]==visited[x][y]){
-                        x-=d[0];
-                        y-=d[1];
-                        ans+=d[2];
-                    }
+            for (auto d : dir) {
+                if (d[2] == visited[x][y]) {
+                    x -= d[0];
+                    y -= d[1];
+                    ans += d[2];
                 }
             }
+        }
 
-            cout<<"YES"<<endl;
-            cout<<ans.size()<<endl;
-            reverse(ans.begin(),ans.end());
-            cout<<ans<<endl;
+        cout << "YES" << endl;
+        cout << ans.size() << endl;
+        reverse(ans.begin(), ans.end());
+        cout << ans << endl;
 
-     }
-
-
-
-    
-         
+    }
 
 
-   /*
-    #ifndef  ONLINE_JUDGE
-     clock_t end=clock();
-    cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
-    #endif
-    */
-   return 0;
+
+
+
+
+
+    /*
+     #ifndef  ONLINE_JUDGE
+      clock_t end=clock();
+     cout<<"\n\n\n\nExecuted in: "<<double(end-start)/(CLOCKS_PER_SEC*1000)<<" ms"<<endl;
+     #endif
+     */
+    return 0;
 
 
 

@@ -80,16 +80,16 @@ public:
 
 	}
 
-	friend istream& operator >>(istream & is, Person & p);
-	friend ostream& operator <<(ostream & os, const Person& p);
+	friend istream & operator >>(istream & is, Person & p);
+	friend ostream & operator <<(ostream & os, const Person & p);
 };
 
-istream& operator >>(istream & is, Person& p) {
+istream & operator >>(istream & is, Person& p) {
 	is >> p.name >> p.id >> p.phoneNo;
 	return is;
 }
 
-ostream& operator <<(ostream & os, const Person& p) {
+ostream & operator <<(ostream & os, const Person& p) {
 	os << "name : " << p.name << endl;
 	os << "AdhaarId : " << p.id << endl;
 	os << "phoneNo : " << p.phoneNo << endl;
